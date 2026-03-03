@@ -1,13 +1,16 @@
 import model.Event;
+import model.Participant;
 import repository.EventRepository;
+import repository.ParticipantRepository;
 
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
-public static EventRepository eventRepository = new EventRepository();
 public static final Scanner scanner = new Scanner(System.in);
+public static EventRepository eventRepository = new EventRepository();
+public static ParticipantRepository participantRepository = new ParticipantRepository();
 
 // Eventos ->
 public static List<Integer> idEventoCadastrado = new ArrayList<>();
@@ -53,8 +56,8 @@ void main() {
             switch (opcao) {
                 case 1 -> registerEvent();
                 case 2 -> eventRepository.readEvent();
-                case 3 -> inscreverParticipante();
-                case 4 -> exibirParticipantesInscritos(opcao);
+                case 3 -> registerParticipant();
+                case 4 -> participantRepository.readParticipant();
                 case 5 -> confirmarPresencaParticipante();
                 case 6 -> {
                     System.out.println("Saindo...");
@@ -94,6 +97,18 @@ public static void registerEvent() {
     System.out.println("Evento criado com sucesso!");
 }
 
+public static void registerParticipant() {
+    Participant participant1 = new Participant("Vinícius", 998271900);
+    Participant participant2 = new Participant("João Victor", 987593594);
+    Participant participant3 = new Participant("Ricardo", 999175344);
+    Participant participant4 = new Participant("Ângela", 999223567);
+
+    participantRepository.createParticipant(participant1);
+    participantRepository.createParticipant(participant2);
+    participantRepository.createParticipant(participant3);
+    participantRepository.createParticipant(participant4);
+}
+
 public static void cadastrarEvento() {
     System.out.println("              Cadastrar Evento\n--------------------------------------------");
     System.out.println("Digite o nome do evento:");
@@ -125,6 +140,18 @@ public static void cadastrarEvento() {
 
     Event event1 = new Event("Verão Massayo - Show do Matuê", "17/01/2026", "Estacionamento Jaraguá", 10000);
     System.out.println("Evento " + nome + " cadastrado com sucesso!");
+}
+
+public static void confirmParticipantAttendance() {
+    int participant_id = selectParticipant();
+
+}
+
+public static int selectParticipant() {
+    participantRepository.readParticipant();
+    System.out.println("Digite o ID do participante:");
+    int participant_id = scanner.nextInt();
+    return participant_id;
 }
 
 public static void listarEventos(int opcao) {
@@ -265,3 +292,13 @@ public static void confirmarPresencaParticipante() {
         }
     } while (true);
 }
+
+/*
+    Funções:
+    - Login
+    - Cadastrar Evento (Nome, Data, Local, Capacidade)
+    - Listar Eventos
+    - Inscrever Participante (Nome, Contato)
+    - Exibir Participantes Inscritos
+    - Confirmar Presença de Participante
+*/
