@@ -1,8 +1,12 @@
+import model.Event;
+import repository.EventRepository;
+
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
+public static EventRepository eventRepository = new EventRepository();
 public static final Scanner scanner = new Scanner(System.in);
 
 // Eventos ->
@@ -47,8 +51,8 @@ void main() {
             System.out.println("--------------------------------------------");
 
             switch (opcao) {
-                case 1 -> cadastrarEvento();
-                case 2 -> listarEventos(opcao);
+                case 1 -> registerEvent();
+                case 2 -> eventRepository.readEvent();
                 case 3 -> inscreverParticipante();
                 case 4 -> exibirParticipantesInscritos(opcao);
                 case 5 -> confirmarPresencaParticipante();
@@ -74,6 +78,20 @@ public static void login() {
     System.out.println("Digite sua senha:");
     String senha = scanner.nextLine();
     System.out.println("Seja bem-vindo " + email + "!");
+}
+
+public static void registerEvent() {
+    Event event1 = new Event("Verão Massayo - Show do Matuê", "17/01/2026", "Estacionamento Jaraguá", 10000);
+    Event event2 = new Event("Verão Massayo - Show do Teto", "17/01/2026", "Estacionamento Jaraguá", 10000);
+    Event event3 = new Event("Verão Massayo - Show do Wiu", "17/01/2026", "Estacionamento Jaraguá", 10000);
+    Event event4 = new Event("Verão Massayo - Show do Brandão", "17/01/2026", "Estacionamento Jaraguá", 10000);
+
+    eventRepository.createEvent(event1);
+    eventRepository.createEvent(event2);
+    eventRepository.createEvent(event3);
+    eventRepository.createEvent(event4);
+
+    System.out.println("Evento criado com sucesso!");
 }
 
 public static void cadastrarEvento() {
@@ -104,6 +122,8 @@ public static void cadastrarEvento() {
 
     totalEventosCadastrados++;
     idEventoCadastrado.add(totalEventosCadastrados);
+
+    Event event1 = new Event("Verão Massayo - Show do Matuê", "17/01/2026", "Estacionamento Jaraguá", 10000);
     System.out.println("Evento " + nome + " cadastrado com sucesso!");
 }
 
