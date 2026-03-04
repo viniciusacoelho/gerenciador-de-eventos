@@ -6,14 +6,14 @@ public class Event {
 
     private String date;
 
-    private String place;
+    private String location;
 
     private int capacity;
 
-    public Event(String name, String date, String place, int capacity) {
+    public Event(String name, String date, String location, int capacity) {
         this.name = name;
         this.date = date;
-        this.place = place;
+        this.location = location;
         this.capacity = capacity;
     }
 
@@ -37,12 +37,12 @@ public class Event {
         this.date = date;
     }
 
-    public String getPlace() {
-        return this.place;
+    public String getLocation() {
+        return this.location;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public int getCapacity() {
@@ -57,7 +57,7 @@ public class Event {
     public String toString() {
         return "Nome: " + this.getName() +
                 "\nData: " + this.getDate() +
-                "\nLocal: " + this.getPlace() +
+                "\nLocal: " + this.getLocation() +
                 "\nCapacidade: " + this.getCapacity();
     }
 }

@@ -2,6 +2,8 @@ import model.Event;
 import model.Participant;
 import repository.EventRepository;
 import repository.ParticipantRepository;
+import service.EventService;
+import service.ParticipantService;
 
 import java.util.Scanner;
 import java.util.List;
@@ -10,7 +12,9 @@ import java.util.InputMismatchException;
 
 public static final Scanner scanner = new Scanner(System.in);
 public static EventRepository eventRepository = new EventRepository();
+public static EventService eventService = new EventService();
 public static ParticipantRepository participantRepository = new ParticipantRepository();
+public static ParticipantService participantService = new ParticipantService();
 
 // Eventos ->
 public static List<Integer> idEventoCadastrado = new ArrayList<>();
@@ -84,21 +88,77 @@ public static void login() {
 }
 
 public static void registerEvent() {
-    Event event1 = new Event("Verão Massayo - Show do Matuê", "17/01/2026", "Estacionamento Jaraguá", 10000);
-    Event event2 = new Event("Verão Massayo - Show do Teto", "17/01/2026", "Estacionamento Jaraguá", 10000);
-    Event event3 = new Event("Verão Massayo - Show do Wiu", "17/01/2026", "Estacionamento Jaraguá", 10000);
-    Event event4 = new Event("Verão Massayo - Show do Brandão", "17/01/2026", "Estacionamento Jaraguá", 10000);
+    Event event1 = new Event("Verão Massayo - Show do Matuê", "17/01/2026", "Estacionamento Jaraguá", 30000);
+
+    do {
+        boolean validatedName = eventService.validateName(event1.getName());
+        if (validatedName) {
+            break;
+        } else {
+            System.out.println("Nome inválido! Tente novamente.");
+        }
+    } while (true);
+
+    do {
+        boolean validatedDate = eventService.validateDate(event1.getDate());
+        if (validatedDate) {
+            break;
+        } else {
+            System.out.println("Data inválida! Tente novamente.");
+        }
+    } while (true);
+
+    do {
+        boolean validatedLocation = eventService.validateLocation(event1.getLocation());
+        if (validatedLocation) {
+            break;
+        } else {
+            System.out.println("Local inválido! Tente novamente.");
+        }
+    } while (true);
+
+    do {
+        boolean validatedCapacity = eventService.validateCapacity(event1.getCapacity());
+        if (validatedCapacity) {
+            break;
+        } else {
+            System.out.println("Capacidade inválida! Tente novamente.");
+        }
+    } while (true);
+
+    Event event2 = new Event("Verão Massayo - Show do Teto", "17/01/2026", "Estacionamento Jaraguá", 30000);
+    Event event3 = new Event("Verão Massayo - Show do Wiu", "17/01/2026", "Estacionamento Jaraguá", 30000);
+    Event event4 = new Event("Verão Massayo - Show do Brandão", "17/01/2026", "Estacionamento Jaraguá", 30000);
 
     eventRepository.createEvent(event1);
     eventRepository.createEvent(event2);
     eventRepository.createEvent(event3);
     eventRepository.createEvent(event4);
 
-    System.out.println("Evento criado com sucesso!");
+    System.out.println("Evento cadastrado com sucesso!");
 }
 
 public static void registerParticipant() {
     Participant participant1 = new Participant("Vinícius", 998271900);
+
+    do {
+        boolean validatedName = participantService.validateName(participant1.getName());
+        if (validatedName) {
+            break;
+        } else {
+            System.out.println("Nome inválido! Tente novamente.");
+        }
+    } while (true);
+
+    do {
+        boolean validatedContact = participantService.validateContact(participant1.getContact());
+        if (validatedContact) {
+            break;
+        } else {
+            System.out.println("Contato inválido! Tente novamente.");
+        }
+    } while (true);
+
     Participant participant2 = new Participant("João Victor", 987593594);
     Participant participant3 = new Participant("Ricardo", 999175344);
     Participant participant4 = new Participant("Ângela", 999223567);
@@ -107,39 +167,41 @@ public static void registerParticipant() {
     participantRepository.createParticipant(participant2);
     participantRepository.createParticipant(participant3);
     participantRepository.createParticipant(participant4);
+
+    System.out.println("Participante " + participant1.getName() + " cadastrado com sucesso!");
 }
 
 public static void cadastrarEvento() {
     System.out.println("              Cadastrar Evento\n--------------------------------------------");
     System.out.println("Digite o nome do evento:");
-    String nome = scanner.nextLine();
+    String name = scanner.nextLine();
     System.out.println("Digite a data do evento:");
-    String data = scanner.nextLine();
+    String date = scanner.nextLine();
     System.out.println("Digite o local do evento:");
-    String local = scanner.nextLine();
+    String location = scanner.nextLine();
 
-    int capacidade;
+    int capacity;
     do {
         try {
             System.out.println("Digite a capacidade do evento:");
-            capacidade = scanner.nextInt();
-            break;
+            capacity = scanner.nextInt();
+            boolean capacityValidated = eventService.validateCapacity(capacity);
+            if (capacityValidated) {
+                break;
+            } else {
+                System.out.println("Capacidade inválida! Tente novamente.");
+            }
         } catch (InputMismatchException e) {
             System.err.println("[ERRO]: Digite um número!");
             scanner.nextLine();
         }
     } while (true);
 
-    nomeEventoCadastrado.add(nome);
-    dataEventoCadastrado.add(data);
-    localEventoCadastrado.add(local);
-    capacidadeEventoCadastrado.add(capacidade);
+    Event event = new Event(name, date, location, capacity);
 
-    totalEventosCadastrados++;
-    idEventoCadastrado.add(totalEventosCadastrados);
-
-    Event event1 = new Event("Verão Massayo - Show do Matuê", "17/01/2026", "Estacionamento Jaraguá", 10000);
-    System.out.println("Evento " + nome + " cadastrado com sucesso!");
+//    Event event1 = new Event("Verão Massayo - Show do Matuê", "17/01/2026", "Estacionamento Jaraguá", 30000);
+    eventRepository.createEvent(event);
+    System.out.println("Evento '" + event.getName() + "' cadastrado com sucesso!");
 }
 
 public static void confirmParticipantAttendance() {
@@ -302,3 +364,5 @@ public static void confirmarPresencaParticipante() {
     - Exibir Participantes Inscritos
     - Confirmar Presença de Participante
 */
+
+// TODO: Ticket (Name, Description, Price), create a Enum if ticket still have to buy, AVAILABLE or SOLD_OUT
