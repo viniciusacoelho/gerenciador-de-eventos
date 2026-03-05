@@ -83,15 +83,21 @@ public static void login() {
     System.out.println("Digite seu e-mail:");
     String email = scanner.nextLine();
     System.out.println("Digite sua senha:");
-    String senha = scanner.nextLine();
+    String password = scanner.nextLine();
     System.out.println("Seja bem-vindo " + email + "!");
 }
 
 public static void registerEvent() {
-    Event event1 = new Event("Verão Massayo - Show do Matuê", "17/01/2026", "Estacionamento Jaraguá", 30000);
+    System.out.println("              Cadastrar Evento\n--------------------------------------------");
+    String name;
+    String date;
+    String location;
+    int capacity;
 
     do {
-        boolean validatedName = eventService.validateName(event1.getName());
+        System.out.println("Digite o nome do evento:");
+        name = scanner.nextLine();
+        boolean validatedName = eventService.validateName(name);
         if (validatedName) {
             break;
         } else {
@@ -100,7 +106,9 @@ public static void registerEvent() {
     } while (true);
 
     do {
-        boolean validatedDate = eventService.validateDate(event1.getDate());
+        System.out.println("Digite a data do evento:");
+        date = scanner.nextLine();
+        boolean validatedDate = eventService.validateDate(date);
         if (validatedDate) {
             break;
         } else {
@@ -109,7 +117,9 @@ public static void registerEvent() {
     } while (true);
 
     do {
-        boolean validatedLocation = eventService.validateLocation(event1.getLocation());
+        System.out.println("Digite o local do evento:");
+        location = scanner.nextLine();
+        boolean validatedLocation = eventService.validateLocation(location);
         if (validatedLocation) {
             break;
         } else {
@@ -117,70 +127,6 @@ public static void registerEvent() {
         }
     } while (true);
 
-    do {
-        boolean validatedCapacity = eventService.validateCapacity(event1.getCapacity());
-        if (validatedCapacity) {
-            break;
-        } else {
-            System.out.println("Capacidade inválida! Tente novamente.");
-        }
-    } while (true);
-
-    Event event2 = new Event("Verão Massayo - Show do Teto", "17/01/2026", "Estacionamento Jaraguá", 30000);
-    Event event3 = new Event("Verão Massayo - Show do Wiu", "17/01/2026", "Estacionamento Jaraguá", 30000);
-    Event event4 = new Event("Verão Massayo - Show do Brandão", "17/01/2026", "Estacionamento Jaraguá", 30000);
-
-    eventRepository.createEvent(event1);
-    eventRepository.createEvent(event2);
-    eventRepository.createEvent(event3);
-    eventRepository.createEvent(event4);
-
-    System.out.println("Evento cadastrado com sucesso!");
-}
-
-public static void registerParticipant() {
-    Participant participant1 = new Participant("Vinícius", 998271900);
-
-    do {
-        boolean validatedName = participantService.validateName(participant1.getName());
-        if (validatedName) {
-            break;
-        } else {
-            System.out.println("Nome inválido! Tente novamente.");
-        }
-    } while (true);
-
-    do {
-        boolean validatedContact = participantService.validateContact(participant1.getContact());
-        if (validatedContact) {
-            break;
-        } else {
-            System.out.println("Contato inválido! Tente novamente.");
-        }
-    } while (true);
-
-    Participant participant2 = new Participant("João Victor", 987593594);
-    Participant participant3 = new Participant("Ricardo", 999175344);
-    Participant participant4 = new Participant("Ângela", 999223567);
-
-    participantRepository.createParticipant(participant1);
-    participantRepository.createParticipant(participant2);
-    participantRepository.createParticipant(participant3);
-    participantRepository.createParticipant(participant4);
-
-    System.out.println("Participante " + participant1.getName() + " cadastrado com sucesso!");
-}
-
-public static void cadastrarEvento() {
-    System.out.println("              Cadastrar Evento\n--------------------------------------------");
-    System.out.println("Digite o nome do evento:");
-    String name = scanner.nextLine();
-    System.out.println("Digite a data do evento:");
-    String date = scanner.nextLine();
-    System.out.println("Digite o local do evento:");
-    String location = scanner.nextLine();
-
-    int capacity;
     do {
         try {
             System.out.println("Digite a capacidade do evento:");
@@ -198,22 +144,19 @@ public static void cadastrarEvento() {
     } while (true);
 
     Event event = new Event(name, date, location, capacity);
-
-//    Event event1 = new Event("Verão Massayo - Show do Matuê", "17/01/2026", "Estacionamento Jaraguá", 30000);
     eventRepository.createEvent(event);
+
+//    Event event2 = new Event("Verão Massayo - Show do Teto", "17/01/2026", "Estacionamento Jaraguá", 30000);
+//    Event event3 = new Event("Verão Massayo - Show do Wiu", "17/01/2026", "Estacionamento Jaraguá", 30000);
+//    Event event4 = new Event("Verão Massayo - Show do Brandão", "17/01/2026", "Estacionamento Jaraguá", 30000);
+
+//    Event event1 = new Event("V", "17/01/2026", "Estacionamento Jaraguá", 30000);
+//    eventRepository.createEvent(event1);
+//    eventRepository.createEvent(event2);
+//    eventRepository.createEvent(event3);
+//    eventRepository.createEvent(event4);
+
     System.out.println("Evento '" + event.getName() + "' cadastrado com sucesso!");
-}
-
-public static void confirmParticipantAttendance() {
-    int participant_id = selectParticipant();
-
-}
-
-public static int selectParticipant() {
-    participantRepository.readParticipant();
-    System.out.println("Digite o ID do participante:");
-    int participant_id = scanner.nextInt();
-    return participant_id;
 }
 
 public static void listarEventos(int opcao) {
@@ -242,6 +185,54 @@ public static void listarEventos(int opcao) {
     }
 }
 
+public static void registerParticipant() {
+    String name;
+    int contact;
+
+    do {
+        System.out.println("Digite o nome do participante:");
+        name = scanner.nextLine();
+        boolean validatedName = participantService.validateName(name);
+        if (validatedName) {
+            break;
+        } else {
+            System.out.println("Nome inválido! Tente novamente.");
+        }
+    } while (true);
+
+    do {
+        try {
+            System.out.println("Digite o contato do participante:");
+            contact = scanner.nextInt();
+            scanner.nextLine();
+            boolean validatedContact = participantService.validateContact(contact);
+            if (validatedContact) {
+                break;
+            } else {
+                System.out.println("Contato inválido! Tente novamente.");
+            }
+        } catch (InputMismatchException e) {
+            System.err.println("[ERRO]: Digite um número!");
+            scanner.nextLine();
+        }
+    } while (true);
+
+    Participant participant = new Participant(name, contact);
+    participantRepository.createParticipant(participant);
+
+//    Participant participant1 = new Participant("Vinícius", 998271900);
+//    Participant participant2 = new Participant("João Victor", 987593594);
+//    Participant participant3 = new Participant("Ricardo", 999175344);
+//    Participant participant4 = new Participant("Ângela", 999223567);
+
+//    participantRepository.createParticipant(participant1);
+//    participantRepository.createParticipant(participant2);
+//    participantRepository.createParticipant(participant3);
+//    participantRepository.createParticipant(participant4);
+
+    System.out.println("Participante '" + participant.getName() + "' cadastrado com sucesso!");
+}
+
 public static void inscreverParticipante() {
     if (totalEventosCadastrados == 0) {
         System.out.println("Nenhum evento cadastrado anteriormente.");
@@ -249,22 +240,7 @@ public static void inscreverParticipante() {
     }
 
     System.out.println("           Inscrever Participante\n--------------------------------------------");
-    System.out.println("Digite o nome do participante:");
-    String nome = scanner.nextLine();
-
-    int contato;
-    do {
-        try {
-            System.out.println("Digite o contato do participante:");
-            contato = scanner.nextInt();
-            scanner.nextLine();
-            break;
-        } catch (InputMismatchException e) {
-            System.err.println("[ERRO]: Digite um número!");
-            scanner.nextLine();
-        }
-    } while (true);
-
+    registerParticipant();
     do {
         System.out.println("--------------------------------------------");
         listarEventos(0);
@@ -353,6 +329,18 @@ public static void confirmarPresencaParticipante() {
             System.out.println("ID do participante inválido! Tente novamente.\n--------------------------------------------");
         }
     } while (true);
+}
+
+public static void confirmParticipantAttendance() {
+    int participant_id = selectParticipant();
+
+}
+
+public static int selectParticipant() {
+    participantRepository.readParticipant();
+    System.out.println("Digite o ID do participante:");
+    int participant_id = scanner.nextInt();
+    return participant_id;
 }
 
 /*
