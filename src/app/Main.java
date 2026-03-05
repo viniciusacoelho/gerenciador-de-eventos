@@ -254,10 +254,10 @@ public static void inscreverParticipante() {
                 participanteCadastradoEvento.add(idEvento - 1);
                 totalParticipantesCadastrados++;
                 idParticipanteCadastrado.add(totalParticipantesCadastrados);
-
-                nomeParticipanteCadastrado.add(nome);
-                contatoParticipateCadastrado.add(contato);
-                System.out.println("Participante " + nome + " inscrito no evento " + nomeEventoCadastrado.get(idEvento - 1) + " com sucesso!");
+//
+//                nomeParticipanteCadastrado.add(nome);
+//                contatoParticipateCadastrado.add(contato);
+//                System.out.println("Participante " + nome + " inscrito no evento " + nomeEventoCadastrado.get(idEvento - 1) + " com sucesso!");
             } else {
                 System.out.println("Evento lotado! Não foi possível inscrever o participante.");
             }
