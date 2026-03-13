@@ -58,10 +58,15 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 /gerenciador-de-eventos
 │
 ├── src/
-│   └── Main.java
+│   └── app
+│   └── enums
+│   └── model
+│   └── repository
+│   └── service
 ├── .gitignore
 ├── LICENSE
-└── README.md
+├── README.md
+└── gerenciador-de-eventos.iml
 ```
 
 ---
@@ -75,7 +80,7 @@ git clone https://github.com/seu-usuario/gerenciador-de-eventos.git
 ```
 
 2. Abra o projeto no **IntelliJ IDEA**;
-3. Execute a classe `Main`;
+3. Execute a classe `app.Main`;
 4. Utilize o menu interativo exibido no console.
 
 ---
