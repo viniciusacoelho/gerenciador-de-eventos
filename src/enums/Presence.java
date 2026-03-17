@@ -6,7 +6,7 @@ public enum Presence {
     PENDING ("Pendente"),
     CANCELED ("Cancelada");
 
-    private String presence;
+    private final String presence;
 
     Presence(String presence) {
         this.presence = presence;
@@ -16,7 +16,4 @@ public enum Presence {
         return presence;
     }
 
-    public void setPresence(String presence) {
-        this.presence = presence;
-    }
 }

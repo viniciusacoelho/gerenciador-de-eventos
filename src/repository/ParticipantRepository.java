@@ -23,4 +23,13 @@ public class ParticipantRepository {
             System.out.println("--------------------------------------------");
         }
     }
+
+    public Participant findParticipantById(int participantId) {
+        for (Participant participant : participants) {
+            if (participant.getParticipantId() == participantId) {
+                return participant;
+            }
+        }
+        return null;
+    }
 }

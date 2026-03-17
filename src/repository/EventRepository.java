@@ -25,4 +25,17 @@ public class EventRepository {
         }
     }
 
+    public Event findEventById(int eventId) {
+        for (Event event : events) {
+            if (event.getEventId() == eventId) {
+                return event;
+            }
+        }
+        return null;
+    }
+
+//    boolean EventIsEmpty() {
+//        return events == null;
+//    }
+
 }

@@ -1,6 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Event {
+
+    private static int totalRegisteredEvents = 1;
+
+    private int eventId;
 
     private String name;
 
@@ -10,15 +18,27 @@ public class Event {
 
     private int capacity;
 
+    private List<Participant> participants;
+
     public Event(String name, String date, String location, int capacity) {
+        this.eventId = totalRegisteredEvents++;
         this.name = name;
         this.date = date;
         this.location = location;
         this.capacity = capacity;
+        this.participants = new ArrayList<>();
     }
 
     public Event() {
 
+    }
+
+    public int getTotalRegisteredEvents() {
+        return totalRegisteredEvents;
+    }
+
+    public int getEventId() {
+        return eventId;
     }
 
     public String getName() {
@@ -53,11 +73,22 @@ public class Event {
         this.capacity = capacity;
     }
 
+    public List<Participant> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Participant participants) {
+        this.participants = Collections.singletonList(participants);
+    }
+
     @Override
     public String toString() {
-        return "Nome: " + this.getName() +
+        return "ID: " + this.getEventId() +
+                "\nNome: " + this.getName() +
                 "\nData: " + this.getDate() +
                 "\nLocal: " + this.getLocation() +
-                "\nCapacidade: " + this.getCapacity();
+                "\nCapacidade: " + this.getCapacity() +
+                "\nNúmero de participantes confirmados: " + this.participants.toArray().length;
     }
+
 }
