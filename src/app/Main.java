@@ -75,10 +75,11 @@ public static void login() {
 public static void registerEvent() {
     System.out.println("              Cadastrar Evento\n--------------------------------------------");
 //    String name;
-//    String date;
+//    String dateTime;
+//    LocalDateTime dateTimeConverted;
 //    String location;
 //    int capacity;
-//
+
 //    do {
 //        System.out.println("Digite o nome do evento:");
 //        name = scanner.nextLine();
@@ -90,19 +91,18 @@ public static void registerEvent() {
 //            System.out.println("Nome inválido! Tente novamente.");
 //        }
 //    } while (true);
-//
-//    do {
-//        System.out.println("Digite a data do evento:");
-//        date = scanner.nextLine();
-//        boolean validatedDate = eventService.validateDate(date);
 
-//        if (validatedDate) {
+//    do {
+//        try {
+//            System.out.println("Digite a data e hora do evento: (dd/MM/yyyy HH:mm)");
+//            dateTime = scanner.nextLine();
+//            dateTimeConverted = eventService.convertDateTime(dateTime);
 //            break;
-//        } else {
-//            System.out.println("Data inválida! Tente novamente.");
+//        } catch (DateTimeParseException e) {
+//            System.out.println("[ERRO]: Data inválida. Tente: 'dd/MM/yyyy HH:mm'.");
 //        }
 //    } while (true);
-//
+
 //    do {
 //        System.out.println("Digite o local do evento:");
 //        location = scanner.nextLine();
@@ -114,7 +114,7 @@ public static void registerEvent() {
 //            System.out.println("Local inválido! Tente novamente.");
 //        }
 //    } while (true);
-//
+
 //    do {
 //        try {
 //            System.out.println("Digite a capacidade do evento:");
@@ -131,14 +131,24 @@ public static void registerEvent() {
 //            scanner.nextLine();
 //        }
 //    } while (true);
-//
+
 //    Event event = new Event(name, date, location, capacity);
 //    eventRepository.createEvent(event);
 
-    Event event1 = new Event("Verão Massayo - Show do Matuê", "17/01/2026", "Estacionamento Jaraguá", 30000);
-    Event event2 = new Event("Verão Massayo - Show do Teto", "17/01/2026", "Estacionamento Jaraguá", 30000);
-    Event event3 = new Event("Verão Massayo - Show do Wiu", "17/01/2026", "Estacionamento Jaraguá", 30000);
-    Event event4 = new Event("Verão Massayo - Show do Brandão", "17/01/2026", "Estacionamento Jaraguá", 30000);
+    String dateTime1 = "17/01/2026 21:10";
+    String dateTime2 = "17/01/2026 21:10";
+    String dateTime3 = "17/01/2026 21:10";
+    String dateTime4 = "17/01/2026 21:10";
+
+    LocalDateTime dateTimeConverted1 = eventService.convertDateTime(dateTime1);
+    LocalDateTime dateTimeConverted2 = eventService.convertDateTime(dateTime2);
+    LocalDateTime dateTimeConverted3 = eventService.convertDateTime(dateTime3);
+    LocalDateTime dateTimeConverted4 = eventService.convertDateTime(dateTime4);
+
+    Event event1 = new Event("Verão Massayo - Show do Matuê", dateTimeConverted1, "Estacionamento Jaraguá", 30000);
+    Event event2 = new Event("Verão Massayo - Show do Teto", dateTimeConverted2, "Estacionamento Jaraguá", 30000);
+    Event event3 = new Event("Verão Massayo - Show do Wiu", dateTimeConverted3, "Estacionamento Jaraguá", 30000);
+    Event event4 = new Event("Verão Massayo - Show do Brandão", dateTimeConverted4, "Estacionamento Jaraguá", 30000);
 
     eventRepository.createEvent(event1);
     eventRepository.createEvent(event2);

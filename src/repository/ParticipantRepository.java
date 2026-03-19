@@ -24,6 +24,7 @@ public class ParticipantRepository {
         }
     }
 
+    // TODO: Find binary recursive
     public Participant findParticipantById(int participantId) {
         for (Participant participant : participants) {
             if (participant.getParticipantId() == participantId) {

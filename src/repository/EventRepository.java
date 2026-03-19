@@ -25,6 +25,7 @@ public class EventRepository {
         }
     }
 
+    // TODO: Find binary normal
     public Event findEventById(int eventId) {
         for (Event event : events) {
             if (event.getEventId() == eventId) {
@@ -33,9 +34,5 @@ public class EventRepository {
         }
         return null;
     }
-
-//    boolean EventIsEmpty() {
-//        return events == null;
-//    }
 
 }

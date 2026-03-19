@@ -1,5 +1,8 @@
 package model;
 
+import service.EventService;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +15,7 @@ public class Event {
 
     private String name;
 
-    private String date;
+    private LocalDateTime dateTime;
 
     private String location;
 
@@ -20,17 +23,16 @@ public class Event {
 
     private List<Participant> participants;
 
-    public Event(String name, String date, String location, int capacity) {
+    public Event(String name, LocalDateTime dateTime, String location, int capacity) {
         this.eventId = totalRegisteredEvents++;
         this.name = name;
-        this.date = date;
+        this.dateTime = dateTime;
         this.location = location;
         this.capacity = capacity;
         this.participants = new ArrayList<>();
     }
 
     public Event() {
-
     }
 
     public int getTotalRegisteredEvents() {
@@ -49,12 +51,12 @@ public class Event {
         this.name = name;
     }
 
-    public String getDate() {
-        return this.date;
+    public LocalDateTime getDateTime() {
+        return this.dateTime;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getLocation() {
@@ -83,11 +85,12 @@ public class Event {
 
     @Override
     public String toString() {
-        return "ID: " + this.getEventId() +
-                "\nNome: " + this.getName() +
-                "\nData: " + this.getDate() +
-                "\nLocal: " + this.getLocation() +
-                "\nCapacidade: " + this.getCapacity() +
+        EventService eventService = new EventService();
+        return "ID: " + this.eventId +
+                "\nNome: " + this.name +
+                "\nHorário: " + eventService.formatDateTime(this.dateTime) +
+                "\nLocal: " + this.location +
+                "\nCapacidade: " + this.capacity +
                 "\nNúmero de participantes confirmados: " + this.participants.toArray().length;
     }
 
