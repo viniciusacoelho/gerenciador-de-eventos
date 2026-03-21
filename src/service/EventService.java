@@ -5,6 +5,7 @@ import model.Participant;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class EventService {
 
@@ -18,6 +19,10 @@ public class EventService {
 
     public boolean validateCapacity(int capacity) {
         return capacity > 0;
+    }
+
+    public boolean EventIsEmpty(List<Event> events) {
+        return events == null;
     }
 
     public LocalDateTime convertDateTime(String dateTime) {
