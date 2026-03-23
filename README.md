@@ -3,7 +3,7 @@
 
 # 📅 Gerenciador de Eventos
 
-Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes**, permitindo o controle de cadastros, inscrições e confirmações de presença. O objetivo principal é oferecer uma aplicação organizada, funcional e didática, servindo como prática de lógica de programação e fundamentos da linguagem Java.
+Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes**, permitindo o controle de cadastros, inscrições e confirmações de presença. O objetivo principal é oferecer uma aplicação organizada, funcional e didática, servindo como prática de Programação Orientada a Objetos (POO), lógica de programação, e fundamentos da linguagem Java.
 
 ---
 
@@ -30,26 +30,19 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 
 ### 🔐 **Sistema**
 
-* Login básico;
+* Login básico com e-mail e senha;
 * Menu interativo via console;
 * Validação de entradas do usuário;
-* Tratamento de erros como `InputMismatchException`.
 
 ---
 
 ## 🛠️ **Tecnologias Utilizadas**
 
 * **Java 25**
-* **IntelliJ IDEA**
-* **Git & GitHub**
-* Java puro (console)
-* Uso de:
-
-  * `ArrayList`
-  * Estruturas de repetição
-  * Condicionais
-  * Tratamento de exceções
-
+* `ArrayList`
+* `List`
+* `InputMismatchException` (tratamento de exceções)
+* `LocalDateTime` 
 ---
 
 ## 📁 **Estrutura do Projeto**
@@ -57,11 +50,12 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 ```
 /gerenciador-de-eventos
 │
+├── .idea
 ├── src/
-│   └── app
-│   └── enums
-│   └── model
-│   └── repository
+│   ├── app
+│   ├── enums
+│   ├── model
+│   ├── repository
 │   └── service
 ├── .gitignore
 ├── LICENSE
@@ -76,12 +70,11 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/gerenciador-de-eventos.git
+git clone https://github.com/viniciusacoelho/gerenciador-de-eventos.git
 ```
 
-2. Abra o projeto no **IntelliJ IDEA**;
-3. Execute a classe `app.Main`;
-4. Utilize o menu interativo exibido no console.
+2. Execute a classe `app\Main.java`;
+3. Utilize o menu interativo exibido no console.
 
 ---
 
@@ -90,7 +83,7 @@ git clone https://github.com/seu-usuario/gerenciador-de-eventos.git
 Este sistema foi construído com foco em:
 
 * Prática de Java puro
-* Consolidação de lógica de programação
+* Consolidação de POO e lógica de programação
 * Organização de código
 * Simulação de um sistema real de gerenciamento
 * Evolução contínua do projeto
@@ -107,7 +100,7 @@ Consulte o arquivo `LICENSE` para mais detalhes.
 
 ## 👤 **Autor**
 
-### 👨 Vinícius
+### 👨‍💻 Vinícius Araújo Coêlho
 
 * Estudante de Sistemas de Informação
 * Desenvolvimento completo do sistema
