@@ -261,14 +261,14 @@ public static void confirmParticipantAttendance() {
     do {
         if (participantRepository.findParticipantById(participantId) != null) {
             System.out.println("Você deseja confirmar presença do participante " + participantRepository.findParticipantById(participantId).getName() + "? (s/n)");
-            String resposta = scanner.nextLine();
-            resposta = resposta.toLowerCase();
+            String response = scanner.nextLine();
+            response = response.toLowerCase();
 
-            if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+            if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
                 participantRepository.findParticipantById(participantId).setPresence(Presence.CONFIRMED);
                 System.out.println("Presença confirmada com sucesso!");
                 break;
-            } else if (resposta.equalsIgnoreCase("n") || resposta.equalsIgnoreCase("nao") || resposta.equalsIgnoreCase("não")) {
+            } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {
                 participantRepository.findParticipantById(participantId).setPresence(Presence.CANCELED);
                 System.out.println("Presença cancelada.");
                 break;

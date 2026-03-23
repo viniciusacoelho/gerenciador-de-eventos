@@ -1,5 +1,6 @@
 package repository;
 
+import enums.Presence;
 import model.Participant;
 import service.ParticipantService;
 
@@ -21,24 +22,28 @@ public class ParticipantRepository {
     }
 
     public void readParticipant() {
-        if (participantService.participantIsEmpty(participants)) {
+        if (this.participants.isEmpty()) {
             System.out.println("Nenhum participante cadastrado anteriormente.");
             return;
         }
-        for (Participant participant : participants) {
-            System.out.println(participant);
-            System.out.println("--------------------------------------------");
+
+        for (Participant participant : this.participants) {
+            if (participant.getPresence() == Presence.CONFIRMED) {
+                System.out.println(participant);
+                System.out.println("--------------------------------------------");
+            }
+            System.out.println("Nenhum participante confirmado anteriormente.");
         }
     }
 
     // TODO: Find binary recursive
     public Participant findParticipantById(int participantId) {
-        if (participantService.participantIsEmpty(participants)) {
+        if (this.participants.isEmpty()) {
             System.out.println("Nenhum participante cadastrado anteriormente.");
             return null;
         }
 
-        for (Participant participant : participants) {
+        for (Participant participant : this.participants) {
             if (participant.getParticipantId() == participantId) {
                 return participant;
             }

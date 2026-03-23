@@ -1,9 +1,5 @@
 package service;
 
-import model.Participant;
-
-import java.util.List;
-
 public class ParticipantService {
 
     public boolean validateName(String name) {
@@ -16,9 +12,5 @@ public class ParticipantService {
     }
 
     // TODO: Contact formatter
-
-    public boolean participantIsEmpty(List<Participant> participants) {
-        return participants == null;
-    }
 
 }
