@@ -21,7 +21,6 @@ public static ParticipantService participantService = new ParticipantService();
 void main() {
     login();
     String[] menu = {
-//    String[] menuAdmin = {
             "Cadastrar Evento", "Listar Eventos", "Inscrever Participante",
             "Exibir Participantes Inscritos", "Confirmar Presença de Participante", "Sair"
     };
@@ -74,6 +73,7 @@ public static void login() {
 
 public static void registerEvent() {
     System.out.println("              Cadastrar Evento\n--------------------------------------------");
+
 //    String name;
 //    String dateTime;
 //    LocalDateTime dateTimeConverted;
@@ -145,7 +145,7 @@ public static void registerEvent() {
     LocalDateTime dateTimeConverted3 = eventService.convertDateTime(dateTime3);
     LocalDateTime dateTimeConverted4 = eventService.convertDateTime(dateTime4);
 
-    Event event1 = new Event("Verão Massayo - Show do Matuê", dateTimeConverted1, "Estacionamento Jaraguá", 30000);
+    Event event1 = new Event("Verão Massayo - Show do Matuê", dateTimeConverted1, "Estacionamento Jaraguá", 2);
     Event event2 = new Event("Verão Massayo - Show do Teto", dateTimeConverted2, "Estacionamento Jaraguá", 30000);
     Event event3 = new Event("Verão Massayo - Show do Wiu", dateTimeConverted3, "Estacionamento Jaraguá", 30000);
     Event event4 = new Event("Verão Massayo - Show do Brandão", dateTimeConverted4, "Estacionamento Jaraguá", 30000);
@@ -161,54 +161,54 @@ public static void registerEvent() {
 public static void registerParticipant() {
     System.out.println("           Inscrever Participante\n--------------------------------------------");
 
-//    String name;
-//    int contact;
+    String name;
+    int contact;
 
-//    do {
-//        System.out.println("Digite o nome do participante:");
-//        name = scanner.nextLine();
-//        boolean validatedName = participantService.validateName(name);
+    do {
+        System.out.println("Digite o nome do participante:");
+        name = scanner.nextLine();
+        boolean validatedName = participantService.validateName(name);
 
-//        if (validatedName) {
-//            break;
-//        } else {
-//            System.out.println("Nome inválido! Tente novamente.");
-//        }
-//    } while (true);
+        if (validatedName) {
+            break;
+        } else {
+            System.out.println("Nome inválido! Tente novamente.");
+        }
+    } while (true);
 
-//    do {
-//        try {
-//            System.out.println("Digite o contato do participante:");
-//            contact = scanner.nextInt();
-//            scanner.nextLine();
-//            boolean validatedContact = participantService.validateContact(contact);
+    do {
+        try {
+            System.out.println("Digite o contato do participante:");
+            contact = scanner.nextInt();
+            scanner.nextLine();
+            boolean validatedContact = participantService.validateContact(contact);
 
-//            if (validatedContact) {
-//                break;
-//            } else {
-//                System.out.println("Contato inválido! Tente novamente.");
-//            }
-//        } catch (InputMismatchException e) {
-//            System.err.println("[ERRO]: Digite um número!");
-//            scanner.nextLine();
-//        }
-//    } while (true);
+            if (validatedContact) {
+                break;
+            } else {
+                System.out.println("Contato inválido! Tente novamente.");
+            }
+        } catch (InputMismatchException e) {
+            System.err.println("[ERRO]: Digite um número!");
+            scanner.nextLine();
+        }
+    } while (true);
 
-//    Participant participant = new Participant(name, contact);
-//    participantRepository.createParticipant(participant);
+    Participant participant = new Participant(name, contact);
+    participantRepository.createParticipant(participant);
 
-    Participant participant1 = new Participant("Vinícius", 998271900);
-    Participant participant2 = new Participant("João Victor", 987593594);
-    Participant participant3 = new Participant("Ricardo", 999175344);
-    Participant participant4 = new Participant("Ângela", 999223567);
-
-    participantRepository.createParticipant(participant1);
-    participantRepository.createParticipant(participant2);
-    participantRepository.createParticipant(participant3);
-    participantRepository.createParticipant(participant4);
-
-    System.out.println("Participante '" + participant1.getName() + "' cadastrado com sucesso!");
-    registerParticipantEvent(participant1);
+//    Participant participant1 = new Participant("Vinícius", 998271900);
+//    Participant participant2 = new Participant("João Victor", 987593594);
+//    Participant participant3 = new Participant("Ricardo", 999175344);
+//    Participant participant4 = new Participant("Ângela", 999223567);
+//
+//    participantRepository.createParticipant(participant1);
+//    participantRepository.createParticipant(participant2);
+//    participantRepository.createParticipant(participant3);
+//    participantRepository.createParticipant(participant4);
+//
+    System.out.println("Participante '" + participant.getName() + "' cadastrado com sucesso!");
+    registerParticipantEvent(participant    );
 }
 
 public static void registerParticipantEvent(Participant participant) {

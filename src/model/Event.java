@@ -4,7 +4,6 @@ import service.EventService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Event {
@@ -80,7 +79,7 @@ public class Event {
     }
 
     public void setParticipants(Participant participants) {
-        this.participants = Collections.singletonList(participants);
+        this.participants.add(participants);
     }
 
     @Override

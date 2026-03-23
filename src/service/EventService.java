@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 
 public class EventService {
 
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
     public boolean validateName(String name) {
         return name.length() > 3;
     }
@@ -21,12 +23,10 @@ public class EventService {
     }
 
     public LocalDateTime convertDateTime(String dateTime) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         return LocalDateTime.parse(dateTime, dateTimeFormatter);
     }
 
     public String formatDateTime(LocalDateTime dateTime) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         return dateTime.format(dateTimeFormatter);
     }
 
@@ -36,7 +36,7 @@ public class EventService {
             System.out.println("Participante '" + participant.getName() + "' inscrito no evento '" + event.getName() + "' com sucesso!");
             return;
         }
-        System.out.println("Evento lotado! Não foi possível inscrever o participante.");
+        System.out.println("Evento lotado! Não foi possível inscrever o participante '" + participant.getName() + "'.");
     }
 
 }

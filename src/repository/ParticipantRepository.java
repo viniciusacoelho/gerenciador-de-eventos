@@ -2,7 +2,6 @@ package repository;
 
 import enums.Presence;
 import model.Participant;
-import service.ParticipantService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +9,6 @@ import java.util.List;
 public class ParticipantRepository {
 
     private final List<Participant> participants;
-
-    ParticipantService participantService = new ParticipantService();
 
     public ParticipantRepository() {
         this.participants = new ArrayList<>();
@@ -28,11 +25,12 @@ public class ParticipantRepository {
         }
 
         for (Participant participant : this.participants) {
-            if (participant.getPresence() == Presence.CONFIRMED) {
-                System.out.println(participant);
-                System.out.println("--------------------------------------------");
+            if (participant.getPresence() != Presence.CONFIRMED) {
+                System.out.println("Nenhum participante confirmado anteriormente.");
+                return;
             }
-            System.out.println("Nenhum participante confirmado anteriormente.");
+            System.out.println(participant);
+            System.out.println("--------------------------------------------");
         }
     }
 
