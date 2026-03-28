@@ -18,6 +18,7 @@ public class EventRepository {
     }
 
     public void readEvent() {
+        // TODO: Create a method of this to reduce code lines (if this is possible)
         if (this.events.isEmpty()) {
             System.out.println("Nenhum evento cadastrado anteriormente.");
             return;
@@ -31,31 +32,41 @@ public class EventRepository {
 
     public Event findEventById(int eventId) {
 //    TODO: Find binary normal
-//        Test ->
-//        if (this.events.isEmpty()) {
-//            int start = 0;
-//            int end = events.toArray().length - 1;
-//            int middle = (end + start) / 2;
-//            while (end > start) {
-//                if (events[middle] == eventId) {
-//                    return event;
-//                }
-//            }
-//        }
-
+//        Test -> WORKED!
         if (this.events.isEmpty()) {
-            System.out.println("Nenhum evento cadastrado anteriormente.");
-            return null;
+            throw new IndexOutOfBoundsException("Nenhum evento cadastrado anteriormente.");
         }
 
-        for (Event event : this.events) {
-            if (event.getEventId() == eventId) {
-                return event;
+        int start = 0;
+        int end = events.toArray().length - 1;
+
+        while (start <= end) {
+            int middle = (start + end) / 2;
+
+            if (events.get(middle).getEventId() == eventId) {
+                return events.get(middle);
+            } else if (events.get(middle).getEventId() < eventId) {
+                start = middle + 1;
+            } else {
+                end = middle - 1;
             }
         }
 
-        System.out.println("Evento não encontrado.");
         return null;
+
+//        if (this.events.isEmpty()) {
+//            System.out.println("Nenhum evento cadastrado anteriormente.");
+//            return null;
+//        }
+//
+//        for (Event event : this.events) {
+//            if (event.getEventId() == eventId) {
+//                return event;
+//            }
+//        }
+//
+//        System.out.println("Evento não encontrado.");
+//        return null;
     }
 
 }

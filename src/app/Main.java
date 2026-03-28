@@ -161,52 +161,52 @@ public static void registerEvent() {
 public static void registerParticipant() {
     System.out.println("           Inscrever Participante\n--------------------------------------------");
 
-    String name;
-    int contact;
+//    String name;
+//    int contact;
 
-    do {
-        System.out.println("Digite o nome do participante:");
-        name = scanner.nextLine();
-        boolean validatedName = participantService.validateName(name);
-
-        if (validatedName) {
-            break;
-        } else {
-            System.out.println("Nome inválido! Tente novamente.");
-        }
-    } while (true);
-
-    do {
-        try {
-            System.out.println("Digite o contato do participante:");
-            contact = scanner.nextInt();
-            scanner.nextLine();
-            boolean validatedContact = participantService.validateContact(contact);
-
-            if (validatedContact) {
-                break;
-            } else {
-                System.out.println("Contato inválido! Tente novamente.");
-            }
-        } catch (InputMismatchException e) {
-            System.err.println("[ERRO]: Digite um número!");
-            scanner.nextLine();
-        }
-    } while (true);
-
-    Participant participant = new Participant(name, contact);
-    participantRepository.createParticipant(participant);
-
-//    Participant participant1 = new Participant("Vinícius", 998271900);
-//    Participant participant2 = new Participant("João Victor", 987593594);
-//    Participant participant3 = new Participant("Ricardo", 999175344);
-//    Participant participant4 = new Participant("Ângela", 999223567);
+//    do {
+//        System.out.println("Digite o nome do participante:");
+//        name = scanner.nextLine();
+//        boolean validatedName = participantService.validateName(name);
 //
-//    participantRepository.createParticipant(participant1);
-//    participantRepository.createParticipant(participant2);
-//    participantRepository.createParticipant(participant3);
-//    participantRepository.createParticipant(participant4);
+//        if (validatedName) {
+//            break;
+//        } else {
+//            System.out.println("Nome inválido! Tente novamente.");
+//        }
+//    } while (true);
+
+//    do {
+//        try {
+//            System.out.println("Digite o contato do participante:");
+//            contact = scanner.nextInt();
+//            scanner.nextLine();
+//            boolean validatedContact = participantService.validateContact(contact);
 //
+//            if (validatedContact) {
+//                break;
+//            } else {
+//                System.out.println("Contato inválido! Tente novamente.");
+//            }
+//        } catch (InputMismatchException e) {
+//            System.err.println("[ERRO]: Digite um número!");
+//            scanner.nextLine();
+//        }
+//    } while (true);
+
+//    Participant participant = new Participant(name, contact);
+//    participantRepository.createParticipant(participant);
+
+    Participant participant1 = new Participant("Vinícius", 998271900);
+    Participant participant2 = new Participant("João Victor", 987593594);
+    Participant participant3 = new Participant("Ricardo", 999175344);
+    Participant participant4 = new Participant("Ângela", 999223567);
+
+    participantRepository.createParticipant(participant1);
+    participantRepository.createParticipant(participant2);
+    participantRepository.createParticipant(participant3);
+    participantRepository.createParticipant(participant4);
+
     System.out.println("Participante '" + participant.getName() + "' cadastrado com sucesso!");
     registerParticipantEvent(participant    );
 }
