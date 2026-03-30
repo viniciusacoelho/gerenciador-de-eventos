@@ -20,8 +20,7 @@ public class EventRepository {
     public void readEvent() {
         // TODO: Create a method of this to reduce code lines (if this is possible)
         if (this.events.isEmpty()) {
-            System.out.println("Nenhum evento cadastrado anteriormente.");
-            return;
+            throw new IndexOutOfBoundsException("Nenhum evento cadastrado anteriormente.");
         }
 
         for (Event event : this.events) {
@@ -31,8 +30,6 @@ public class EventRepository {
     }
 
     public Event findEventById(int eventId) {
-//    TODO: Find binary normal
-//        Test -> WORKED!
         if (this.events.isEmpty()) {
             throw new IndexOutOfBoundsException("Nenhum evento cadastrado anteriormente.");
         }
@@ -53,20 +50,6 @@ public class EventRepository {
         }
 
         return null;
-
-//        if (this.events.isEmpty()) {
-//            System.out.println("Nenhum evento cadastrado anteriormente.");
-//            return null;
-//        }
-//
-//        for (Event event : this.events) {
-//            if (event.getEventId() == eventId) {
-//                return event;
-//            }
-//        }
-//
-//        System.out.println("Evento não encontrado.");
-//        return null;
     }
 
 }

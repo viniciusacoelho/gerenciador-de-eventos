@@ -26,26 +26,33 @@ public class ParticipantRepository {
 
         for (Participant participant : this.participants) {
             if (participant.getPresence() != Presence.CONFIRMED) {
-                System.out.println("Nenhum participante confirmado anteriormente.");
-                return;
+                throw new IndexOutOfBoundsException("Nenhum participante confirmado anteriormente.");
             }
+
             System.out.println(participant);
             System.out.println("--------------------------------------------");
         }
     }
 
-    // TODO: Find binary recursive
     public Participant findParticipantById(int participantId) {
         if (this.participants.isEmpty()) {
-            System.out.println("Nenhum participante cadastrado anteriormente.");
-            return null;
+            throw new IndexOutOfBoundsException("Nenhum participante cadastrado anteriormente.");
         }
 
-        for (Participant participant : this.participants) {
-            if (participant.getParticipantId() == participantId) {
-                return participant;
+        int start = 0;
+        int end = participants.size() - 1;
+
+        while (start <= end) {
+            int middle = (end - start) / 2;
+            if (participants.get(middle).getParticipantId() == participantId) {
+                return participants.get(middle);
+            } else if (participants.get(middle).getParticipantId() < participantId) {
+                start = middle + 1;
+            } else {
+                end = middle - 1;
             }
         }
+
         return null;
     }
 }
