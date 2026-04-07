@@ -8,7 +8,6 @@ import repository.ParticipantRepository;
 import service.EventService;
 import service.ParticipantService;
 
-import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -16,24 +15,26 @@ public class AdminView {
 
     private static final Scanner scanner = new Scanner(System.in);
 
+    public static EventView eventView = new EventView();
+//    public static AdminParticipantView adminParticipantView = new AdminParticipantView();
+
     public static Event event = new Event();
     public static EventRepository eventRepository = new EventRepository();
     public static EventService eventService = new EventService();
 
     public static Participant participant = new Participant();
     public static ParticipantRepository participantRepository = new ParticipantRepository();
-    public static ParticipantService participantService = new ParticipantService();
 
     public void panel() {
         String[] menu = {
-                "Cadastrar Evento", "Listar Eventos", "Inscrever Participante",
-                "Exibir Participantes Inscritos", "Confirmar Presença de Participante", "Sair"
+                "Evento", "Participante", "Sair"
         };
 
         do {
             System.out.println("--------------------------------------------");
             System.out.println("           Gerenciador de Eventos");
             System.out.println("--------------------------------------------");
+            System.out.println("Dashboard\n");
 
             for (int i = 0; i < menu.length; i++) {
                 System.out.println((i + 1) + " - " + menu[i]);
@@ -47,17 +48,16 @@ public class AdminView {
                 System.out.println("--------------------------------------------");
 
                 switch (opcao) {
-                    case 1 -> registerEvent();
-                    case 2 -> eventRepository.readEvent();
-                    case 3 -> registerParticipant();
-                    case 4 -> participantRepository.readParticipant();
-                    case 5 -> confirmParticipantAttendance();
-                    case 6 -> {
+                    case 1 -> eventView.panel();
+                    case 2 -> System.out.println("Em breve...");
+//                            adminParticipantView.panel();
+                    case 3 -> {
                         System.out.println("Saindo...");
                         System.exit(0);
                     }
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
+
             } catch (InputMismatchException e) {
                 System.err.println("[ERRO]: Digite um número!");
                 scanner.nextLine();
@@ -75,146 +75,6 @@ public class AdminView {
         String password = scanner.nextLine();
         System.out.println("Seja bem-vindo " + email + "!");
         panel();
-    }
-
-    public static void registerEvent() {
-        System.out.println("              Cadastrar Evento\n--------------------------------------------");
-
-    //    String name;
-    //    String dateTime;
-    //    LocalDateTime dateTimeConverted;
-    //    String location;
-    //    int capacity;
-
-    //    do {
-    //        System.out.println("Digite o nome do evento:");
-    //        name = scanner.nextLine();
-    //        boolean validatedName = eventService.validateName(name);
-
-    //        if (validatedName) {
-    //            break;
-    //        } else {
-    //            System.out.println("Nome inválido! Tente novamente.");
-    //        }
-    //    } while (true);
-
-    //    do {
-    //        try {
-    //            System.out.println("Digite a data e hora do evento: (dd/MM/yyyy HH:mm)");
-    //            dateTime = scanner.nextLine();
-    //            dateTimeConverted = eventService.convertDateTime(dateTime);
-    //            break;
-    //        } catch (DateTimeParseException e) {
-    //            System.out.println("[ERRO]: Data inválida. Tente: 'dd/MM/yyyy HH:mm'.");
-    //        }
-    //    } while (true);
-
-    //    do {
-    //        System.out.println("Digite o local do evento:");
-    //        location = scanner.nextLine();
-    //        boolean validatedLocation = eventService.validateLocation(location);
-
-    //        if (validatedLocation) {
-    //            break;
-    //        } else {
-    //            System.out.println("Local inválido! Tente novamente.");
-    //        }
-    //    } while (true);
-
-    //    do {
-    //        try {
-    //            System.out.println("Digite a capacidade do evento:");
-    //            capacity = scanner.nextInt();
-    //            boolean validatedCapacity = eventService.validateCapacity(capacity);
-
-    //            if (validatedCapacity) {
-    //                break;
-    //            } else {
-    //                System.out.println("Capacidade inválida! Tente novamente.");
-    //            }
-    //        } catch (InputMismatchException e) {
-    //            System.err.println("[ERRO]: Digite um número!");
-    //            scanner.nextLine();
-    //        }
-    //    } while (true);
-
-    //    Event event = new Event(name, date, location, capacity);
-    //    eventRepository.createEvent(event);
-
-        String dateTime1 = "17/01/2026 21:10";
-        String dateTime2 = "17/01/2026 21:10";
-        String dateTime3 = "17/01/2026 21:10";
-        String dateTime4 = "17/01/2026 21:10";
-
-        LocalDateTime dateTimeConverted1 = eventService.convertDateTime(dateTime1);
-        LocalDateTime dateTimeConverted2 = eventService.convertDateTime(dateTime2);
-        LocalDateTime dateTimeConverted3 = eventService.convertDateTime(dateTime3);
-        LocalDateTime dateTimeConverted4 = eventService.convertDateTime(dateTime4);
-
-        Event event1 = new Event("Verão Massayo - Show do Matuê", dateTimeConverted1, "Estacionamento Jaraguá", 2);
-        Event event2 = new Event("Verão Massayo - Show do Teto", dateTimeConverted2, "Estacionamento Jaraguá", 30000);
-        Event event3 = new Event("Verão Massayo - Show do Wiu", dateTimeConverted3, "Estacionamento Jaraguá", 30000);
-        Event event4 = new Event("Verão Massayo - Show do Brandão", dateTimeConverted4, "Estacionamento Jaraguá", 30000);
-
-        eventRepository.createEvent(event1);
-        eventRepository.createEvent(event2);
-        eventRepository.createEvent(event3);
-        eventRepository.createEvent(event4);
-
-        System.out.println("Evento '" + event1.getName() + "' cadastrado com sucesso!");
-    }
-
-    public static void registerParticipant() {
-        System.out.println("           Inscrever Participante\n--------------------------------------------");
-
-    //    String name;
-    //    int contact;
-
-    //    do {
-    //        System.out.println("Digite o nome do participante:");
-    //        name = scanner.nextLine();
-    //        boolean validatedName = participantService.validateName(name);
-    //
-    //        if (validatedName) {
-    //            break;
-    //        } else {
-    //            System.out.println("Nome inválido! Tente novamente.");
-    //        }
-    //    } while (true);
-
-    //    do {
-    //        try {
-    //            System.out.println("Digite o contato do participante:");
-    //            contact = scanner.nextInt();
-    //            scanner.nextLine();
-    //            boolean validatedContact = participantService.validateContact(contact);
-    //
-    //            if (validatedContact) {
-    //                break;
-    //            } else {
-    //                System.out.println("Contato inválido! Tente novamente.");
-    //            }
-    //        } catch (InputMismatchException e) {
-    //            System.err.println("[ERRO]: Digite um número!");
-    //            scanner.nextLine();
-    //        }
-    //    } while (true);
-
-    //    Participant participant = new Participant(name, contact);
-    //    participantRepository.createParticipant(participant);
-
-        Participant participant1 = new Participant("Vinícius", 998271900);
-        Participant participant2 = new Participant("João Victor", 987593594);
-        Participant participant3 = new Participant("Ricardo", 999175344);
-        Participant participant4 = new Participant("Ângela", 999223567);
-
-        participantRepository.createParticipant(participant1);
-        participantRepository.createParticipant(participant2);
-        participantRepository.createParticipant(participant3);
-        participantRepository.createParticipant(participant4);
-
-        System.out.println("Participante '" + participant.getName() + "' cadastrado com sucesso!");
-        registerParticipantEvent(participant    );
     }
 
     public static void registerParticipantEvent(Participant participant) {
