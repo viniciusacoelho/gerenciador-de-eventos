@@ -56,7 +56,8 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 │   ├── enums
 │   ├── model
 │   ├── repository
-│   └── service
+│   ├── service
+│   └── view
 ├── .gitignore
 ├── LICENSE
 ├── README.md
