@@ -1,5 +1,8 @@
 package service;
 
+import model.Event;
+import model.Participant;
+
 public class ParticipantService {
 
     public boolean validateName(String name) {
@@ -12,5 +15,22 @@ public class ParticipantService {
     }
 
     // TODO: Contact formatter
+    public String contactFormatter(int contact) {
+        return "Em breve";
+    }
+
+    // TODO: Regex validation
+    public boolean validateEmail(String email) {
+        return email.length() > 3;
+    }
+
+    // TODO: Regex validation
+    public boolean validatePassword(String password) {
+        return password.length() > 3;
+    }
+
+    public void addEventParticipant(Event event, Participant participant) {
+        participant.setEvents(event);
+    }
 
 }

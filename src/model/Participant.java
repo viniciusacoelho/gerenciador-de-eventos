@@ -2,6 +2,9 @@ package model;
 
 import enums.Presence;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Participant {
 
     public static int totalRegisteredParticipants = 1;
@@ -12,13 +15,22 @@ public class Participant {
 
     private int contact;
 
+    private String email;
+
+    private String password;
+
     private Presence presence;
 
-    public Participant(String name, int contact) {
+    private List<Event> events;
+
+    public Participant(String name, int contact, String email, String password) {
         this.participantId = totalRegisteredParticipants++;
         this.name = name;
         this.contact = contact;
+        this.email = email;
+        this.password = password;
         this.presence = Presence.PENDING;
+        this.events = new ArrayList<>();
     }
 
     public Participant() {
@@ -48,12 +60,36 @@ public class Participant {
         this.contact = contact;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Presence getPresence() {
         return presence;
     }
 
     public void setPresence(Presence presence) {
         this.presence = presence;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Event event) {
+        this.events.add(event);
     }
 
     @Override

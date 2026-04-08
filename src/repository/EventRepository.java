@@ -13,17 +13,22 @@ public class EventRepository {
         this.events = new ArrayList<>();
     }
 
+    // I'm not using this anymore
+//    public List<Event> getEvents() {
+//        return events;
+//    }
+
     public void createEvent(Event event) {
         this.events.add(event);
     }
 
-    public void readEvent() {
+    public void readEvents() {
         // TODO: Create a method of this to reduce code lines (if this is possible)
-        if (this.events.isEmpty()) {
+        if (events.isEmpty()) {
             throw new IndexOutOfBoundsException("Nenhum evento cadastrado anteriormente.");
         }
 
-        for (Event event : this.events) {
+        for (Event event : events) {
             System.out.println(event);
             System.out.println("--------------------------------------------");
         }
@@ -49,7 +54,7 @@ public class EventRepository {
 
     public Event findEventById(int eventId) {
         // TODO: Test another way to use it, because this make a error, so I think I've no create a method to fix it
-        if (this.events.isEmpty()) {
+        if (events.isEmpty()) {
             throw new IndexOutOfBoundsException("Nenhum evento cadastrado anteriormente.");
         }
 

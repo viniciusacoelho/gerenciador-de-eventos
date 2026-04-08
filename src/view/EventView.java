@@ -43,11 +43,12 @@ public class EventView {
 
                 switch (opcao) {
                     case 1 -> registerEvent();
-                    case 2 -> eventRepository.readEvent();
+                    case 2 -> eventRepository.readEvents();
                     case 3 -> findEvent();
                     case 4 -> updateEvent();
                     case 5 -> removeEvent();
                     case 6 -> {
+                        System.out.println("Voltando...");
                         return;
                     }
                     default -> System.out.println("Opção inválida! Tente novamente.");
@@ -192,6 +193,7 @@ public class EventView {
                     case 3-> updateLocation(event);
                     case 4 -> updateCapacity(event);
                     case 5 -> {
+                        System.out.println("Voltando...");
                         return;
                     }
                     default -> System.out.println("Opção inválida! Tente novamente.");
