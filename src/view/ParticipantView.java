@@ -219,8 +219,8 @@ public class ParticipantView {
                 System.out.println("Digite o ID do evento para inscrever-se:");
                 int eventId = scanner.nextInt();
                 System.out.println("--------------------------------------------");
-
                 Event event = eventRepository.findEventById(eventId);
+
                 if (event != null) {
                     eventService.addParticipantEvent(participant, event);
                     participantService.addEventParticipant(event, participant);

@@ -4,8 +4,10 @@ import model.Event;
 import repository.EventRepository;
 import repository.ParticipantRepository;
 import service.EventService;
+import util.DateTimeUtil;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -16,6 +18,8 @@ public class EventView {
     public static Event event = new Event();
     public static EventRepository eventRepository = new EventRepository();
     public static EventService eventService = new EventService();
+
+    public static DateTimeUtil dateTimeUtil = new DateTimeUtil();
 
     public static ParticipantRepository participantRepository = new ParticipantRepository();
 
@@ -65,7 +69,7 @@ public class EventView {
         System.out.println("              Cadastrar Evento\n--------------------------------------------");
 
         //    String name;
-        //    String dateTime;
+            String dateTime;
         //    LocalDateTime dateTimeConverted;
         //    String location;
         //    int capacity;
@@ -82,16 +86,16 @@ public class EventView {
         //        }
         //    } while (true);
 
-        //    do {
-        //        try {
-        //            System.out.println("Digite a data e hora do evento: (dd/MM/yyyy HH:mm)");
-        //            dateTime = scanner.nextLine();
-        //            dateTimeConverted = eventService.convertDateTime(dateTime);
-        //            break;
-        //        } catch (DateTimeParseException e) {
-        //            System.out.println("[ERRO]: Data inválida. Tente: 'dd/MM/yyyy HH:mm'.");
-        //        }
-        //    } while (true);
+            do {
+                try {
+                    System.out.println("Digite a data e hora do evento: (dd/MM/yyyy HH:mm)");
+                    dateTime = scanner.nextLine();
+                    LocalDateTime dateTimeConverted = dateTimeUtil.convertDateTime(dateTime);
+                    break;
+                } catch (DateTimeParseException e) {
+                    System.out.println("[ERRO]: Horário inválido. Tente: 'dd/MM/yyyy HH:mm'.");
+                }
+            } while (true);
 
         //    do {
         //        System.out.println("Digite o local do evento:");
@@ -122,23 +126,13 @@ public class EventView {
         //        }
         //    } while (true);
 
-        //    Event event = new Event(name, date, location, capacity);
+        //    Event event = new Event(name, dateTimeConverted, location, capacity);
         //    eventRepository.createEvent(event);
 
-        String dateTime1 = "17/01/2026 21:10";
-        String dateTime2 = "17/01/2026 21:10";
-        String dateTime3 = "17/01/2026 21:10";
-        String dateTime4 = "17/01/2026 21:10";
-
-        LocalDateTime dateTimeConverted1 = eventService.convertDateTime(dateTime1);
-        LocalDateTime dateTimeConverted2 = eventService.convertDateTime(dateTime2);
-        LocalDateTime dateTimeConverted3 = eventService.convertDateTime(dateTime3);
-        LocalDateTime dateTimeConverted4 = eventService.convertDateTime(dateTime4);
-
-        Event event1 = new Event("Verão Massayo - Show do Matuê", dateTimeConverted1, "Estacionamento Jaraguá", 2);
-        Event event2 = new Event("Verão Massayo - Show do Teto", dateTimeConverted2, "Estacionamento Jaraguá", 30000);
-        Event event3 = new Event("Verão Massayo - Show do Wiu", dateTimeConverted3, "Estacionamento Jaraguá", 30000);
-        Event event4 = new Event("Verão Massayo - Show do Brandão", dateTimeConverted4, "Estacionamento Jaraguá", 30000);
+        Event event1 = new Event("Verão Massayo - Show do Matuê", dateTimeUtil.convertDateTime("17/01/2026 21:10"), "Estacionamento Jaraguá", 30000);
+        Event event2 = new Event("Verão Massayo - Show do Teto", dateTimeUtil.convertDateTime("17/01/2026 21:10"), "Estacionamento Jaraguá", 30000);
+        Event event3 = new Event("Verão Massayo - Show do Wiu", dateTimeUtil.convertDateTime("17/01/2026 21:10"), "Estacionamento Jaraguá", 30000);
+        Event event4 = new Event("Verão Massayo - Show do Brandão", dateTimeUtil.convertDateTime("17/01/2026 21:10"), "Estacionamento Jaraguá", 30000);
 
         eventRepository.createEvent(event1);
         eventRepository.createEvent(event2);
@@ -222,22 +216,18 @@ public class EventView {
 
 //    TODO: Fix ->
     public static void updateDateTime(Event event) {
-//        do {
-//            System.out.println("Digite o novo horário para atualizar:");
-//            String newDateTime = scanner.nextLine();
-//            LocalDateTime validatedNewDateTime = eventService.convertDateTime(newDateTime);
-//            LocalDateTime validatedNewDateTime2 = LocalDateTime.parse(eventService.formatDateTime(validatedNewDateTime));
-//            if (!event.getName().equalsIgnoreCase(String.valueOf(validatedNewDateTime))) {
-//                if (validatedNewDateTime2) {
-//                    eventRepository.updateEvent(event.getEventId(), validatedNewDateTime2, "Horário");
-//                    break;
-//                } else {
-//                    System.out.println("Novo horário inválido! Tente novamente.");
-//                }
-//            } else {
-//                System.out.println("Novo horário inválido! Tente novamente.");
-//            }
-//        } while (true);
+        do {
+            System.out.println("Digite o novo horário para atualizar:");
+            String newDateTime = scanner.nextLine();
+            LocalDateTime validatedNewDateTime = dateTimeUtil.convertDateTime(newDateTime);
+
+            try {
+                eventRepository.updateEvent(event.getEventId(), validatedNewDateTime, "Horário");
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Novo horário inválido! Tente novamente.");
+            }
+        } while (true);
     }
 
     public static void updateLocation(Event event) {

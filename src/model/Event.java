@@ -1,6 +1,6 @@
 package model;
 
-import service.EventService;
+import util.DateTimeUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,6 +21,8 @@ public class Event {
     private int capacity;
 
     private List<Participant> participants;
+
+    private static final DateTimeUtil dateTimeUtil = new DateTimeUtil();
 
     public Event(String name, LocalDateTime dateTime, String location, int capacity) {
         this.eventId = totalRegisteredEvents++;
@@ -84,13 +86,12 @@ public class Event {
 
     @Override
     public String toString() {
-        EventService eventService = new EventService();
-        return "ID: " + this.eventId +
-                "\nNome: " + this.name +
-                "\nHorário: " + eventService.formatDateTime(this.dateTime) +
-                "\nLocal: " + this.location +
-                "\nCapacidade: " + this.capacity +
-                "\nNúmero de participantes confirmados: " + this.participants.toArray().length;
+        return "ID: " + eventId +
+                "\nNome: " + name +
+                "\nHorário: " + dateTimeUtil.formatDateTime(dateTime) +
+                "\nLocal: " + location +
+                "\nCapacidade: " + capacity +
+                "\nNúmero de participantes confirmados: " + participants.toArray().length;
     }
 
 }

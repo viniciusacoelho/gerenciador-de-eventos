@@ -1,5 +1,6 @@
 package service;
 
+import enums.Presence;
 import model.Event;
 import model.Participant;
 
@@ -30,6 +31,7 @@ public class ParticipantService {
     }
 
     public void addEventParticipant(Event event, Participant participant) {
+        participant.setPresence(Presence.PENDING); // TODO: Verify if need this
         participant.setEvents(event);
     }
 

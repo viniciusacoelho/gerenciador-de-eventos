@@ -2,6 +2,7 @@ package repository;
 
 import model.Event;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,22 +35,23 @@ public class EventRepository {
         }
     }
 
-    public void updateEvent(int eventId, String attribute, String attributeName) {
-//        TODO: Fix, because the user will choose a number or LocalDateTime to update de attribute
+    public <T> void updateEvent(int eventId, T attribute, String attributeName) {
         Event event = findEventById(eventId);
+
         switch (attributeName) {
-            case "Nome" -> event.setName(attribute);
-//            case "dateTime" -> event.setDateTime();
-            case "dateTime" -> event.setLocation(attribute);
-//            case "capacity" -> event.setCapacity(attribute);
+            case "Nome" -> event.setName((String) attribute);
+            case "Horário" -> event.setDateTime((LocalDateTime) attribute);
+            case "Local" -> event.setLocation((String) attribute);
+            case "Capacidade" -> event.setCapacity((Integer) attribute);
             default -> System.out.println(attribute);
         }
+
         System.out.println(attributeName + " atualizado com sucesso!");
     }
 
     public void deleteEvent(Event event) {
         System.out.println("Participante '" + event.getName() + "' deletado com sucesso!");
-        events.remove(event);
+        this.events.remove(event);
     }
 
     public Event findEventById(int eventId) {
@@ -86,6 +88,7 @@ public class EventRepository {
                 return event;
             }
         }
+
         return null;
     }
 

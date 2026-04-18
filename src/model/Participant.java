@@ -1,7 +1,9 @@
 package model;
 
 import enums.Presence;
+import util.DateTimeUtil;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,10 @@ public class Participant {
 
     private List<Event> events;
 
+    private LocalDateTime accountDateTimeCreation;
+
+    private final static DateTimeUtil dateTimeUtil = new DateTimeUtil();
+
     public Participant(String name, int contact, String email, String password) {
         this.participantId = totalRegisteredParticipants++;
         this.name = name;
@@ -31,6 +37,7 @@ public class Participant {
         this.password = password;
         this.presence = Presence.PENDING;
         this.events = new ArrayList<>();
+        this.accountDateTimeCreation = LocalDateTime.now();
     }
 
     public Participant() {
@@ -89,15 +96,23 @@ public class Participant {
     }
 
     public void setEvents(Event event) {
+        // TODO: Find a way to participant have one presence in each event
+        this.presence = Presence.PENDING;
+
         this.events.add(event);
+    }
+
+    public LocalDateTime getAccountDateTimeCreation() { // TODO: Verify if it's necessary, if the user will use it in the future
+        return accountDateTimeCreation;
     }
 
     @Override
     public String toString() {
-        return "ID: " + this.getParticipantId() +
-                "\nNome: " + this.getName() +
-                "\nContato:" + this.getContact() +
-                "\nPresença: " + this.getPresence().getPresence();
+        return "ID: " + participantId +
+                "\nNome: " + name +
+                "\nContato:" + contact +
+                "\nPresença: " + presence + // TODO: Maybe remove it, because I think is better to see it in the Events part
+                "\nData de Criação da Conta: " + dateTimeUtil.formatDateTime(accountDateTimeCreation);
     }
 
 }

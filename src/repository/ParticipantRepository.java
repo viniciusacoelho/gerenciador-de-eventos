@@ -1,6 +1,5 @@
 package repository;
 
-import enums.Presence;
 import model.Event;
 import model.Participant;
 
@@ -13,7 +12,7 @@ public class ParticipantRepository {
     private final List<Participant> participants;
 
     public ParticipantRepository() {
-        this.participants = new ArrayList<>();
+        participants = new ArrayList<>();
     }
 
     public void createParticipant(Participant participant) {
@@ -21,15 +20,16 @@ public class ParticipantRepository {
     }
 
     public void readParticipants() {
-        if (this.participants.isEmpty()) {
+        if (participants.isEmpty()) {
             System.out.println("Nenhum participante cadastrado anteriormente.");
             return;
         }
 
         for (Participant participant : this.participants) {
-            if (participant.getPresence() != Presence.CONFIRMED) {
-                throw new IndexOutOfBoundsException("Nenhum participante confirmado anteriormente.");
-            }
+            // TODO: Fix it
+//            if (participant.getPresence() != Presence.CONFIRMED) {
+//                throw new IndexOutOfBoundsException("Nenhum participante confirmado anteriormente.");
+//            }
 
             System.out.println(participant);
             System.out.println("--------------------------------------------");
@@ -57,16 +57,17 @@ public class ParticipantRepository {
 
     }
 
-    public void updateParticipant(int participantId, String attribute, String attributeName) {
-//        TODO: Fix, because the user will choose a number to update de attribute
+    public <T> void updateParticipant(int participantId, T attribute, String attributeName) {
         Participant participant = findParticipantById(participantId);
+
         switch (attributeName) {
-            case "Nome" -> participant.setName(attribute);
-//            case "Contato" -> participant.setContact(attribute);
-            case "E-mail" -> participant.setEmail(attribute);
-            case "Senha" -> participant.setPassword(attribute);
+            case "Nome" -> participant.setName((String) attribute);
+            case "Contato" -> participant.setContact((Integer) attribute);
+            case "E-mail" -> participant.setEmail((String) attribute);
+            case "Senha" -> participant.setPassword((String) attribute);
             default -> System.out.println("[ERRO]: Atributo inválido!");
         }
+
         System.out.println(attributeName + " atualizado com sucesso!");
     }
 
@@ -85,6 +86,7 @@ public class ParticipantRepository {
 
         while (start <= end) {
             int middle = (end - start) / 2;
+
             if (participants.get(middle).getParticipantId() == participantId) {
                 return participants.get(middle);
             } else if (participants.get(middle).getParticipantId() < participantId) {
@@ -107,6 +109,7 @@ public class ParticipantRepository {
                 return participant;
             }
         }
+
         return null;
     }
 
@@ -114,11 +117,13 @@ public class ParticipantRepository {
         if (participants.isEmpty()) {
             return null;
         }
+
         for (Participant participant : participants) {
             if (Objects.equals(password, participant.getPassword())) {
                 return participant;
             }
         }
+
         return null;
     }
 

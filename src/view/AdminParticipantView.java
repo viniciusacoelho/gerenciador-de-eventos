@@ -1,21 +1,16 @@
 package view;
 
 import model.Participant;
-import repository.ParticipantRepository;
-import service.ParticipantService;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static view.ParticipantView.*;
+import static view.ParticipantView.participantRepository;
+import static view.ParticipantView.deleteAccount;
 
 public class AdminParticipantView {
 
     private static final Scanner scanner = new Scanner(System.in);
-
-    public static Participant participant = new Participant();
-    public static ParticipantRepository participantRepository = new ParticipantRepository();
-    public static ParticipantService participantService = new ParticipantService();
 
     public void panel() {
         String[] menu = {
@@ -113,7 +108,7 @@ public class AdminParticipantView {
         participantRepository.createParticipant(participant3);
         participantRepository.createParticipant(participant4);
 
-        System.out.println("Participante '" + participant.getName() + "' cadastrado com sucesso!");
+//        System.out.println("Participante '" + participant.getName() + "' cadastrado com sucesso!");
     }
 
     public static void findParticipant() {

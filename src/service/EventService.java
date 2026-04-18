@@ -3,12 +3,7 @@ package service;
 import model.Event;
 import model.Participant;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class EventService {
-
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public boolean validateName(String name) {
         return name.length() > 3;
@@ -20,14 +15,6 @@ public class EventService {
 
     public boolean validateCapacity(int capacity) {
         return capacity > 0;
-    }
-
-    public LocalDateTime convertDateTime(String dateTime) {
-        return LocalDateTime.parse(dateTime, dateTimeFormatter);
-    }
-
-    public String formatDateTime(LocalDateTime dateTime) {
-        return dateTime.format(dateTimeFormatter);
     }
 
     public void addParticipantEvent(Participant participant, Event event) {
