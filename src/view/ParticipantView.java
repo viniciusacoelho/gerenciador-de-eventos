@@ -35,11 +35,11 @@ public class ParticipantView {
             try {
                 System.out.println("--------------------------------------------");
                 System.out.println("Digite uma opção:");
-                int opcao = scanner.nextInt();
+                int option = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
 
-                switch (opcao) {
+                switch (option) {
                     case 1 -> create_account();
                     case 2 -> login();
                     case 3 -> {
@@ -165,7 +165,8 @@ public class ParticipantView {
     public void panel(Participant participant) {
         String[] menu = {
                 "Inscrever-se em um Evento", "Visualizar Eventos/Disponíveis", "Confirmar Presença no Evento",
-                "Histórico de Eventos Inscritos", "Atualizar Cadastro", "Excluir Conta", "Voltar"
+                "Histórico de Eventos Inscritos", "Cancelar Inscrição no Evento",
+                "Atualizar Cadastro", "Excluir Conta", "Voltar"
         };
 
         do {
@@ -181,18 +182,19 @@ public class ParticipantView {
             try {
                 System.out.println("--------------------------------------------");
                 System.out.println("Digite uma opção:");
-                int opcao = scanner.nextInt();
+                int option = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
 
-                switch (opcao) {
+                switch (option) {
                     case 1 -> registerParticipantEvent(participant);
-                    case 2 -> System.out.println("Em breve...");
+                    case 2 -> viewAvailableEvents(participant);
                     case 3 -> confirmAttendance(participant);
                     case 4 -> historyRegisteredEvents(participant);
-                    case 5 -> updateAccount(participant);
-                    case 6 -> deleteAccount(participant);
-                    case 7 -> {
+                    case 5 -> removeParticipantEvent(participant);
+                    case 6 -> updateAccount(participant);
+                    case 7 -> deleteAccount(participant);
+                    case 8 -> {
                         System.out.println("Voltando...");
                         return;
                     }
@@ -235,6 +237,11 @@ public class ParticipantView {
         } while (true);
     }
 
+    public static void viewAvailableEvents(Participant participant) {
+        // TODO: List events that wasn't registered in participant, and list events that are only available, not sold out (maybe)
+        System.out.println("Em breve...");
+    }
+
     public static void confirmAttendance(Participant participant) {
         System.out.println("      Confirmar Presença de Participante\n--------------------------------------------");
 
@@ -254,19 +261,21 @@ public class ParticipantView {
                 participantRepository.readParticipantEvents(participant);
                 System.out.println("Digite o ID do evento para confirmar presença:");
                 int eventId = scanner.nextInt();
+                scanner.nextLine();
                 System.out.println("--------------------------------------------");
 
                 if (eventRepository.findEventById(eventId) != null) {
                         System.out.println("Você deseja confirmar presença no evento '" + eventRepository.findEventById(eventId).getName() + "'? (s/n)");
-                        String response = scanner.nextLine();
-                        response = response.toLowerCase();
+                        String response = scanner.nextLine().toLowerCase();
 
                         if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
-                            participantRepository.findParticipantById(participant.getParticipantId()).setPresence(Presence.CONFIRMED);
+                            // TODO: Maybe don't use set, use update, because Presence always starts with PENDING
+                            // TODO: This line need to update de presence, nowadays, it are adding presences, and it need to update
+                            participantRepository.findParticipantById(participant.getParticipantId()).setPresences(Presence.CONFIRMED);
                             System.out.println("Presença confirmada com sucesso!");
                             break;
                         } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {
-                            participantRepository.findParticipantById(participant.getParticipantId()).setPresence(Presence.CANCELED);
+                            participantRepository.findParticipantById(participant.getParticipantId()).setPresences(Presence.CANCELED);
                             System.out.println("Presença cancelada.");
                             break;
                         } else {
@@ -286,8 +295,13 @@ public class ParticipantView {
     }
 
     public void historyRegisteredEvents(Participant participant) {
-        // TODO: A method that validate if the participant presence are confirmed
+        // TODO: A method that validate if the participant presence are confirmed (maybe)
+        // TODO: Read events using stack (LIFO)
         participantRepository.readParticipantEvents(participant);
+    }
+
+    public void removeParticipantEvent(Participant participant) {
+        System.out.println("Em breve");
     }
 
     public void updateAccount(Participant participant) {
@@ -305,11 +319,11 @@ public class ParticipantView {
             try {
                 System.out.println("--------------------------------------------");
                 System.out.println("Digite uma opção:");
-                int opcao = scanner.nextInt();
+                int option = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
 
-                switch (opcao) {
+                switch (option) {
                     case 1 -> updateName(participant);
                     case 2 -> updateContact(participant);
                     case 3-> updateEmail(participant);
@@ -349,8 +363,7 @@ public class ParticipantView {
             boolean validatedNewContact = participantService.validateContact(newContact);
 
             if (validatedNewContact && (participant.getContact() != newContact)) {
-                // TODO: Find a way to use 'int' in this method, because there are with 'String'
-//                participantRepository.updateParticipant(participant.getParticipantId(), newContact, "Contato");
+                participantRepository.updateParticipant(participant.getParticipantId(), newContact, "Contato");
                 break;
             } else {
                 System.out.println("Novo contato inválido! Tente novamente.");

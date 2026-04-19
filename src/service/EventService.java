@@ -23,6 +23,7 @@ public class EventService {
             System.out.println("Participante '" + participant.getName() + "' inscrito no evento '" + event.getName() + "' com sucesso!");
             return;
         }
+        // TODO: When I create the class Ticket, here I will put the enum SOLD_OUT
         System.out.println("Evento lotado! Não foi possível inscrever o participante '" + participant.getName() + "'.");
     }
 

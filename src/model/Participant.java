@@ -21,11 +21,11 @@ public class Participant {
 
     private String password;
 
-    private Presence presence;
+    private LocalDateTime accountDateTimeCreation;
 
     private List<Event> events;
 
-    private LocalDateTime accountDateTimeCreation;
+    private List<Presence> presences;
 
     private final static DateTimeUtil dateTimeUtil = new DateTimeUtil();
 
@@ -35,9 +35,9 @@ public class Participant {
         this.contact = contact;
         this.email = email;
         this.password = password;
-        this.presence = Presence.PENDING;
-        this.events = new ArrayList<>();
         this.accountDateTimeCreation = LocalDateTime.now();
+        this.events = new ArrayList<>();
+        this.presences = new ArrayList<>();
     }
 
     public Participant() {
@@ -83,23 +83,21 @@ public class Participant {
         this.password = password;
     }
 
-    public Presence getPresence() {
-        return presence;
-    }
-
-    public void setPresence(Presence presence) {
-        this.presence = presence;
-    }
-
     public List<Event> getEvents() {
         return events;
     }
 
     public void setEvents(Event event) {
-        // TODO: Find a way to participant have one presence in each event
-        this.presence = Presence.PENDING;
-
         this.events.add(event);
+        setPresences(Presence.PENDING);
+    }
+
+    public List<Presence> getPresences() {
+        return presences;
+    }
+
+    public void setPresences(Presence presence) {
+        this.presences.add(presence);
     }
 
     public LocalDateTime getAccountDateTimeCreation() { // TODO: Verify if it's necessary, if the user will use it in the future
@@ -110,8 +108,9 @@ public class Participant {
     public String toString() {
         return "ID: " + participantId +
                 "\nNome: " + name +
-                "\nContato:" + contact +
-                "\nPresença: " + presence + // TODO: Maybe remove it, because I think is better to see it in the Events part
+                "\nContato: " + contact +
+                "\nE-mail: " + email +
+                "\nSenha: " + password.replace(password, "*".repeat(password.length())) +
                 "\nData de Criação da Conta: " + dateTimeUtil.formatDateTime(accountDateTimeCreation);
     }
 

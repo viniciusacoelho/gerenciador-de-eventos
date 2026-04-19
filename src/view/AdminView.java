@@ -26,11 +26,11 @@ public class AdminView {
             try {
                 System.out.println("--------------------------------------------");
                 System.out.println("Digite uma opção:");
-                int opcao = scanner.nextInt();
+                int option = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
 
-                switch (opcao) {
+                switch (option) {
                     case 1 -> eventView.panel();
                     case 2 -> adminParticipantView.panel();
                     case 3 -> {
@@ -48,21 +48,21 @@ public class AdminView {
     }
 
     public void login() {
-        String DEFAULT_PASSWORD = "1234";
+//        String DEFAULT_PASSWORD = "1234";
 
-        System.out.println("--------------------------------------------");
-        System.out.println("                   Login");
-        System.out.println("--------------------------------------------");
-        System.out.println("Digite seu e-mail:");
-        String email = scanner.nextLine();
-        System.out.println("Digite sua senha:");
-        String password = scanner.nextLine();
+//        System.out.println("--------------------------------------------");
+//        System.out.println("                   Login");
+//        System.out.println("--------------------------------------------");
+//        System.out.println("Digite seu e-mail:");
+//        String email = scanner.nextLine();
+//        System.out.println("Digite sua senha:");
+//        String password = scanner.nextLine();
 
-        if (!password.equals(DEFAULT_PASSWORD)) {
-            throw new InputMismatchException("[ERRO]: Senha inválida!");
-        }
+//        if (!password.equals(DEFAULT_PASSWORD)) {
+//            throw new InputMismatchException("[ERRO]: Senha inválida! Tente novamente.");
+//        }
 
-        System.out.println("Seja bem-vindo " + email + "!");
+//        System.out.println("Seja bem-vindo " + email + '!');
         panel();
     }
 

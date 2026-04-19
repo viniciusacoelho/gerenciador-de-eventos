@@ -39,22 +39,16 @@ public class ParticipantRepository {
     public void readParticipantEvents(Participant participant) {
         if (participant.getEvents().isEmpty()) {
             System.out.println("Participante inscrito em nenhum evento anteriormente.");
+//            throw new IndexOutOfBoundsException("Nenhum evento inscrito anteriormente.");
             return;
         }
 
         for (Event event : participant.getEvents()) {
             System.out.println(event);
+            // TODO: Fix presence view, because it are showing a array of presences, not individual presences
+            System.out.println("Presença: " + participant.getPresences());
             System.out.println("--------------------------------------------");
         }
-
-        // This work too, but I need to import from EventRepository
-//        for (Event event : eventRepository.getEvents()) {
-//            if (event.getParticipants().contains(participant)) {
-//                System.out.println(event);
-//                System.out.println("--------------------------------------------");
-//            }
-//        }
-
     }
 
     public <T> void updateParticipant(int participantId, T attribute, String attributeName) {

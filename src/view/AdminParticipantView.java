@@ -15,9 +15,7 @@ public class AdminParticipantView {
     public void panel() {
         String[] menu = {
                 "Cadastrar Participante", "Listar Participantes", "Buscar Participante",
-                "Atualizar Participante", "Remover Participante",
-                "Exibir Participantes Inscritos", "Confirmar Presença de Participante",
-                "Voltar"
+                "Atualizar Participante", "Remover Participante", "Voltar"
         };
 
         do {
@@ -33,19 +31,17 @@ public class AdminParticipantView {
             try {
                 System.out.println("--------------------------------------------");
                 System.out.println("Digite uma opção:");
-                int opcao = scanner.nextInt();
+                int option = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
 
-                switch (opcao) {
+                switch (option) {
                     case 1 -> registerParticipant();
                     case 2 -> participantRepository.readParticipants();
                     case 3 -> findParticipant();
                     case 4 -> updateParticipant();
                     case 5 -> removeParticipant();
-//                    case 6 -> ();
-//                    case 7 -> ();
-                    case 8 -> {
+                    case 6 -> {
                         System.out.println("Voltando...");
                         return;
                     }

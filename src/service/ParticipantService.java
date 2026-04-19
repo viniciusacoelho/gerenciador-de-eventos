@@ -31,7 +31,7 @@ public class ParticipantService {
     }
 
     public void addEventParticipant(Event event, Participant participant) {
-        participant.setPresence(Presence.PENDING); // TODO: Verify if need this
+//        participant.setPresences(Presence.PENDING); // TODO: Verify if need this
         participant.setEvents(event);
     }
 

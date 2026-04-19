@@ -14,11 +14,6 @@ public class EventRepository {
         this.events = new ArrayList<>();
     }
 
-    // I'm not using this anymore
-//    public List<Event> getEvents() {
-//        return events;
-//    }
-
     public void createEvent(Event event) {
         this.events.add(event);
     }

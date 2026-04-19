@@ -80,8 +80,8 @@ public class Event {
         return participants;
     }
 
-    public void setParticipants(Participant participants) {
-        this.participants.add(participants);
+    public void setParticipants(Participant participant) {
+        this.participants.add(participant);
     }
 
     @Override

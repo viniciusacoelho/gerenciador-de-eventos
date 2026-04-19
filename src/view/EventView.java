@@ -41,11 +41,11 @@ public class EventView {
             try {
                 System.out.println("--------------------------------------------");
                 System.out.println("Digite uma opção:");
-                int opcao = scanner.nextInt();
+                int option = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
 
-                switch (opcao) {
+                switch (option) {
                     case 1 -> registerEvent();
                     case 2 -> eventRepository.readEvents();
                     case 3 -> findEvent();
@@ -69,7 +69,7 @@ public class EventView {
         System.out.println("              Cadastrar Evento\n--------------------------------------------");
 
         //    String name;
-            String dateTime;
+//            String dateTime;
         //    LocalDateTime dateTimeConverted;
         //    String location;
         //    int capacity;
@@ -86,16 +86,16 @@ public class EventView {
         //        }
         //    } while (true);
 
-            do {
-                try {
-                    System.out.println("Digite a data e hora do evento: (dd/MM/yyyy HH:mm)");
-                    dateTime = scanner.nextLine();
-                    LocalDateTime dateTimeConverted = dateTimeUtil.convertDateTime(dateTime);
-                    break;
-                } catch (DateTimeParseException e) {
-                    System.out.println("[ERRO]: Horário inválido. Tente: 'dd/MM/yyyy HH:mm'.");
-                }
-            } while (true);
+//            do {
+//                try {
+//                    System.out.println("Digite a data e hora do evento: (dd/MM/yyyy HH:mm)");
+//                    dateTime = scanner.nextLine();
+//                    LocalDateTime dateTimeConverted = dateTimeUtil.convertDateTime(dateTime);
+//                    break;
+//                } catch (DateTimeParseException e) {
+//                    System.out.println("[ERRO]: Horário inválido. Tente: 'dd/MM/yyyy HH:mm'.");
+//                }
+//            } while (true);
 
         //    do {
         //        System.out.println("Digite o local do evento:");
@@ -177,11 +177,11 @@ public class EventView {
             try {
                 System.out.println("--------------------------------------------");
                 System.out.println("Digite uma opção:");
-                int opcao = scanner.nextInt();
+                int option = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
 
-                switch (opcao) {
+                switch (option) {
                     case 1 -> updateName(event);
                     case 2 -> updateDateTime(event);
                     case 3-> updateLocation(event);
