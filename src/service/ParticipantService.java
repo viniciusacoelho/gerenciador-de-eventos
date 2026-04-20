@@ -1,6 +1,6 @@
 package service;
 
-import enums.Presence;
+import enums.Attendance;
 import model.Event;
 import model.Participant;
 
@@ -33,6 +33,29 @@ public class ParticipantService {
     public void addEventParticipant(Event event, Participant participant) {
 //        participant.setPresences(Presence.PENDING); // TODO: Verify if need this
         participant.setEvents(event);
+    }
+
+    public void confirmPresence(Participant participant, int eventId) {
+        participant.setAttendances(Attendance.CONFIRMED.getAttendance(), eventId);
+        removePresence(participant, eventId);
+    }
+
+    public void cancelPresence(Participant participant, int eventId) {
+        participant.setAttendances(Attendance.CANCELED.getAttendance(), eventId);
+        removePresence(participant, eventId);
+    }
+
+    // TODO: Verify if I'll separate this in methods of each one or continue with this method doing everything
+    public void removePresence(Participant participant, int eventId) {
+        for (String attendance : participant.getAttendances().keySet()) {
+            if (attendance.equals(Attendance.PENDING.getAttendance())) {
+                participant.getAttendances().get(Attendance.PENDING.getAttendance()).remove(eventId);
+            } else if (attendance.equals(Attendance.CONFIRMED.getAttendance())) {
+                participant.getAttendances().get(Attendance.CONFIRMED.getAttendance()).remove(eventId);
+            } else {
+                participant.getAttendances().get(Attendance.CANCELED.getAttendance()).remove(eventId);
+            }
+        }
     }
 
 }

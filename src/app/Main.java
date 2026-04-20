@@ -57,3 +57,4 @@ void main() {
 
 // TODO: Ticket (Name, Description, Price), create a Enum if ticket still have to buy, AVAILABLE or SOLD_OUT
 // TODO: Create a abstract class Ticket and others extends from it and create a interface of their methods
+// TODO: Event Billing using Ticket sales, summing the payments

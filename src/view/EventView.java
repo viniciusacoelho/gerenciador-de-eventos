@@ -2,7 +2,6 @@ package view;
 
 import model.Event;
 import repository.EventRepository;
-import repository.ParticipantRepository;
 import service.EventService;
 import util.DateTimeUtil;
 
@@ -20,8 +19,6 @@ public class EventView {
     public static EventService eventService = new EventService();
 
     public static DateTimeUtil dateTimeUtil = new DateTimeUtil();
-
-    public static ParticipantRepository participantRepository = new ParticipantRepository();
 
     public void panel() {
         String[] menu = {
@@ -192,6 +189,7 @@ public class EventView {
                     }
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
+
             } catch (InputMismatchException e) {
                 System.err.println("[ERRO]: Digite um número!");
                 scanner.nextLine();
@@ -214,14 +212,12 @@ public class EventView {
         } while (true);
     }
 
-//    TODO: Fix ->
     public static void updateDateTime(Event event) {
         do {
-            System.out.println("Digite o novo horário para atualizar:");
-            String newDateTime = scanner.nextLine();
-            LocalDateTime validatedNewDateTime = dateTimeUtil.convertDateTime(newDateTime);
-
             try {
+                System.out.println("Digite o novo horário para atualizar:");
+                String newDateTime = scanner.nextLine();
+                LocalDateTime validatedNewDateTime = dateTimeUtil.convertDateTime(newDateTime);
                 eventRepository.updateEvent(event.getEventId(), validatedNewDateTime, "Horário");
                 break;
             } catch (DateTimeParseException e) {
@@ -245,20 +241,23 @@ public class EventView {
         } while (true);
     }
 
-//    TODO: Fix ->
     public static void updateCapacity(Event event) {
-//        do {
-//            System.out.println("Digite a nova capacidade para atualizar:");
-//            int newCapacity = scanner.nextInt();
-//            boolean validatedNewCapacity = eventService.validateCapacity(newCapacity);
-//
-//            if (validatedNewCapacity && (event.getCapacity() != newCapacity)) {
-//                eventRepository.updateEvent(event.getEventId(), newCapacity, "Local");
-//                break;
-//            } else {
-//                System.out.println("Nova capacidade inválida! Tente novamente.");
-//            }
-//        } while (true);
+        do {
+            try {
+                System.out.println("Digite a nova capacidade para atualizar:");
+                int newCapacity = scanner.nextInt();
+                boolean validatedNewCapacity = eventService.validateCapacity(newCapacity);
+
+                if (validatedNewCapacity && (event.getCapacity() != newCapacity)) {
+                    eventRepository.updateEvent(event.getEventId(), newCapacity, "Local");
+                    break;
+                } else {
+                    System.out.println("Nova capacidade inválida! Tente novamente.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("[ERR]: Digite um número!");
+            }
+        } while (true);
     }
 
     public static void removeEvent() {

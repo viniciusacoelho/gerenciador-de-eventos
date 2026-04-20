@@ -46,9 +46,13 @@ public class ParticipantRepository {
         for (Event event : participant.getEvents()) {
             System.out.println(event);
             // TODO: Fix presence view, because it are showing a array of presences, not individual presences
-            System.out.println("Presença: " + participant.getPresences());
+            for (String presence : participant.getAttendances().keySet()) {
+                System.out.println("Presença: " + presence + " | Evento: " + participant.getAttendances().get(presence));
+            }
+
             System.out.println("--------------------------------------------");
         }
+
     }
 
     public <T> void updateParticipant(int participantId, T attribute, String attributeName) {
@@ -120,5 +124,10 @@ public class ParticipantRepository {
 
         return null;
     }
+
+//    public void updatePresence(Participant participant, int eventId) {
+//        participant.setPresences(Presence.CONFIRMED.getPresence(), eventId);
+//        participant.getPresences().put(Presence.CONFIRMED.getPresence(), participant.getPresences().remove(participant.getPresences().get()));
+//    }
 
 }

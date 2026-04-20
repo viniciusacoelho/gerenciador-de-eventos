@@ -1,6 +1,5 @@
 package view;
 
-import enums.Presence;
 import model.Event;
 import model.Participant;
 import repository.ParticipantRepository;
@@ -271,11 +270,11 @@ public class ParticipantView {
                         if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
                             // TODO: Maybe don't use set, use update, because Presence always starts with PENDING
                             // TODO: This line need to update de presence, nowadays, it are adding presences, and it need to update
-                            participantRepository.findParticipantById(participant.getParticipantId()).setPresences(Presence.CONFIRMED);
+                            participantService.confirmPresence(participant, eventId);
                             System.out.println("Presença confirmada com sucesso!");
                             break;
                         } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {
-                            participantRepository.findParticipantById(participant.getParticipantId()).setPresences(Presence.CANCELED);
+                            participantService.cancelPresence(participant, eventId);
                             System.out.println("Presença cancelada.");
                             break;
                         } else {
@@ -296,7 +295,7 @@ public class ParticipantView {
 
     public void historyRegisteredEvents(Participant participant) {
         // TODO: A method that validate if the participant presence are confirmed (maybe)
-        // TODO: Read events using stack (LIFO)
+        // TODO: Read events using Stack (LIFO), because the Events that the participant registered recently need stay on the top
         participantRepository.readParticipantEvents(participant);
     }
 
@@ -334,6 +333,7 @@ public class ParticipantView {
                     }
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
+
             } catch (InputMismatchException e) {
                 System.err.println("[ERRO]: Digite um número!");
                 scanner.nextLine();

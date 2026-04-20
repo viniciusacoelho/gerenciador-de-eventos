@@ -10,7 +10,26 @@ public class AdminView {
     public static EventView eventView = new EventView();
     public static AdminParticipantView adminParticipantView = new AdminParticipantView();
 
-    public void panel() {
+    public void login() {
+//        String DEFAULT_PASSWORD = "1234";
+
+//        System.out.println("--------------------------------------------");
+//        System.out.println("                   Login");
+//        System.out.println("--------------------------------------------");
+//        System.out.println("Digite seu e-mail:");
+//        String email = scanner.nextLine();
+//        System.out.println("Digite sua senha:");
+//        String password = scanner.nextLine();
+
+//        if (!password.equals(DEFAULT_PASSWORD)) {
+//            throw new InputMismatchException("[ERRO]: Senha inválida! Tente novamente.");
+//        }
+
+//        System.out.println("Seja bem-vindo " + email + '!');
+        panel();
+    }
+
+    public static void panel() {
         String[] menu = {"Evento", "Participante", "Voltar"};
 
         do {
@@ -45,25 +64,6 @@ public class AdminView {
                 scanner.nextLine();
             }
         } while (true);
-    }
-
-    public void login() {
-//        String DEFAULT_PASSWORD = "1234";
-
-//        System.out.println("--------------------------------------------");
-//        System.out.println("                   Login");
-//        System.out.println("--------------------------------------------");
-//        System.out.println("Digite seu e-mail:");
-//        String email = scanner.nextLine();
-//        System.out.println("Digite sua senha:");
-//        String password = scanner.nextLine();
-
-//        if (!password.equals(DEFAULT_PASSWORD)) {
-//            throw new InputMismatchException("[ERRO]: Senha inválida! Tente novamente.");
-//        }
-
-//        System.out.println("Seja bem-vindo " + email + '!');
-        panel();
     }
 
 }

@@ -1,10 +1,12 @@
 package model;
 
-import enums.Presence;
+import enums.Attendance;
 import util.DateTimeUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Participant {
@@ -25,7 +27,8 @@ public class Participant {
 
     private List<Event> events;
 
-    private List<Presence> presences;
+//    private List<Attendance> attendances;
+    private HashMap<String, List<Integer>> attendances;
 
     private final static DateTimeUtil dateTimeUtil = new DateTimeUtil();
 
@@ -37,7 +40,9 @@ public class Participant {
         this.password = password;
         this.accountDateTimeCreation = LocalDateTime.now();
         this.events = new ArrayList<>();
-        this.presences = new ArrayList<>();
+//        this.attendances = new ArrayList<>();
+        this.attendances = new LinkedHashMap<>();
+        createPresences();
     }
 
     public Participant() {
@@ -87,17 +92,36 @@ public class Participant {
         return events;
     }
 
+//    public void setEvents(Event event) {
+//        this.events.add(event);
+//        setPresences(Presence.PENDING);
+//    }
+
+//    public List<Attendance> getAttendances() {
+//        return attendances;
+//    }
+
+//    public void setAttendances(Attendance attendance) {
+//        attendances.add(Attendance.PENDING);
+//    }
+
     public void setEvents(Event event) {
         this.events.add(event);
-        setPresences(Presence.PENDING);
+        setAttendances(Attendance.PENDING.getAttendance(), event.getEventId());
     }
 
-    public List<Presence> getPresences() {
-        return presences;
+    public HashMap<String, List<Integer>> getAttendances() {
+        return attendances;
     }
 
-    public void setPresences(Presence presence) {
-        this.presences.add(presence);
+    public void setAttendances(String attendance, int eventId) {
+        attendances.get(attendance).add(eventId);
+    }
+
+    public void createPresences() {
+        attendances.put(Attendance.PENDING.getAttendance(), new ArrayList<>());
+        attendances.put(Attendance.CONFIRMED.getAttendance(), new ArrayList<>());
+        attendances.put(Attendance.CANCELED.getAttendance(), new ArrayList<>());
     }
 
     public LocalDateTime getAccountDateTimeCreation() { // TODO: Verify if it's necessary, if the user will use it in the future
