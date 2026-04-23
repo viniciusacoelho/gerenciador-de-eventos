@@ -45,11 +45,7 @@ public class ParticipantRepository {
 
         for (Event event : participant.getEvents()) {
             System.out.println(event);
-            // TODO: Fix presence view, because it are showing a array of presences, not individual presences
-            for (String presence : participant.getAttendances().keySet()) {
-                System.out.println("Presença: " + presence + " | Evento: " + participant.getAttendances().get(presence));
-            }
-
+            System.out.println("Presença: " + participant.getAttendances().get(event).getAttendance());
             System.out.println("--------------------------------------------");
         }
 

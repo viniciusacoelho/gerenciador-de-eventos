@@ -39,7 +39,7 @@ public class ParticipantView {
                 System.out.println("--------------------------------------------");
 
                 switch (option) {
-                    case 1 -> create_account();
+                    case 1 -> createAccount();
                     case 2 -> login();
                     case 3 -> {
                         System.out.println("Voltando...");
@@ -71,7 +71,7 @@ public class ParticipantView {
         }
     }
 
-    public void create_account() {
+    public void createAccount() {
         System.out.println("           Cadastro\n--------------------------------------------");
 
 //        String name;
@@ -263,6 +263,8 @@ public class ParticipantView {
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
 
+                Event event = eventRepository.findEventById(eventId);
+
                 if (eventRepository.findEventById(eventId) != null) {
                         System.out.println("Você deseja confirmar presença no evento '" + eventRepository.findEventById(eventId).getName() + "'? (s/n)");
                         String response = scanner.nextLine().toLowerCase();
@@ -270,11 +272,11 @@ public class ParticipantView {
                         if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
                             // TODO: Maybe don't use set, use update, because Presence always starts with PENDING
                             // TODO: This line need to update de presence, nowadays, it are adding presences, and it need to update
-                            participantService.confirmPresence(participant, eventId);
+                            participantService.confirmPresence(participant, event);
                             System.out.println("Presença confirmada com sucesso!");
                             break;
                         } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {
-                            participantService.cancelPresence(participant, eventId);
+                            participantService.cancelPresence(participant, event);
                             System.out.println("Presença cancelada.");
                             break;
                         } else {

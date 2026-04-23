@@ -27,8 +27,7 @@ public class Participant {
 
     private List<Event> events;
 
-//    private List<Attendance> attendances;
-    private HashMap<String, List<Integer>> attendances;
+    private HashMap<Event, Attendance> attendances;
 
     private final static DateTimeUtil dateTimeUtil = new DateTimeUtil();
 
@@ -40,9 +39,7 @@ public class Participant {
         this.password = password;
         this.accountDateTimeCreation = LocalDateTime.now();
         this.events = new ArrayList<>();
-//        this.attendances = new ArrayList<>();
         this.attendances = new LinkedHashMap<>();
-        createPresences();
     }
 
     public Participant() {
@@ -92,36 +89,17 @@ public class Participant {
         return events;
     }
 
-//    public void setEvents(Event event) {
-//        this.events.add(event);
-//        setPresences(Presence.PENDING);
-//    }
-
-//    public List<Attendance> getAttendances() {
-//        return attendances;
-//    }
-
-//    public void setAttendances(Attendance attendance) {
-//        attendances.add(Attendance.PENDING);
-//    }
-
     public void setEvents(Event event) {
         this.events.add(event);
-        setAttendances(Attendance.PENDING.getAttendance(), event.getEventId());
+        setAttendances(event, Attendance.PENDING);
     }
 
-    public HashMap<String, List<Integer>> getAttendances() {
+    public HashMap<Event, Attendance> getAttendances() {
         return attendances;
     }
 
-    public void setAttendances(String attendance, int eventId) {
-        attendances.get(attendance).add(eventId);
-    }
-
-    public void createPresences() {
-        attendances.put(Attendance.PENDING.getAttendance(), new ArrayList<>());
-        attendances.put(Attendance.CONFIRMED.getAttendance(), new ArrayList<>());
-        attendances.put(Attendance.CANCELED.getAttendance(), new ArrayList<>());
+    public void setAttendances(Event event, Attendance attendance) {
+        attendances.put(event, attendance);
     }
 
     public LocalDateTime getAccountDateTimeCreation() { // TODO: Verify if it's necessary, if the user will use it in the future
