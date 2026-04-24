@@ -25,12 +25,7 @@ public class ParticipantRepository {
             return;
         }
 
-        for (Participant participant : this.participants) {
-            // TODO: Fix it
-//            if (participant.getPresence() != Presence.CONFIRMED) {
-//                throw new IndexOutOfBoundsException("Nenhum participante confirmado anteriormente.");
-//            }
-
+        for (Participant participant : participants) {
             System.out.println(participant);
             System.out.println("--------------------------------------------");
         }
@@ -44,9 +39,12 @@ public class ParticipantRepository {
         }
 
         for (Event event : participant.getEvents()) {
-            System.out.println(event);
-            System.out.println("Presença: " + participant.getAttendances().get(event).getAttendance());
-            System.out.println("--------------------------------------------");
+            // TODO: Verify if participant attendance isn't CONFIRMED when call the method 'confirmAttendance'
+//            if (!Objects.equals(participant.getAttendances().get(event).getAttendance(), Attendance.CONFIRMED.getAttendance())) {
+                System.out.println(event);
+                System.out.println("Presença: " + participant.getAttendances().get(event).getAttendance());
+                System.out.println("--------------------------------------------");
+//            }
         }
 
     }
@@ -71,7 +69,7 @@ public class ParticipantRepository {
     }
 
     public Participant findParticipantById(int participantId) {
-        if (this.participants.isEmpty()) {
+        if (participants.isEmpty()) {
             throw new IndexOutOfBoundsException("Nenhum participante cadastrado anteriormente.");
         }
 
@@ -120,10 +118,5 @@ public class ParticipantRepository {
 
         return null;
     }
-
-//    public void updatePresence(Participant participant, int eventId) {
-//        participant.setPresences(Presence.CONFIRMED.getPresence(), eventId);
-//        participant.getPresences().put(Presence.CONFIRMED.getPresence(), participant.getPresences().remove(participant.getPresences().get()));
-//    }
 
 }

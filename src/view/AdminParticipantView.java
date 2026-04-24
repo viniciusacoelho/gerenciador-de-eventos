@@ -94,17 +94,17 @@ public class AdminParticipantView {
         //    Participant participant = new Participant(name, contact);
         //    participantRepository.createParticipant(participant);
 
-        Participant participant1 = new Participant("Vinícius", 998271900, "vinicius@email.com", "1234");
-        Participant participant2 = new Participant("João Victor", 987593594, "joaovcitor@email.com", "1234");
-        Participant participant3 = new Participant("Ricardo", 999175344, "ricardo@email.com", "1234");
-        Participant participant4 = new Participant("Ângela", 999223567, "angela@email.com", "1234");
+        Participant participant1 = new Participant("Vinícius Araújo Coêlho", 998271900, "vinicius@email.com", "1234");
+        Participant participant2 = new Participant("João Victor Araújo Coêlho", 987593594, "joaovcitor@email.com", "1234");
+        Participant participant3 = new Participant("Ricardo José de Andrade Coêlho", 999175344, "ricardo@email.com", "1234");
+        Participant participant4 = new Participant("Ângela Maria Araújo Coêlho", 999223567, "angela@email.com", "1234");
 
         participantRepository.createParticipant(participant1);
         participantRepository.createParticipant(participant2);
         participantRepository.createParticipant(participant3);
         participantRepository.createParticipant(participant4);
 
-//        System.out.println("Participante '" + participant.getName() + "' cadastrado com sucesso!");
+        System.out.println("Participante '" + participant1.getName() + "' cadastrado com sucesso!");
     }
 
     public static void findParticipant() {

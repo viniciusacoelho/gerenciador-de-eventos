@@ -4,6 +4,8 @@ import enums.Attendance;
 import model.Event;
 import model.Participant;
 
+import static view.EventView.eventRepository;
+
 public class ParticipantService {
 
     public boolean validateName(String name) {
@@ -35,16 +37,27 @@ public class ParticipantService {
         participant.setEvents(event);
     }
 
+    public boolean verifyRegisteredEvent(Participant participant, int eventId) {
+        Event event = eventRepository.findEventById(eventId);
+        return participant.getEvents().contains(event);
+    }
+
     public void confirmPresence(Participant participant, Event event) {
         if (participant.getAttendances().containsKey(event)) {
             participant.getAttendances().put(event, Attendance.CONFIRMED);
+            return;
         }
+
+        System.out.println("Evento inválido!");
     }
 
     public void cancelPresence(Participant participant, Event event) {
         if (participant.getAttendances().containsKey(event)) {
             participant.getAttendances().put(event, Attendance.CANCELED);
+            return;
         }
+
+        System.out.println("Evento inválido!");
     }
 
 }

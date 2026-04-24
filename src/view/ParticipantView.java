@@ -222,13 +222,19 @@ public class ParticipantView {
                 System.out.println("--------------------------------------------");
                 Event event = eventRepository.findEventById(eventId);
 
-                if (event != null) {
-                    eventService.addParticipantEvent(participant, event);
-                    participantService.addEventParticipant(event, participant);
-                    break;
-                } else {
+                if (event == null) {
                     System.out.println("ID do evento inválido! Tente novamente.");
+                    return;
                 }
+
+                if (participantService.verifyRegisteredEvent(participant, eventId)) {
+                    System.out.println("Evento já inscrito anteriormente. Tente novamente.");
+                    return;
+                }
+
+                eventService.addParticipantEvent(participant, event);
+                participantService.addEventParticipant(event, participant);
+                break;
             } catch (InputMismatchException e) {
                 System.out.println("[ERRO]: Digite um número!");
                 scanner.nextLine();
@@ -262,6 +268,11 @@ public class ParticipantView {
                 int eventId = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
+
+                if (!participantService.verifyRegisteredEvent(participant, eventId)) {
+                    System.out.println("ID do evento inválido! Tente novamente.");
+                    return;
+                }
 
                 Event event = eventRepository.findEventById(eventId);
 
@@ -405,6 +416,7 @@ public class ParticipantView {
 
     public static void deleteAccount(Participant participant) {
         System.out.println("           Deletar Participante\n--------------------------------------------");
+        // TODO: This isn't working because it only removes from the participants list, not from the Participant class
         participantRepository.deleteParticipant(participant);
     }
 
