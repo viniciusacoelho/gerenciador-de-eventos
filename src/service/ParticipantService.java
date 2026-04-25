@@ -4,7 +4,10 @@ import enums.Attendance;
 import model.Event;
 import model.Participant;
 
+import java.util.Objects;
+
 import static view.EventView.eventRepository;
+import static view.ParticipantView.participantRepository;
 
 public class ParticipantService {
 
@@ -37,7 +40,7 @@ public class ParticipantService {
         participant.setEvents(event);
     }
 
-    public boolean verifyRegisteredEvent(Participant participant, int eventId) {
+    public boolean isEventRegistered(Participant participant, int eventId) {
         Event event = eventRepository.findEventById(eventId);
         return participant.getEvents().contains(event);
     }
@@ -58,6 +61,18 @@ public class ParticipantService {
         }
 
         System.out.println("Evento inválido!");
+    }
+
+    public boolean isAttendanceConfirmed(Participant participant, Event event) {
+        return Objects.equals(participant.getAttendances().get(event).getAttendance(), Attendance.CONFIRMED.getAttendance());
+    }
+
+    public boolean isEmpty(Participant participant) {
+        return participant == null;
+    }
+
+    public boolean isPasswordCorrect(Participant participant, String password) {
+        return participantRepository.findParticipantByPassword(password) != null;
     }
 
 }

@@ -1,5 +1,7 @@
 package view;
 
+import exceptions.EventNotFoundException;
+import exceptions.ParticipantEventNotRegisteredException;
 import model.Event;
 import model.Participant;
 import repository.ParticipantRepository;
@@ -65,10 +67,13 @@ public class ParticipantView {
         String password = scanner.nextLine();
         Participant participant = participantRepository.findParticipantByEmail(email);
 
-        if (participant != null && participantRepository.findParticipantByPassword(password) != null) {
+        if (!participantService.isEmpty(participant) && participantService.isPasswordCorrect(participant, password)) {
             System.out.println("Seja bem-vindo(a) de volta " + participant.getName() + '!');
             panel(participant);
+            return;
         }
+
+        System.out.println("E-mail e/ou senha inválidos!");
     }
 
     public void createAccount() {
@@ -227,7 +232,7 @@ public class ParticipantView {
                     return;
                 }
 
-                if (participantService.verifyRegisteredEvent(participant, eventId)) {
+                if (participantService.isEventRegistered(participant, eventId)) {
                     System.out.println("Evento já inscrito anteriormente. Tente novamente.");
                     return;
                 }
@@ -247,17 +252,17 @@ public class ParticipantView {
         System.out.println("Em breve...");
     }
 
-    public static void confirmAttendance(Participant participant) {
+    public static void confirmAttendance(Participant participant) throws EventNotFoundException, ParticipantEventNotRegisteredException {
         System.out.println("      Confirmar Presença de Participante\n--------------------------------------------");
 
         if (event.getTotalRegisteredEvents() == 0) {
-            System.out.println("Nenhum evento cadastrado anteriormente.");
-            return;
+            throw new EventNotFoundException("Nenhum evento cadastrado anteriormente.");
+//            return;
         }
 
-        if (participant.getEvents() == null) {
-            System.out.println("Nenhum evento inscrito anteriormente.");
-            return;
+        if (participant.getEvents().isEmpty()) {
+            throw new ParticipantEventNotRegisteredException("Nenhum evento inscrito anteriormente.");
+//            return;
         }
 
         do {
@@ -269,36 +274,32 @@ public class ParticipantView {
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
 
-                if (!participantService.verifyRegisteredEvent(participant, eventId)) {
+                if (!participantService.isEventRegistered(participant, eventId)) {
                     System.out.println("ID do evento inválido! Tente novamente.");
                     return;
                 }
 
                 Event event = eventRepository.findEventById(eventId);
 
-                if (eventRepository.findEventById(eventId) != null) {
-                        System.out.println("Você deseja confirmar presença no evento '" + eventRepository.findEventById(eventId).getName() + "'? (s/n)");
-                        String response = scanner.nextLine().toLowerCase();
+                System.out.println("Você deseja confirmar presença no evento '" + eventRepository.findEventById(eventId).getName() + "'? (s/n)");
+                String response = scanner.nextLine().toLowerCase();
 
-                        if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
-                            // TODO: Maybe don't use set, use update, because Presence always starts with PENDING
-                            // TODO: This line need to update de presence, nowadays, it are adding presences, and it need to update
-                            participantService.confirmPresence(participant, event);
-                            System.out.println("Presença confirmada com sucesso!");
-                            break;
-                        } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {
-                            participantService.cancelPresence(participant, event);
-                            System.out.println("Presença cancelada.");
-                            break;
-                        } else {
-                            System.out.println("Resposta inválida! Tente novamente.");
-                        }
-
-                    } else {
-                        System.out.println("ID do evento inválido! Tente novamente.\n--------------------------------------------");
-                    }
-                    // TODO: Test if this 'break' is necessary
+                if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
+                    // TODO: Maybe don't use set, use update, because Presence always starts with PENDING
+                    // TODO: This line need to update de presence, nowadays, it are adding presences, and it need to update
+                    participantService.confirmPresence(participant, event);
+                    System.out.println("Presença confirmada com sucesso!");
                     break;
+                } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {
+                    participantService.cancelPresence(participant, event);
+                    System.out.println("Presença cancelada.");
+                    break;
+                } else {
+                    System.out.println("Resposta inválida! Tente novamente.");
+                }
+
+                // TODO: Test if this 'break' is necessary
+                break;
             } catch (InputMismatchException e) {
                 System.out.println("[ERRO]: Digite um número!");
                 scanner.nextLine();

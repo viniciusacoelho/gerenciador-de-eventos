@@ -1,5 +1,6 @@
 package service;
 
+import exceptions.EventCapacityException;
 import model.Event;
 import model.Participant;
 
@@ -17,14 +18,21 @@ public class EventService {
         return capacity > 0;
     }
 
-    public void addParticipantEvent(Participant participant, Event event) {
-        if (event.getParticipants().toArray().length < event.getCapacity()) {
-            event.setParticipants(participant);
-            System.out.println("Participante '" + participant.getName() + "' inscrito no evento '" + event.getName() + "' com sucesso!");
-            return;
+    public void addParticipantEvent(Participant participant, Event event) throws EventCapacityException {
+        if (!haveCapacity(event)) {
+            throw new EventCapacityException("Evento lotado! Não foi possível inscrever o participante '" + participant.getName() + "'.");
+            // TODO: When I create the class Ticket, I'll put the enum SOLD_OUT here
         }
-        // TODO: When I create the class Ticket, here I will put the enum SOLD_OUT
-        System.out.println("Evento lotado! Não foi possível inscrever o participante '" + participant.getName() + "'.");
+
+        event.setParticipants(participant);
+        System.out.println("Participante '" + participant.getName() + "' inscrito no evento '" + event.getName() + "' com sucesso!");
     }
 
+    public boolean haveCapacity(Event event) {
+        return event.getCapacity() > event.getParticipants().size();
+    }
+
+    public boolean isEmpty(Event event) {
+        return event == null;
+    }
 }

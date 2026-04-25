@@ -5,8 +5,7 @@ import model.Participant;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static view.ParticipantView.participantRepository;
-import static view.ParticipantView.deleteAccount;
+import static view.ParticipantView.*;
 
 public class AdminParticipantView {
 
@@ -111,7 +110,7 @@ public class AdminParticipantView {
         System.out.println("           Buscar Participante\n--------------------------------------------");
         Participant participant = chooseParticipant("buscar");
 
-        if (participant == null) {
+        if (participantService.isEmpty(participant)) {
             System.out.println("E-mail do participante não encontrado.");
             return;
         }
@@ -122,7 +121,7 @@ public class AdminParticipantView {
     public static void updateParticipant() {
         Participant participant = chooseParticipant("atualizar");
 
-        if (participant == null) {
+        if (participantService.isEmpty(participant)) {
             System.out.println("E-mail do participante não encontrado.");
             return;
         }
@@ -133,7 +132,7 @@ public class AdminParticipantView {
     public static void removeParticipant() {
         Participant participant = chooseParticipant("deletar");
 
-        if (participant == null) {
+        if (participantService.isEmpty(participant)) {
             System.out.println("Nome do participante não encontrado.");
             return;
         }

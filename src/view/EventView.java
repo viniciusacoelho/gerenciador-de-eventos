@@ -155,7 +155,7 @@ public class EventView {
         System.out.println("           Atualizar Evento\n--------------------------------------------");
         Event event = chooseEvent("atualizar");
 
-        if (event == null) {
+        if (eventService.isEmpty(event)) {
             System.out.println("Evento não encontrado.");
             return;
         }
@@ -264,7 +264,7 @@ public class EventView {
         System.out.println("           Deletar Evento\n--------------------------------------------");
         Event event = chooseEvent("deletar");
 
-        if (event == null) {
+        if (eventService.isEmpty(event)) {
             System.out.println("Nome do evento não encontrado.");
             return;
         }

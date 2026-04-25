@@ -1,7 +1,11 @@
 package repository;
 
+import exceptions.ParticipantEventNotRegisteredException;
+import exceptions.ParticipantNotFoundException;
+import exceptions.ParticipantNotRegisteredException;
 import model.Event;
 import model.Participant;
+import service.ParticipantService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +15,8 @@ public class ParticipantRepository {
 
     private final List<Participant> participants;
 
+    private final ParticipantService participantService = new ParticipantService();
+
     public ParticipantRepository() {
         participants = new ArrayList<>();
     }
@@ -19,10 +25,9 @@ public class ParticipantRepository {
         this.participants.add(participant);
     }
 
-    public void readParticipants() {
+    public void readParticipants() throws ParticipantNotRegisteredException {
         if (participants.isEmpty()) {
-            System.out.println("Nenhum participante cadastrado anteriormente.");
-            return;
+            throw new ParticipantNotRegisteredException("Nenhum participante cadastrado anteriormente.");
         }
 
         for (Participant participant : participants) {
@@ -31,20 +36,17 @@ public class ParticipantRepository {
         }
     }
 
-    public void readParticipantEvents(Participant participant) {
+    public void readParticipantEvents(Participant participant) throws ParticipantEventNotRegisteredException {
         if (participant.getEvents().isEmpty()) {
-            System.out.println("Participante inscrito em nenhum evento anteriormente.");
-//            throw new IndexOutOfBoundsException("Nenhum evento inscrito anteriormente.");
-            return;
+            throw new ParticipantEventNotRegisteredException("Participante inscrito em nenhum evento anteriormente.");
         }
 
         for (Event event : participant.getEvents()) {
-            // TODO: Verify if participant attendance isn't CONFIRMED when call the method 'confirmAttendance'
-//            if (!Objects.equals(participant.getAttendances().get(event).getAttendance(), Attendance.CONFIRMED.getAttendance())) {
+            if (!participantService.isAttendanceConfirmed(participant, event)) {
                 System.out.println(event);
                 System.out.println("Presença: " + participant.getAttendances().get(event).getAttendance());
                 System.out.println("--------------------------------------------");
-//            }
+            }
         }
 
     }
@@ -68,9 +70,9 @@ public class ParticipantRepository {
         participants.remove(participant);
     }
 
-    public Participant findParticipantById(int participantId) {
+    public Participant findParticipantById(int participantId) throws ParticipantNotRegisteredException {
         if (participants.isEmpty()) {
-            throw new IndexOutOfBoundsException("Nenhum participante cadastrado anteriormente.");
+            throw new ParticipantNotRegisteredException("Nenhum participante cadastrado anteriormente.");
         }
 
         int start = 0;
@@ -91,9 +93,10 @@ public class ParticipantRepository {
         return null;
     }
 
-    public Participant findParticipantByEmail(String email) {
+    public Participant findParticipantByEmail(String email) throws ParticipantNotRegisteredException, ParticipantNotFoundException {
         if (participants.isEmpty()) {
-            return null;
+            throw new ParticipantNotRegisteredException("Nenhum participante cadastrado anteriormente.");
+//            return null;
         }
 
         for (Participant participant : participants) {
@@ -105,9 +108,10 @@ public class ParticipantRepository {
         return null;
     }
 
-    public Participant findParticipantByPassword(String password) {
+    public Participant findParticipantByPassword(String password) throws ParticipantNotRegisteredException, ParticipantNotFoundException {
         if (participants.isEmpty()) {
-            return null;
+            throw new ParticipantNotRegisteredException("Nenhum participante cadastrado anteriormente.");
+//            return null;
         }
 
         for (Participant participant : participants) {
@@ -116,7 +120,8 @@ public class ParticipantRepository {
             }
         }
 
-        return null;
+        throw new ParticipantNotRegisteredException("Nenhum participante cadastrado anteriormente.");
+//        return null;
     }
 
 }

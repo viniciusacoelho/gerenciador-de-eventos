@@ -1,5 +1,7 @@
 package repository;
 
+import exceptions.EventNotFoundException;
+import exceptions.EventNotRegisteredException;
 import model.Event;
 
 import java.time.LocalDateTime;
@@ -18,10 +20,9 @@ public class EventRepository {
         this.events.add(event);
     }
 
-    public void readEvents() {
-        // TODO: Create a method of this to reduce code lines (if this is possible)
+    public void readEvents() throws EventNotRegisteredException {
         if (events.isEmpty()) {
-            throw new IndexOutOfBoundsException("Nenhum evento cadastrado anteriormente.");
+            throw new EventNotRegisteredException("Nenhum evento cadastrado anteriormente.");
         }
 
         for (Event event : events) {
@@ -46,13 +47,13 @@ public class EventRepository {
 
     public void deleteEvent(Event event) {
         System.out.println("Participante '" + event.getName() + "' deletado com sucesso!");
-        this.events.remove(event);
+        events.remove(event);
     }
 
-    public Event findEventById(int eventId) {
+    public Event findEventById(int eventId) throws EventNotRegisteredException, EventNotFoundException {
         // TODO: Test another way to use it, because this make a error, so I think I've no create a method to fix it
         if (events.isEmpty()) {
-            throw new IndexOutOfBoundsException("Nenhum evento cadastrado anteriormente.");
+            throw new EventNotRegisteredException("Nenhum evento cadastrado anteriormente.");
         }
 
         int start = 0;
@@ -70,10 +71,11 @@ public class EventRepository {
             }
         }
 
-        return null;
+        throw new EventNotFoundException("Evento não encontrado");
+//        return null;
     }
 
-    public Event findEventByName(String name) {
+    public Event findEventByName(String name) throws EventNotRegisteredException, EventNotFoundException {
         if (events.isEmpty()) {
             throw new IndexOutOfBoundsException("Nenhum evento cadastrado anteriormente.");
         }
@@ -84,7 +86,8 @@ public class EventRepository {
             }
         }
 
-        return null;
+        throw new EventNotFoundException("Evento não encontrado");
+//        return null;
     }
 
 }
