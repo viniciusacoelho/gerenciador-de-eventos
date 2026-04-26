@@ -1,9 +1,11 @@
 package view;
 
+import exceptions.EventNotFoundException;
 import model.Event;
 import repository.EventRepository;
 import service.EventService;
 import util.DateTimeUtil;
+import util.IsEqualUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -13,6 +15,7 @@ import java.util.Scanner;
 public class EventView {
 
     private static final Scanner scanner = new Scanner(System.in);
+    private static final IsEqualUtil isEqualUtil = new IsEqualUtil();
 
     public static Event event = new Event();
     public static EventRepository eventRepository = new EventRepository();
@@ -139,25 +142,25 @@ public class EventView {
         System.out.println("Evento '" + event1.getName() + "' cadastrado com sucesso!");
     }
 
-    public static void findEvent() {
+    public static void findEvent() throws EventNotFoundException {
         System.out.println("           Buscar Evento\n--------------------------------------------");
         Event event = chooseEvent("buscar");
 
-        if (event == null) {
-            System.out.println("Nome do evento não encontrado.");
-            return;
+        if (eventService.isEmpty(event)) {
+            throw new EventNotFoundException("Evento não encontrado. Tente novamente.");
+//            return;
         }
 
         System.out.println(event);
     }
 
-    public static void updateEvent() {
+    public static void updateEvent() throws EventNotFoundException {
         System.out.println("           Atualizar Evento\n--------------------------------------------");
         Event event = chooseEvent("atualizar");
 
         if (eventService.isEmpty(event)) {
-            System.out.println("Evento não encontrado.");
-            return;
+            throw new EventNotFoundException("Evento não encontrado. Tente novamente.");
+//            return;
         }
 
         System.out.println("\n--------------------------------------------\n" + event + "\n--------------------------------------------\n");
@@ -201,9 +204,13 @@ public class EventView {
         do {
             System.out.println("Digite o novo nome para atualizar:");
             String newName = scanner.nextLine();
-            boolean validatedNewName = eventService.validateName(newName);
+            boolean isNewNameValidated = eventService.validateName(newName);
 
-            if (validatedNewName && !event.getName().equalsIgnoreCase(newName)) {
+            if (!isNewNameValidated) {
+                return;
+            }
+
+            if (newName.equalsIgnoreCase(event.getName())) {
                 eventRepository.updateEvent(event.getEventId(), newName, "Nome");
                 break;
             } else {
@@ -218,8 +225,11 @@ public class EventView {
                 System.out.println("Digite o novo horário para atualizar:");
                 String newDateTime = scanner.nextLine();
                 LocalDateTime validatedNewDateTime = dateTimeUtil.convertDateTime(newDateTime);
-                eventRepository.updateEvent(event.getEventId(), validatedNewDateTime, "Horário");
-                break;
+
+                if (isEqualUtil.isEqual(validatedNewDateTime, event.getDateTime())) {
+                    eventRepository.updateEvent(event.getEventId(), validatedNewDateTime, "Horário");
+                    break;
+                }
             } catch (DateTimeParseException e) {
                 System.out.println("Novo horário inválido! Tente novamente.");
             }
@@ -230,9 +240,13 @@ public class EventView {
         do {
             System.out.println("Digite o novo local para atualizar:");
             String newLocation = scanner.nextLine();
-            boolean validatedNewLocation = eventService.validateLocation(newLocation);
+            boolean isNewLocationValidated = eventService.validateLocation(newLocation);
 
-            if (validatedNewLocation && !event.getLocation().equalsIgnoreCase(newLocation)) {
+            if (!isNewLocationValidated) {
+                return;
+            }
+
+            if (newLocation.equalsIgnoreCase(event.getLocation())) {
                 eventRepository.updateEvent(event.getEventId(), newLocation, "Local");
                 break;
             } else {
@@ -248,7 +262,11 @@ public class EventView {
                 int newCapacity = scanner.nextInt();
                 boolean validatedNewCapacity = eventService.validateCapacity(newCapacity);
 
-                if (validatedNewCapacity && (event.getCapacity() != newCapacity)) {
+                if (!validatedNewCapacity) {
+                    return;
+                }
+
+                if (isEqualUtil.isEqual(newCapacity, event.getDateTime())) {
                     eventRepository.updateEvent(event.getEventId(), newCapacity, "Local");
                     break;
                 } else {
@@ -260,22 +278,29 @@ public class EventView {
         } while (true);
     }
 
-    public static void removeEvent() {
+    public static void removeEvent() throws EventNotFoundException {
         System.out.println("           Deletar Evento\n--------------------------------------------");
         Event event = chooseEvent("deletar");
 
         if (eventService.isEmpty(event)) {
-            System.out.println("Nome do evento não encontrado.");
-            return;
+            throw new EventNotFoundException("Evento não encontrado. Tente novamente.");
+//            return;
         }
 
         eventRepository.deleteEvent(event);
     }
 
+    // TODO: Maybe put the exception just here to not use in the others methods
     public static Event chooseEvent(String action) {
-        System.out.println("Digite o ID do evento para " + action + ':');
-        int eventId = scanner.nextInt();
-        return eventRepository.findEventById(eventId);
+        do {
+            try {
+                System.out.println("Digite o ID do evento para " + action + ':');
+                int eventId = scanner.nextInt();
+                return eventRepository.findEventById(eventId);
+            } catch (InputMismatchException e) {
+                System.out.println("[ERRO]: Digite um número!");
+            }
+        } while (true);
     }
 
 }

@@ -13,21 +13,21 @@ public class AdminView {
     public static AdminParticipantView adminParticipantView = new AdminParticipantView();
 
     public void login() throws IncorrectDefaultPasswordException {
-        String DEFAULT_PASSWORD = "1234";
-
-        System.out.println("--------------------------------------------");
-        System.out.println("                   Login");
-        System.out.println("--------------------------------------------");
-        System.out.println("Digite seu e-mail:");
-        String email = scanner.nextLine();
-        System.out.println("Digite sua senha:");
-        String password = scanner.nextLine();
-
-        if (!password.equals(DEFAULT_PASSWORD)) {
-            throw new IncorrectDefaultPasswordException("[ERRO]: Senha inválida! Tente novamente.");
-        }
-
-        System.out.println("Seja bem-vindo " + email + '!');
+//        String DEFAULT_PASSWORD = "1234";
+//
+//        System.out.println("--------------------------------------------");
+//        System.out.println("                   Login");
+//        System.out.println("--------------------------------------------");
+//        System.out.println("Digite seu e-mail:");
+//        String email = scanner.nextLine();
+//        System.out.println("Digite sua senha:");
+//        String password = scanner.nextLine();
+//
+//        if (!password.equals(DEFAULT_PASSWORD)) {
+//            throw new IncorrectDefaultPasswordException("[ERRO]: Senha inválida! Tente novamente.");
+//        }
+//
+//        System.out.println("Seja bem-vindo " + email + '!');
         panel();
     }
 

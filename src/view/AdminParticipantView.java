@@ -1,5 +1,6 @@
 package view;
 
+import exceptions.ParticipantNotFoundException;
 import model.Participant;
 
 import java.util.InputMismatchException;
@@ -14,7 +15,7 @@ public class AdminParticipantView {
     public void panel() {
         String[] menu = {
                 "Cadastrar Participante", "Listar Participantes", "Buscar Participante",
-                "Atualizar Participante", "Remover Participante", "Voltar"
+                "Atualizar Participante", "Deletar Participante", "Voltar"
         };
 
         do {
@@ -106,35 +107,35 @@ public class AdminParticipantView {
         System.out.println("Participante '" + participant1.getName() + "' cadastrado com sucesso!");
     }
 
-    public static void findParticipant() {
+    public static void findParticipant() throws ParticipantNotFoundException {
         System.out.println("           Buscar Participante\n--------------------------------------------");
         Participant participant = chooseParticipant("buscar");
 
         if (participantService.isEmpty(participant)) {
-            System.out.println("E-mail do participante não encontrado.");
-            return;
+            throw new ParticipantNotFoundException("E-mail do participante não encontrado.");
+//            return;
         }
 
         System.out.println(participant);
     }
 
-    public static void updateParticipant() {
+    public static void updateParticipant() throws ParticipantNotFoundException {
         Participant participant = chooseParticipant("atualizar");
 
         if (participantService.isEmpty(participant)) {
-            System.out.println("E-mail do participante não encontrado.");
-            return;
+            throw new ParticipantNotFoundException("E-mail do participante não encontrado.");
+//            return;
         }
 
         deleteAccount(participant);
     }
 
-    public static void removeParticipant() {
+    public static void removeParticipant() throws ParticipantNotFoundException {
         Participant participant = chooseParticipant("deletar");
 
         if (participantService.isEmpty(participant)) {
-            System.out.println("Nome do participante não encontrado.");
-            return;
+            throw new ParticipantNotFoundException("Nome do participante não encontrado.");
+//            return;
         }
 
         deleteAccount(participant);

@@ -4,6 +4,8 @@ import exceptions.EventCapacityException;
 import model.Event;
 import model.Participant;
 
+import static view.EventView.event;
+
 public class EventService {
 
     public boolean validateName(String name) {
@@ -35,4 +37,9 @@ public class EventService {
     public boolean isEmpty(Event event) {
         return event == null;
     }
+
+    public boolean haveEventsRegistered(Event event) {
+        return event.getTotalRegisteredEvents() == 0;
+    }
+
 }

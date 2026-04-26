@@ -6,6 +6,7 @@ import model.Event;
 import model.Participant;
 import repository.ParticipantRepository;
 import service.ParticipantService;
+import util.IsEqualUtil;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -17,6 +18,7 @@ import static view.EventView.eventService;
 public class ParticipantView {
 
     private static final Scanner scanner = new Scanner(System.in);
+    private static final IsEqualUtil isEqualUtil = new IsEqualUtil();
 
     public static ParticipantRepository participantRepository = new ParticipantRepository();
     public static ParticipantService participantService = new ParticipantService();
@@ -67,7 +69,7 @@ public class ParticipantView {
         String password = scanner.nextLine();
         Participant participant = participantRepository.findParticipantByEmail(email);
 
-        if (!participantService.isEmpty(participant) && participantService.isPasswordCorrect(participant, password)) {
+        if (!participantService.isEmpty(participant) && participantService.isPasswordCorrect(password)) {
             System.out.println("Seja bem-vindo(a) de volta " + participant.getName() + '!');
             panel(participant);
             return;
@@ -212,8 +214,8 @@ public class ParticipantView {
         } while (true);
     }
 
-    public static void registerParticipantEvent(Participant participant) {
-        if (event.getTotalRegisteredEvents() == 0) {
+    public static void registerParticipantEvent(Participant participant) throws EventNotFoundException {
+        if (!eventService.haveEventsRegistered(event)) {
             System.out.println("Nenhum evento cadastrado anteriormente.");
             return;
         }
@@ -227,12 +229,12 @@ public class ParticipantView {
                 System.out.println("--------------------------------------------");
                 Event event = eventRepository.findEventById(eventId);
 
-                if (event == null) {
-                    System.out.println("ID do evento inválido! Tente novamente.");
-                    return;
+                if (eventService.isEmpty(event)) {
+                    throw new EventNotFoundException("ID do evento inválido! Tente novamente.");
+//                    return;
                 }
 
-                if (participantService.isEventRegistered(participant, eventId)) {
+                if (participantService.isEventRegistered(participant, event)) {
                     System.out.println("Evento já inscrito anteriormente. Tente novamente.");
                     return;
                 }
@@ -255,7 +257,7 @@ public class ParticipantView {
     public static void confirmAttendance(Participant participant) throws EventNotFoundException, ParticipantEventNotRegisteredException {
         System.out.println("      Confirmar Presença de Participante\n--------------------------------------------");
 
-        if (event.getTotalRegisteredEvents() == 0) {
+        if (!eventService.haveEventsRegistered(event)) {
             throw new EventNotFoundException("Nenhum evento cadastrado anteriormente.");
 //            return;
         }
@@ -273,26 +275,21 @@ public class ParticipantView {
                 int eventId = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
+                Event event = eventRepository.findEventById(eventId);
 
-                if (!participantService.isEventRegistered(participant, eventId)) {
+                if (!participantService.isEventRegistered(participant, event)) {
                     System.out.println("ID do evento inválido! Tente novamente.");
                     return;
                 }
-
-                Event event = eventRepository.findEventById(eventId);
 
                 System.out.println("Você deseja confirmar presença no evento '" + eventRepository.findEventById(eventId).getName() + "'? (s/n)");
                 String response = scanner.nextLine().toLowerCase();
 
                 if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
-                    // TODO: Maybe don't use set, use update, because Presence always starts with PENDING
-                    // TODO: This line need to update de presence, nowadays, it are adding presences, and it need to update
-                    participantService.confirmPresence(participant, event);
+                    participantService.confirmAttendance(participant, event);
                     System.out.println("Presença confirmada com sucesso!");
                     break;
                 } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {
-                    participantService.cancelPresence(participant, event);
-                    System.out.println("Presença cancelada.");
                     break;
                 } else {
                     System.out.println("Resposta inválida! Tente novamente.");
@@ -313,8 +310,54 @@ public class ParticipantView {
         participantRepository.readParticipantEvents(participant);
     }
 
-    public void removeParticipantEvent(Participant participant) {
-        System.out.println("Em breve");
+    public void removeParticipantEvent(Participant participant) throws EventNotFoundException, ParticipantEventNotRegisteredException {
+        System.out.println("      Cancelar Presença de Participante\n--------------------------------------------");
+
+        if (!eventService.haveEventsRegistered(event)) {
+            throw new EventNotFoundException("Nenhum evento cadastrado anteriormente.");
+//            return;
+        }
+
+        if (participant.getEvents().isEmpty()) {
+            throw new ParticipantEventNotRegisteredException("Nenhum evento inscrito anteriormente.");
+//            return;
+        }
+
+        do {
+            try {
+                System.out.println("--------------------------------------------");
+                participantRepository.readParticipantEvents(participant);
+                System.out.println("Digite o ID do evento para cancelar presença:");
+                int eventId = scanner.nextInt();
+                scanner.nextLine();
+                System.out.println("--------------------------------------------");
+                Event event = eventRepository.findEventById(eventId);
+
+                if (!participantService.isEventRegistered(participant, event)) {
+                    System.out.println("ID do evento inválido! Tente novamente.");
+                    return;
+                }
+
+                System.out.println("Você deseja cancelar presença no evento '" + eventRepository.findEventById(eventId).getName() + "'? (s/n)");
+                String response = scanner.nextLine().toLowerCase();
+
+                if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
+                    participantService.cancelAttendance(participant, event);
+                    System.out.println("Presença cancelada com sucesso!");
+                    break;
+                } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {
+                    break;
+                } else {
+                    System.out.println("Resposta inválida! Tente novamente.");
+                }
+
+                // TODO: Test if this 'break' is necessary
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("[ERRO]: Digite um número!");
+                scanner.nextLine();
+            }
+        } while (true);
     }
 
     public void updateAccount(Participant participant) {
@@ -359,9 +402,13 @@ public class ParticipantView {
         do {
             System.out.println("Digite o novo nome para atualizar:");
             String newName = scanner.nextLine();
-            boolean validatedNewName = participantService.validateName(newName);
+            boolean isNewNameValidated = participantService.validateName(newName);
 
-            if (validatedNewName && !participant.getName().equalsIgnoreCase(newName)) {
+            if (!isNewNameValidated) {
+                return;
+            }
+
+            if (!newName.equalsIgnoreCase(participant.getName())) {
                 participantRepository.updateParticipant(participant.getParticipantId(), newName, "Nome");
                 break;
             } else {
@@ -374,9 +421,13 @@ public class ParticipantView {
         do {
             System.out.println("Digite o novo contato para atualizar:");
             int newContact = scanner.nextInt();
-            boolean validatedNewContact = participantService.validateContact(newContact);
+            boolean isNewContactValidated = participantService.validateContact(newContact);
 
-            if (validatedNewContact && (participant.getContact() != newContact)) {
+            if (!isNewContactValidated) {
+                return;
+            }
+
+            if (isEqualUtil.isEqual(newContact, participant.getContact())) {
                 participantRepository.updateParticipant(participant.getParticipantId(), newContact, "Contato");
                 break;
             } else {
@@ -389,9 +440,13 @@ public class ParticipantView {
         do {
             System.out.println("Digite o novo email para atualizar:");
             String newEmail = scanner.nextLine();
-            boolean validatedNewEmail = participantService.validateEmail(newEmail);
+            boolean isNewEmailValidated = participantService.validateEmail(newEmail);
 
-            if (validatedNewEmail && !participant.getEmail().equalsIgnoreCase(newEmail)) {
+            if (!isNewEmailValidated) {
+                return;
+            }
+
+            if (newEmail.equalsIgnoreCase(participant.getEmail())) {
                 participantRepository.updateParticipant(participant.getParticipantId(), newEmail, "E-mail");
                 break;
             } else {
@@ -404,9 +459,13 @@ public class ParticipantView {
         do {
             System.out.println("Digite a nova senha para atualizar:");
             String newPassword = scanner.nextLine();
-            boolean validatedNewPassword = participantService.validatePassword(newPassword);
+            boolean isNewPasswordValidated = participantService.validatePassword(newPassword);
 
-            if (validatedNewPassword && !participant.getPassword().equalsIgnoreCase(newPassword)) {
+            if (!isNewPasswordValidated) {
+                return;
+            }
+
+            if (newPassword.equalsIgnoreCase(participant.getPassword())) {
                 participantRepository.updateParticipant(participant.getParticipantId(), newPassword, "Senha");
                 break;
             } else {

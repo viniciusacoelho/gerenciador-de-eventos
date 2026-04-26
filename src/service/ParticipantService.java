@@ -40,12 +40,11 @@ public class ParticipantService {
         participant.setEvents(event);
     }
 
-    public boolean isEventRegistered(Participant participant, int eventId) {
-        Event event = eventRepository.findEventById(eventId);
+    public boolean isEventRegistered(Participant participant, Event event) {
         return participant.getEvents().contains(event);
     }
 
-    public void confirmPresence(Participant participant, Event event) {
+    public void confirmAttendance(Participant participant, Event event) {
         if (participant.getAttendances().containsKey(event)) {
             participant.getAttendances().put(event, Attendance.CONFIRMED);
             return;
@@ -54,7 +53,7 @@ public class ParticipantService {
         System.out.println("Evento inválido!");
     }
 
-    public void cancelPresence(Participant participant, Event event) {
+    public void cancelAttendance(Participant participant, Event event) {
         if (participant.getAttendances().containsKey(event)) {
             participant.getAttendances().put(event, Attendance.CANCELED);
             return;
@@ -71,7 +70,7 @@ public class ParticipantService {
         return participant == null;
     }
 
-    public boolean isPasswordCorrect(Participant participant, String password) {
+    public boolean isPasswordCorrect(String password) {
         return participantRepository.findParticipantByPassword(password) != null;
     }
 
