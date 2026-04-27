@@ -1,12 +1,10 @@
 package service;
 
 import enums.Attendance;
+import exceptions.EventNotFoundException;
 import model.Event;
 import model.Participant;
 
-import java.util.Objects;
-
-import static view.EventView.eventRepository;
 import static view.ParticipantView.participantRepository;
 
 public class ParticipantService {
@@ -44,31 +42,34 @@ public class ParticipantService {
         return participant.getEvents().contains(event);
     }
 
-    public void confirmAttendance(Participant participant, Event event) {
-        if (participant.getAttendances().containsKey(event)) {
-            participant.getAttendances().put(event, Attendance.CONFIRMED);
-            return;
+    public void confirmAttendance(Participant participant, Event event) throws EventNotFoundException {
+        if (!participant.getAttendances().containsKey(event)) {
+            throw new EventNotFoundException("Evento inválido!");
         }
 
-        System.out.println("Evento inválido!");
+        participant.getAttendances().put(event, Attendance.CONFIRMED);
     }
 
-    public void cancelAttendance(Participant participant, Event event) {
-        if (participant.getAttendances().containsKey(event)) {
-            participant.getAttendances().put(event, Attendance.CANCELED);
-            return;
+    public void cancelAttendance(Participant participant, Event event) throws EventNotFoundException {
+        if (!participant.getAttendances().containsKey(event)) {
+            throw new EventNotFoundException("Evento inválido!");
         }
 
-        System.out.println("Evento inválido!");
+        participant.getAttendances().put(event, Attendance.CANCELED);
     }
 
-    public boolean isAttendanceConfirmed(Participant participant, Event event) {
-        return Objects.equals(participant.getAttendances().get(event).getAttendance(), Attendance.CONFIRMED.getAttendance());
+    public boolean isAttendanceConfirmed(Attendance attendance) {
+        return attendance == Attendance.CONFIRMED;
     }
 
     public boolean isEmpty(Participant participant) {
         return participant == null;
     }
+//    public void hasParticipant(Participant participant) throws ParticipantNotFoundException {
+//        if (participant == null) {
+//            throw new ParticipantNotFoundException("");
+//        }
+//    }
 
     public boolean isPasswordCorrect(String password) {
         return participantRepository.findParticipantByPassword(password) != null;

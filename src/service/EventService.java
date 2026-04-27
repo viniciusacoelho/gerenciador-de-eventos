@@ -1,10 +1,10 @@
 package service;
 
-import exceptions.EventCapacityException;
+import exceptions.EventFullException;
+import exceptions.EventNotFoundException;
+import exceptions.ParticipantEventNotFoundException;
 import model.Event;
 import model.Participant;
-
-import static view.EventView.event;
 
 public class EventService {
 
@@ -20,17 +20,17 @@ public class EventService {
         return capacity > 0;
     }
 
-    public void addParticipantEvent(Participant participant, Event event) throws EventCapacityException {
-        if (!haveCapacity(event)) {
-            throw new EventCapacityException("Evento lotado! Não foi possível inscrever o participante '" + participant.getName() + "'.");
-            // TODO: When I create the class Ticket, I'll put the enum SOLD_OUT here
+    public void addParticipantEvent(Participant participant, Event event) throws EventFullException {
+        if (!hasCapacity(event)) {
+            // TODO: When I create the Ticket class, I'll put the SOLD_OUT enum here
+            throw new EventFullException("Evento lotado! Não foi possível inscrever o participante '" + participant.getName() + "'.");
         }
 
         event.setParticipants(participant);
         System.out.println("Participante '" + participant.getName() + "' inscrito no evento '" + event.getName() + "' com sucesso!");
     }
 
-    public boolean haveCapacity(Event event) {
+    private boolean hasCapacity(Event event) {
         return event.getCapacity() > event.getParticipants().size();
     }
 
@@ -38,8 +38,14 @@ public class EventService {
         return event == null;
     }
 
-    public boolean haveEventsRegistered(Event event) {
+    public boolean hasEventsRegistered(Event event) {
         return event.getTotalRegisteredEvents() == 0;
+    }
+
+    public void hasParticipantEventsRegistered(Participant participant) throws ParticipantEventNotFoundException {
+        if (participant.getEvents().isEmpty()) {
+            throw new EventNotFoundException("Nenhum evento inscrito anteriormente.");
+        }
     }
 
 }

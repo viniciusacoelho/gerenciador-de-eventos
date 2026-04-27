@@ -1,7 +1,8 @@
 package view;
 
+import exceptions.EventFullException;
 import exceptions.EventNotFoundException;
-import exceptions.ParticipantEventNotRegisteredException;
+import exceptions.ParticipantEventNotFoundException;
 import model.Event;
 import model.Participant;
 import repository.ParticipantRepository;
@@ -214,8 +215,8 @@ public class ParticipantView {
         } while (true);
     }
 
-    public static void registerParticipantEvent(Participant participant) throws EventNotFoundException {
-        if (!eventService.haveEventsRegistered(event)) {
+    public static void registerParticipantEvent(Participant participant) {
+        if (eventService.hasEventsRegistered(event)) {
             System.out.println("Nenhum evento cadastrado anteriormente.");
             return;
         }
@@ -230,8 +231,8 @@ public class ParticipantView {
                 Event event = eventRepository.findEventById(eventId);
 
                 if (eventService.isEmpty(event)) {
-                    throw new EventNotFoundException("ID do evento inválido! Tente novamente.");
-//                    return;
+                    System.out.println("ID do evento inválido! Tente novamente.");
+                    return;
                 }
 
                 if (participantService.isEventRegistered(participant, event)) {
@@ -239,7 +240,13 @@ public class ParticipantView {
                     return;
                 }
 
-                eventService.addParticipantEvent(participant, event);
+                try {
+                    eventService.addParticipantEvent(participant, event);
+                } catch (EventFullException e) {
+                    System.err.println(e.getMessage());
+                    return;
+                }
+
                 participantService.addEventParticipant(event, participant);
                 break;
             } catch (InputMismatchException e) {
@@ -254,30 +261,39 @@ public class ParticipantView {
         System.out.println("Em breve...");
     }
 
-    public static void confirmAttendance(Participant participant) throws EventNotFoundException, ParticipantEventNotRegisteredException {
+    public static void confirmAttendance(Participant participant) throws EventNotFoundException, ParticipantEventNotFoundException {
         System.out.println("      Confirmar Presença de Participante\n--------------------------------------------");
 
-        if (!eventService.haveEventsRegistered(event)) {
-            throw new EventNotFoundException("Nenhum evento cadastrado anteriormente.");
-//            return;
+        if (eventService.hasEventsRegistered(event)) {
+            System.out.println("Nenhum evento cadastrado anteriormente.");
+            return;
         }
 
-        if (participant.getEvents().isEmpty()) {
-            throw new ParticipantEventNotRegisteredException("Nenhum evento inscrito anteriormente.");
-//            return;
+        try {
+            eventService.hasParticipantEventsRegistered(participant);
+        } catch (EventNotFoundException e) {
+            System.err.println(e.getMessage());
+            return;
         }
 
         do {
             try {
                 System.out.println("--------------------------------------------");
-                participantRepository.readParticipantEvents(participant);
+
+                try {
+                    participantRepository.readParticipantEvents(participant);
+                } catch (ParticipantEventNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
+
                 System.out.println("Digite o ID do evento para confirmar presença:");
                 int eventId = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
                 Event event = eventRepository.findEventById(eventId);
 
-                if (!participantService.isEventRegistered(participant, event)) {
+                if (eventService.isEmpty(event)) {
                     System.out.println("ID do evento inválido! Tente novamente.");
                     return;
                 }
@@ -310,17 +326,19 @@ public class ParticipantView {
         participantRepository.readParticipantEvents(participant);
     }
 
-    public void removeParticipantEvent(Participant participant) throws EventNotFoundException, ParticipantEventNotRegisteredException {
+    public void removeParticipantEvent(Participant participant) {
         System.out.println("      Cancelar Presença de Participante\n--------------------------------------------");
 
-        if (!eventService.haveEventsRegistered(event)) {
-            throw new EventNotFoundException("Nenhum evento cadastrado anteriormente.");
-//            return;
+        if (eventService.hasEventsRegistered(event)) {
+            System.out.println("Nenhum evento cadastrado anteriormente.");
+            return;
         }
 
-        if (participant.getEvents().isEmpty()) {
-            throw new ParticipantEventNotRegisteredException("Nenhum evento inscrito anteriormente.");
-//            return;
+        try {
+            eventService.hasParticipantEventsRegistered(participant);
+        } catch (EventNotFoundException e) {
+            System.err.println(e.getMessage());
+            return;
         }
 
         do {
@@ -332,6 +350,11 @@ public class ParticipantView {
                 scanner.nextLine();
                 System.out.println("--------------------------------------------");
                 Event event = eventRepository.findEventById(eventId);
+
+                if (eventService.isEmpty(event)) {
+                    System.out.println("ID do evento inválido! Tente novamente.");
+                    return;
+                }
 
                 if (!participantService.isEventRegistered(participant, event)) {
                     System.out.println("ID do evento inválido! Tente novamente.");
@@ -409,7 +432,7 @@ public class ParticipantView {
             }
 
             if (!newName.equalsIgnoreCase(participant.getName())) {
-                participantRepository.updateParticipant(participant.getParticipantId(), newName, "Nome");
+                participantRepository.updateParticipant(participant, newName, "Nome");
                 break;
             } else {
                 System.out.println("Novo nome inválido! Tente novamente.");
@@ -428,7 +451,7 @@ public class ParticipantView {
             }
 
             if (isEqualUtil.isEqual(newContact, participant.getContact())) {
-                participantRepository.updateParticipant(participant.getParticipantId(), newContact, "Contato");
+                participantRepository.updateParticipant(participant, newContact, "Contato");
                 break;
             } else {
                 System.out.println("Novo contato inválido! Tente novamente.");
@@ -447,7 +470,7 @@ public class ParticipantView {
             }
 
             if (newEmail.equalsIgnoreCase(participant.getEmail())) {
-                participantRepository.updateParticipant(participant.getParticipantId(), newEmail, "E-mail");
+                participantRepository.updateParticipant(participant, newEmail, "E-mail");
                 break;
             } else {
                 System.out.println("Novo e-mail inválido! Tente novamente.");
@@ -466,7 +489,7 @@ public class ParticipantView {
             }
 
             if (newPassword.equalsIgnoreCase(participant.getPassword())) {
-                participantRepository.updateParticipant(participant.getParticipantId(), newPassword, "Senha");
+                participantRepository.updateParticipant(participant, newPassword, "Senha");
                 break;
             } else {
                 System.out.println("Nova senha inválida! Tente novamente.");

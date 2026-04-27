@@ -1,15 +1,13 @@
 package repository;
 
-import exceptions.ParticipantEventNotRegisteredException;
+import exceptions.ParticipantEventNotFoundException;
 import exceptions.ParticipantNotFoundException;
-import exceptions.ParticipantNotRegisteredException;
 import model.Event;
 import model.Participant;
 import service.ParticipantService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ParticipantRepository {
 
@@ -25,9 +23,9 @@ public class ParticipantRepository {
         this.participants.add(participant);
     }
 
-    public void readParticipants() throws ParticipantNotRegisteredException {
+    public void readParticipants() throws ParticipantNotFoundException {
         if (participants.isEmpty()) {
-            throw new ParticipantNotRegisteredException("Nenhum participante cadastrado anteriormente.");
+            throw new ParticipantNotFoundException("Nenhum participante cadastrado anteriormente.");
         }
 
         for (Participant participant : participants) {
@@ -36,24 +34,21 @@ public class ParticipantRepository {
         }
     }
 
-    public void readParticipantEvents(Participant participant) throws ParticipantEventNotRegisteredException {
+    public void readParticipantEvents(Participant participant) throws ParticipantEventNotFoundException {
         if (participant.getEvents().isEmpty()) {
-            throw new ParticipantEventNotRegisteredException("Participante inscrito em nenhum evento anteriormente.");
+            throw new ParticipantEventNotFoundException("Participante inscrito em nenhum evento anteriormente.");
         }
 
         for (Event event : participant.getEvents()) {
-            if (!participantService.isAttendanceConfirmed(participant, event)) {
+            if (!participantService.isAttendanceConfirmed(participant.getAttendances().get(event))) {
                 System.out.println(event);
                 System.out.println("Presença: " + participant.getAttendances().get(event).getAttendance());
                 System.out.println("--------------------------------------------");
             }
         }
-
     }
 
-    public <T> void updateParticipant(int participantId, T attribute, String attributeName) {
-        Participant participant = findParticipantById(participantId);
-
+    public <T> void updateParticipant(Participant participant, T attribute, String attributeName) {
         switch (attributeName) {
             case "Nome" -> participant.setName((String) attribute);
             case "Contato" -> participant.setContact((Integer) attribute);
@@ -70,9 +65,9 @@ public class ParticipantRepository {
         participants.remove(participant);
     }
 
-    public Participant findParticipantById(int participantId) throws ParticipantNotRegisteredException {
+    public Participant findParticipantById(int participantId) throws ParticipantNotFoundException {
         if (participants.isEmpty()) {
-            throw new ParticipantNotRegisteredException("Nenhum participante cadastrado anteriormente.");
+            throw new ParticipantNotFoundException("Nenhum participante cadastrado anteriormente.");
         }
 
         int start = 0;
@@ -93,14 +88,13 @@ public class ParticipantRepository {
         return null;
     }
 
-    public Participant findParticipantByEmail(String email) throws ParticipantNotRegisteredException, ParticipantNotFoundException {
+    public Participant findParticipantByEmail(String email) throws ParticipantNotFoundException {
         if (participants.isEmpty()) {
-            throw new ParticipantNotRegisteredException("Nenhum participante cadastrado anteriormente.");
-//            return null;
+            throw new ParticipantNotFoundException("Nenhum participante cadastrado anteriormente.");
         }
 
         for (Participant participant : participants) {
-            if (Objects.equals(email, participant.getEmail())) {
+            if (email.equals(participant.getEmail())) {
                 return participant;
             }
         }
@@ -108,20 +102,18 @@ public class ParticipantRepository {
         return null;
     }
 
-    public Participant findParticipantByPassword(String password) throws ParticipantNotRegisteredException, ParticipantNotFoundException {
+    public Participant findParticipantByPassword(String password) throws ParticipantNotFoundException {
         if (participants.isEmpty()) {
-            throw new ParticipantNotRegisteredException("Nenhum participante cadastrado anteriormente.");
-//            return null;
+            throw new ParticipantNotFoundException("Nenhum participante cadastrado anteriormente.");
         }
 
         for (Participant participant : participants) {
-            if (Objects.equals(password, participant.getPassword())) {
+            if (password.equals(participant.getPassword())) {
                 return participant;
             }
         }
 
-        throw new ParticipantNotRegisteredException("Nenhum participante cadastrado anteriormente.");
-//        return null;
+        return null;
     }
 
 }

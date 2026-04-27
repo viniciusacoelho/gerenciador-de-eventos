@@ -1,7 +1,6 @@
 package repository;
 
 import exceptions.EventNotFoundException;
-import exceptions.EventNotRegisteredException;
 import model.Event;
 
 import java.time.LocalDateTime;
@@ -20,9 +19,9 @@ public class EventRepository {
         this.events.add(event);
     }
 
-    public void readEvents() throws EventNotRegisteredException {
+    public void readEvents() throws EventNotFoundException {
         if (events.isEmpty()) {
-            throw new EventNotRegisteredException("Nenhum evento cadastrado anteriormente.");
+            throw new EventNotFoundException("Nenhum evento cadastrado anteriormente.");
         }
 
         for (Event event : events) {
@@ -50,10 +49,10 @@ public class EventRepository {
         events.remove(event);
     }
 
-    public Event findEventById(int eventId) throws EventNotRegisteredException, EventNotFoundException {
+    public Event findEventById(int eventId) throws EventNotFoundException {
         // TODO: Test another way to use it, because this make a error, so I think I've no create a method to fix it
         if (events.isEmpty()) {
-            throw new EventNotRegisteredException("Nenhum evento cadastrado anteriormente.");
+            throw new EventNotFoundException("Nenhum evento cadastrado anteriormente.");
         }
 
         int start = 0;
@@ -75,7 +74,7 @@ public class EventRepository {
 //        return null;
     }
 
-    public Event findEventByName(String name) throws EventNotRegisteredException, EventNotFoundException {
+    public Event findEventByName(String name) throws EventNotFoundException {
         if (events.isEmpty()) {
             throw new IndexOutOfBoundsException("Nenhum evento cadastrado anteriormente.");
         }
