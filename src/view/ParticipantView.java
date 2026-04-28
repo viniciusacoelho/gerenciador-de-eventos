@@ -280,8 +280,9 @@ public class ParticipantView {
             try {
                 System.out.println("--------------------------------------------");
 
+                // TODO: Correct when the participant confirms their attendance and returns here. The exception doesn't work because they have no events to confirm, but the program still requests the event ID, even though it's empty
                 try {
-                    participantRepository.readParticipantEvents(participant);
+                    participantRepository.readParticipantEventsNotConfirmed(participant);
                 } catch (ParticipantEventNotFoundException e) {
                     System.out.println(e.getMessage());
                     return;
@@ -293,7 +294,7 @@ public class ParticipantView {
                 System.out.println("--------------------------------------------");
                 Event event = eventRepository.findEventById(eventId);
 
-                if (eventService.isEmpty(event)) {
+                if (eventService.isEmpty(event) || !participant.getEvents().contains(event)) {
                     System.out.println("ID do evento inválido! Tente novamente.");
                     return;
                 }
@@ -344,7 +345,7 @@ public class ParticipantView {
         do {
             try {
                 System.out.println("--------------------------------------------");
-                participantRepository.readParticipantEvents(participant);
+                participantRepository.readParticipantEventsNotCanceled(participant);
                 System.out.println("Digite o ID do evento para cancelar presença:");
                 int eventId = scanner.nextInt();
                 scanner.nextLine();

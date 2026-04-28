@@ -48,4 +48,8 @@ public class EventService {
         }
     }
 
+    public void removeParticipant(Participant participant, Event event) {
+        event.getParticipants().remove(participant);
+    }
+
 }

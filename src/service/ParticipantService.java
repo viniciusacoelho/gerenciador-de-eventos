@@ -9,12 +9,14 @@ import static view.ParticipantView.participantRepository;
 
 public class ParticipantService {
 
+    public static EventService eventService = new EventService();
+
     public boolean validateName(String name) {
         return name.length() > 3;
     }
 
+    // TODO: Validate if contact have 10 digits
     public boolean validateContact(int contact) {
-        // TODO: Validate if contact have 10 digits
         return contact > 10;
     }
 
@@ -56,10 +58,15 @@ public class ParticipantService {
         }
 
         participant.getAttendances().put(event, Attendance.CANCELED);
+        eventService.removeParticipant(participant, event);
     }
 
     public boolean isAttendanceConfirmed(Attendance attendance) {
         return attendance == Attendance.CONFIRMED;
+    }
+
+    public boolean isAttendanceCanceled(Attendance attendance) {
+        return attendance == Attendance.CANCELED;
     }
 
     public boolean isEmpty(Participant participant) {

@@ -4,6 +4,7 @@ import exceptions.ParticipantEventNotFoundException;
 import exceptions.ParticipantNotFoundException;
 import model.Event;
 import model.Participant;
+import service.EventService;
 import service.ParticipantService;
 
 import java.util.ArrayList;
@@ -13,7 +14,9 @@ public class ParticipantRepository {
 
     private final List<Participant> participants;
 
-    private final ParticipantService participantService = new ParticipantService();
+    private static final ParticipantService participantService = new ParticipantService();
+
+    private static final EventService eventService = new EventService();
 
     public ParticipantRepository() {
         participants = new ArrayList<>();
@@ -34,13 +37,45 @@ public class ParticipantRepository {
         }
     }
 
-    public void readParticipantEvents(Participant participant) throws ParticipantEventNotFoundException {
-        if (participant.getEvents().isEmpty()) {
-            throw new ParticipantEventNotFoundException("Participante inscrito em nenhum evento anteriormente.");
+    public void readParticipantEvents(Participant participant) {
+        try {
+            eventService.hasParticipantEventsRegistered(participant);
+        } catch (ParticipantEventNotFoundException e) {
+            System.out.println(e.getMessage());;
+        }
+
+        for (Event event : participant.getEvents()) {
+            System.out.println(event);
+            System.out.println("Presença: " + participant.getAttendances().get(event).getAttendance());
+            System.out.println("--------------------------------------------");
+        }
+    }
+
+    public void readParticipantEventsNotConfirmed(Participant participant) {
+        try {
+            eventService.hasParticipantEventsRegistered(participant);
+        } catch (ParticipantEventNotFoundException e) {
+            System.out.println(e.getMessage());;
         }
 
         for (Event event : participant.getEvents()) {
             if (!participantService.isAttendanceConfirmed(participant.getAttendances().get(event))) {
+                System.out.println(event);
+                System.out.println("Presença: " + participant.getAttendances().get(event).getAttendance());
+                System.out.println("--------------------------------------------");
+            }
+        }
+    }
+
+    public void readParticipantEventsNotCanceled(Participant participant) {
+        try {
+            eventService.hasParticipantEventsRegistered(participant);
+        } catch (ParticipantEventNotFoundException e) {
+            System.out.println(e.getMessage());;
+        }
+
+        for (Event event : participant.getEvents()) {
+            if (!participantService.isAttendanceCanceled(participant.getAttendances().get(event))) {
                 System.out.println(event);
                 System.out.println("Presença: " + participant.getAttendances().get(event).getAttendance());
                 System.out.println("--------------------------------------------");
@@ -115,5 +150,17 @@ public class ParticipantRepository {
 
         return null;
     }
+
+//    public Event findParticipantEvent(Participant participant, int eventId) {
+//        int start = 0;
+//        int end = participants.size() - 1;
+//
+//        while (start <= end) {
+//            int middle = (start + end) / 2;
+//            if (participant.getEvents().get(middle) == eventId) {
+//
+//            }
+//        }
+//    }
 
 }

@@ -70,8 +70,8 @@ public class EventRepository {
             }
         }
 
-        throw new EventNotFoundException("Evento não encontrado");
-//        return null;
+//        throw new EventNotFoundException("Evento não encontrado");
+        return null;
     }
 
     public Event findEventByName(String name) throws EventNotFoundException {
@@ -85,8 +85,8 @@ public class EventRepository {
             }
         }
 
-        throw new EventNotFoundException("Evento não encontrado");
-//        return null;
+//        throw new EventNotFoundException("Evento não encontrado");
+        return null;
     }
 
 }
