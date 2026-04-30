@@ -142,13 +142,15 @@ public class EventView {
         System.out.println("Evento '" + event1.getName() + "' cadastrado com sucesso!");
     }
 
-    public static void findEvent() throws EventNotFoundException {
+    public static void findEvent() {
         System.out.println("           Buscar Evento\n--------------------------------------------");
         Event event = chooseEvent("buscar");
 
-        if (eventService.isEmpty(event)) {
-            throw new EventNotFoundException("Evento não encontrado. Tente novamente.");
-//            return;
+        try {
+            eventService.hasEvent(event);
+        } catch (EventNotFoundException e) {
+            System.out.println(e.getMessage());
+            return;
         }
 
         System.out.println(event);
@@ -158,9 +160,11 @@ public class EventView {
         System.out.println("           Atualizar Evento\n--------------------------------------------");
         Event event = chooseEvent("atualizar");
 
-        if (eventService.isEmpty(event)) {
-            throw new EventNotFoundException("Evento não encontrado. Tente novamente.");
-//            return;
+        try {
+            eventService.hasEvent(event);
+        } catch (EventNotFoundException e) {
+            System.out.println(e.getMessage());
+            return;
         }
 
         System.out.println("\n--------------------------------------------\n" + event + "\n--------------------------------------------\n");
@@ -282,9 +286,11 @@ public class EventView {
         System.out.println("           Deletar Evento\n--------------------------------------------");
         Event event = chooseEvent("deletar");
 
-        if (eventService.isEmpty(event)) {
-            throw new EventNotFoundException("Evento não encontrado. Tente novamente.");
-//            return;
+        try {
+            eventService.hasEvent(event);
+        } catch (EventNotFoundException e) {
+            System.out.println(e.getMessage());
+            return;
         }
 
         eventRepository.deleteEvent(event);

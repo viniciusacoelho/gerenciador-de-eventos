@@ -2,7 +2,6 @@ package service;
 
 import exceptions.EventFullException;
 import exceptions.EventNotFoundException;
-import exceptions.ParticipantEventNotFoundException;
 import model.Event;
 import model.Participant;
 
@@ -42,14 +41,14 @@ public class EventService {
         return event.getTotalRegisteredEvents() == 0;
     }
 
-    public void hasParticipantEventsRegistered(Participant participant) throws ParticipantEventNotFoundException {
-        if (participant.getEvents().isEmpty()) {
-            throw new EventNotFoundException("Nenhum evento inscrito anteriormente.");
-        }
-    }
-
     public void removeParticipant(Participant participant, Event event) {
         event.getParticipants().remove(participant);
+    }
+
+    public void hasEvent(Event event) {
+        if (isEmpty(event)) {
+            throw new EventNotFoundException("Evento não encontrado. Tente novamente.");
+        }
     }
 
 }

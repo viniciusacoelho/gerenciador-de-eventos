@@ -270,7 +270,7 @@ public class ParticipantView {
         }
 
         try {
-            eventService.hasParticipantEventsRegistered(participant);
+            participantService.hasParticipantEventsRegistered(participant);
         } catch (EventNotFoundException e) {
             System.err.println(e.getMessage());
             return;
@@ -280,12 +280,14 @@ public class ParticipantView {
             try {
                 System.out.println("--------------------------------------------");
 
-                // TODO: Correct when the participant confirms their attendance and returns here. The exception doesn't work because they have no events to confirm, but the program still requests the event ID, even though it's empty
-                try {
-                    participantRepository.readParticipantEventsNotConfirmed(participant);
-                } catch (ParticipantEventNotFoundException e) {
-                    System.out.println(e.getMessage());
+                participantRepository.readParticipantEventsNotConfirmed(participant);
+
+                // TODO: Fix when the participant confirms their attendance and returns here. The exception doesn't work because they have no events to confirm, but the program still requests the event ID, even though it's empty
+                if (participantRepository.getCounterConfirmedEvents() == 0) {
+                    System.out.println("Nenhum evento pendente para confirmação.");
                     return;
+                } else {
+                    participantRepository.setCounterConfirmedEvents(0);
                 }
 
                 System.out.println("Digite o ID do evento para confirmar presença:");
@@ -299,7 +301,7 @@ public class ParticipantView {
                     return;
                 }
 
-                System.out.println("Você deseja confirmar presença no evento '" + eventRepository.findEventById(eventId).getName() + "'? (s/n)");
+                System.out.println("Você deseja confirmar presença no evento '" + event.getName() + "'? (s/n)");
                 String response = scanner.nextLine().toLowerCase();
 
                 if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
@@ -336,10 +338,17 @@ public class ParticipantView {
         }
 
         try {
-            eventService.hasParticipantEventsRegistered(participant);
+            participantService.hasParticipantEventsRegistered(participant);
         } catch (EventNotFoundException e) {
             System.err.println(e.getMessage());
             return;
+        }
+
+        if (participantRepository.getCounterCanceledEvents() == 0) {
+            System.out.println("Nenhum evento disponível para cancelar.");
+            return;
+        } else {
+            participantRepository.setCounterCanceledEvents(0);
         }
 
         do {

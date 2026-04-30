@@ -2,6 +2,7 @@ package service;
 
 import enums.Attendance;
 import exceptions.EventNotFoundException;
+import exceptions.ParticipantEventNotFoundException;
 import model.Event;
 import model.Participant;
 
@@ -80,6 +81,12 @@ public class ParticipantService {
 
     public boolean isPasswordCorrect(String password) {
         return participantRepository.findParticipantByPassword(password) != null;
+    }
+
+    public void hasParticipantEventsRegistered(Participant participant) throws ParticipantEventNotFoundException {
+        if (participant.getEvents().isEmpty()) {
+            throw new EventNotFoundException("Nenhum evento inscrito anteriormente.");
+        }
     }
 
 }
