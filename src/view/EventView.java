@@ -17,9 +17,9 @@ public class EventView {
     private static final Scanner scanner = new Scanner(System.in);
     private static final IsEqualUtil isEqualUtil = new IsEqualUtil();
 
-    public static Event event = new Event();
-    public static EventRepository eventRepository = new EventRepository();
-    public static EventService eventService = new EventService();
+    public static final Event event = new Event();
+    public static final EventRepository eventRepository = new EventRepository();
+    public static final EventService eventService = new EventService();
 
     public static DateTimeUtil dateTimeUtil = new DateTimeUtil();
 
@@ -170,7 +170,8 @@ public class EventView {
         System.out.println("\n--------------------------------------------\n" + event + "\n--------------------------------------------\n");
 
         String[] menu = {
-                "Atualizar Nome", "Atualizar Data e Hora", "Atualizar Local", "Atualizar Capacidade", "Voltar"
+                "Atualizar Nome", "Atualizar Data e Hora",
+                "Atualizar Local", "Atualizar Capacidade", "Voltar"
         };
 
         do {
@@ -214,7 +215,7 @@ public class EventView {
                 return;
             }
 
-            if (newName.equalsIgnoreCase(event.getName())) {
+            if (!newName.equalsIgnoreCase(event.getName())) {
                 eventRepository.updateEvent(event.getEventId(), newName, "Nome");
                 break;
             } else {
@@ -230,7 +231,7 @@ public class EventView {
                 String newDateTime = scanner.nextLine();
                 LocalDateTime validatedNewDateTime = dateTimeUtil.convertDateTime(newDateTime);
 
-                if (isEqualUtil.isEqual(validatedNewDateTime, event.getDateTime())) {
+                if (!isEqualUtil.isEqual(validatedNewDateTime, event.getDateTime())) {
                     eventRepository.updateEvent(event.getEventId(), validatedNewDateTime, "Horário");
                     break;
                 }
@@ -250,7 +251,7 @@ public class EventView {
                 return;
             }
 
-            if (newLocation.equalsIgnoreCase(event.getLocation())) {
+            if (!newLocation.equalsIgnoreCase(event.getLocation())) {
                 eventRepository.updateEvent(event.getEventId(), newLocation, "Local");
                 break;
             } else {
@@ -270,7 +271,7 @@ public class EventView {
                     return;
                 }
 
-                if (isEqualUtil.isEqual(newCapacity, event.getDateTime())) {
+                if (!isEqualUtil.isEqual(newCapacity, event.getDateTime())) {
                     eventRepository.updateEvent(event.getEventId(), newCapacity, "Local");
                     break;
                 } else {

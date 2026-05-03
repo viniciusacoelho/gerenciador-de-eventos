@@ -2,15 +2,19 @@ package view;
 
 import exceptions.ParticipantNotFoundException;
 import model.Participant;
+import service.ParticipantService;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static view.ParticipantView.*;
+import static view.ParticipantView.deleteAccount;
+import static view.ParticipantView.participantRepository;
 
 public class AdminParticipantView {
 
     private static final Scanner scanner = new Scanner(System.in);
+
+    private static final ParticipantService participantService = new ParticipantService();
 
     public void panel() {
         String[] menu = {

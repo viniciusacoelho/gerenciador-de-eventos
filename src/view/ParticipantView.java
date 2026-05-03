@@ -173,7 +173,7 @@ public class ParticipantView {
         String[] menu = {
                 "Inscrever-se em um Evento", "Visualizar Eventos/Disponíveis", "Confirmar Presença no Evento",
                 "Histórico de Eventos Inscritos", "Cancelar Inscrição no Evento",
-                "Atualizar Cadastro", "Excluir Conta", "Voltar"
+                "Visualizar Cadastro", "Atualizar Cadastro", "Excluir Conta", "Voltar"
         };
 
         do {
@@ -199,9 +199,10 @@ public class ParticipantView {
                     case 3 -> confirmAttendance(participant);
                     case 4 -> historyRegisteredEvents(participant);
                     case 5 -> removeParticipantEvent(participant);
-                    case 6 -> updateAccount(participant);
-                    case 7 -> deleteAccount(participant);
-                    case 8 -> {
+                    case 6 -> viewRegistration(participant);
+                    case 7 -> updateAccount(participant);
+                    case 8 -> deleteAccount(participant);
+                    case 9 -> {
                         System.out.println("Voltando...");
                         return;
                     }
@@ -393,6 +394,11 @@ public class ParticipantView {
         } while (true);
     }
 
+    public static void viewRegistration(Participant participant) {
+        System.out.println("           Visualizar Cadastro\n--------------------------------------------");
+        System.out.println(participant);
+    }
+
     public void updateAccount(Participant participant) {
         System.out.println("           Atualizar Participante\n--------------------------------------------");
 
@@ -460,7 +466,7 @@ public class ParticipantView {
                 return;
             }
 
-            if (isEqualUtil.isEqual(newContact, participant.getContact())) {
+            if (!isEqualUtil.isEqual(newContact, participant.getContact())) {
                 participantRepository.updateParticipant(participant, newContact, "Contato");
                 break;
             } else {
@@ -479,7 +485,7 @@ public class ParticipantView {
                 return;
             }
 
-            if (newEmail.equalsIgnoreCase(participant.getEmail())) {
+            if (!newEmail.equalsIgnoreCase(participant.getEmail())) {
                 participantRepository.updateParticipant(participant, newEmail, "E-mail");
                 break;
             } else {
@@ -498,7 +504,7 @@ public class ParticipantView {
                 return;
             }
 
-            if (newPassword.equalsIgnoreCase(participant.getPassword())) {
+            if (!newPassword.equalsIgnoreCase(participant.getPassword())) {
                 participantRepository.updateParticipant(participant, newPassword, "Senha");
                 break;
             } else {
@@ -508,9 +514,22 @@ public class ParticipantView {
     }
 
     public static void deleteAccount(Participant participant) {
-        System.out.println("           Deletar Participante\n--------------------------------------------");
-        // TODO: This isn't working because it only removes from the participants list, not from the Participant class
-        participantRepository.deleteParticipant(participant);
+        System.out.println("           Excluir Conta\n--------------------------------------------");
+
+        do {
+            System.out.println("Você tem certeza que deseja excluir sua conta? (s/n)");
+            String response = scanner.nextLine().toLowerCase();
+
+            if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
+                // TODO: This isn't working because it only removes from the participants list, not from the Participant class
+                participantRepository.deleteParticipant(participant);
+                break;
+            } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {
+                break;
+            } else {
+                System.out.println("Resposta inválida! Tente novamente.");
+            }
+        } while (true);
     }
 
 }

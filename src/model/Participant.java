@@ -6,8 +6,8 @@ import util.DateTimeUtil;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Participant {
 
@@ -27,7 +27,7 @@ public class Participant {
 
     private List<Event> events;
 
-    private HashMap<Event, Attendance> attendances;
+    private Map<Event, Attendance> attendances;
 
     private final static DateTimeUtil dateTimeUtil = new DateTimeUtil();
 
@@ -39,7 +39,7 @@ public class Participant {
         this.password = password;
         this.accountDateTimeCreation = LocalDateTime.now();
         this.events = new ArrayList<>();
-        this.attendances = new LinkedHashMap<>();
+        this.attendances = new HashMap<>();
     }
 
     public Participant() {
@@ -94,12 +94,12 @@ public class Participant {
         setAttendances(event, Attendance.PENDING);
     }
 
-    public HashMap<Event, Attendance> getAttendances() {
+    public Map<Event, Attendance> getAttendances() {
         return attendances;
     }
 
     public void setAttendances(Event event, Attendance attendance) {
-        attendances.put(event, attendance);
+        this.attendances.put(event, attendance);
     }
 
     public LocalDateTime getAccountDateTimeCreation() { // TODO: Verify if it's necessary, if the user will use it in the future
