@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Participant {
 
@@ -17,7 +18,7 @@ public class Participant {
 
     private String name;
 
-    private int contact;
+    private String contact;
 
     private String email;
 
@@ -27,11 +28,11 @@ public class Participant {
 
     private List<Event> events;
 
-    private Map<Event, Attendance> attendances;
+    private Map<Event, Attendance> attendanceEvents;
 
     private final static DateTimeUtil dateTimeUtil = new DateTimeUtil();
 
-    public Participant(String name, int contact, String email, String password) {
+    public Participant(String name, String contact, String email, String password) {
         this.participantId = totalRegisteredParticipants++;
         this.name = name;
         this.contact = contact;
@@ -39,7 +40,7 @@ public class Participant {
         this.password = password;
         this.accountDateTimeCreation = LocalDateTime.now();
         this.events = new ArrayList<>();
-        this.attendances = new HashMap<>();
+        this.attendanceEvents = new HashMap<>();
     }
 
     public Participant() {
@@ -61,11 +62,11 @@ public class Participant {
         this.name = name;
     }
 
-    public int getContact() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContact(int contact) {
+    public void setContact(String contact) {
         this.contact = contact;
     }
 
@@ -91,19 +92,31 @@ public class Participant {
 
     public void setEvents(Event event) {
         this.events.add(event);
-        setAttendances(event, Attendance.PENDING);
+        setAttendanceEvents(event, Attendance.PENDING);
     }
 
-    public Map<Event, Attendance> getAttendances() {
-        return attendances;
+    public Map<Event, Attendance> getAttendanceEvents() {
+        return attendanceEvents;
     }
 
-    public void setAttendances(Event event, Attendance attendance) {
-        this.attendances.put(event, attendance);
+    public void setAttendanceEvents(Event event, Attendance attendance) {
+        this.attendanceEvents.put(event, attendance);
     }
 
     public LocalDateTime getAccountDateTimeCreation() { // TODO: Verify if it's necessary, if the user will use it in the future
         return accountDateTimeCreation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Participant that = (Participant) o;
+        return participantId == that.participantId && Objects.equals(name, that.name) && Objects.equals(contact, that.contact) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(accountDateTimeCreation, that.accountDateTimeCreation) && Objects.equals(events, that.events) && Objects.equals(attendanceEvents, that.attendanceEvents);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(participantId, name, contact, email, password, accountDateTimeCreation, events, attendanceEvents);
     }
 
     @Override

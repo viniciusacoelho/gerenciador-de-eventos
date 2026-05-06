@@ -47,7 +47,7 @@ public class ParticipantRepository {
 
         for (Event event : participant.getEvents()) {
             System.out.println(event);
-            System.out.println("Presença: " + participant.getAttendances().get(event).getAttendance());
+            System.out.println("Presença: " + participant.getAttendanceEvents().get(event).getAttendance());
             System.out.println("--------------------------------------------");
         }
     }
@@ -60,9 +60,9 @@ public class ParticipantRepository {
         }
 
         for (Event event : participant.getEvents()) {
-            if (!participantService.isAttendanceConfirmed(participant.getAttendances().get(event))) {
+            if (!participantService.isAttendanceConfirmed(participant.getAttendanceEvents().get(event))) {
                 System.out.println(event);
-                System.out.println("Presença: " + participant.getAttendances().get(event).getAttendance());
+                System.out.println("Presença: " + participant.getAttendanceEvents().get(event).getAttendance());
                 System.out.println("--------------------------------------------");
                 this.counterConfirmedEvents++;
             }
@@ -77,9 +77,9 @@ public class ParticipantRepository {
         }
 
         for (Event event : participant.getEvents()) {
-            if (!participantService.isAttendanceCanceled(participant.getAttendances().get(event))) {
+            if (!participantService.isAttendanceCanceled(participant.getAttendanceEvents().get(event))) {
                 System.out.println(event);
-                System.out.println("Presença: " + participant.getAttendances().get(event).getAttendance());
+                System.out.println("Presença: " + participant.getAttendanceEvents().get(event).getAttendance());
                 System.out.println("--------------------------------------------");
                 this.counterCanceledEvents++;
             }
@@ -89,7 +89,7 @@ public class ParticipantRepository {
     public <T> void updateParticipant(Participant participant, T attribute, String attributeName) {
         switch (attributeName) {
             case "Nome" -> participant.setName((String) attribute);
-            case "Contato" -> participant.setContact((Integer) attribute);
+            case "Contato" -> participant.setContact((String) attribute);
             case "E-mail" -> participant.setEmail((String) attribute);
             case "Senha" -> participant.setPassword((String) attribute);
             default -> System.out.println("[ERRO]: Atributo inválido!");

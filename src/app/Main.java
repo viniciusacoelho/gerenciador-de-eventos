@@ -44,18 +44,3 @@ void main() {
     } while (true);
 
 }
-
-/*
-    Funções:
-    - Login
-    - Cadastrar Evento (Nome, Data, Local, Capacidade)
-    - Listar Eventos
-    - Inscrever Participante (Nome, Contato)
-    - Exibir Participantes Inscritos
-    - Confirmar Presença de Participante
-*/
-
-// TODO: Ticket (Name, Description, Price), create a Enum if ticket still have to buy, AVAILABLE or SOLD_OUT
-// TODO: Create a abstract class Ticket and others extends from it and create a interface of their methods
-// TODO: Event Billing using Ticket sales, summing the payments
-// TODO: Event revenue

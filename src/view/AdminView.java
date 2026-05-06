@@ -13,7 +13,7 @@ public class AdminView {
     public static AdminParticipantView adminParticipantView = new AdminParticipantView();
 
     public void login() throws IncorrectDefaultPasswordException {
-//        String DEFAULT_PASSWORD = "1234";
+//        final String DEFAULT_PASSWORD = "1234";
 //
 //        System.out.println("--------------------------------------------");
 //        System.out.println("                   Login");

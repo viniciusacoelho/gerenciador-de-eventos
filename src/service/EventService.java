@@ -8,11 +8,11 @@ import model.Participant;
 public class EventService {
 
     public boolean validateName(String name) {
-        return name.length() > 3;
+        return name.matches("^\\p{L}{2,}([\\s-]\\p{L}+)*$");
     }
 
     public boolean validateLocation(String location) {
-        return location.length() > 3;
+        return location.matches("^\\p{L}{2,}([\\s-]\\p{L}+)*$");
     }
 
     public boolean validateCapacity(int capacity) {

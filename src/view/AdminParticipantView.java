@@ -98,10 +98,10 @@ public class AdminParticipantView {
         //    Participant participant = new Participant(name, contact);
         //    participantRepository.createParticipant(participant);
 
-        Participant participant1 = new Participant("Vinícius Araújo Coêlho", 998271900, "vinicius@email.com", "1234");
-        Participant participant2 = new Participant("João Victor Araújo Coêlho", 987593594, "joaovcitor@email.com", "1234");
-        Participant participant3 = new Participant("Ricardo José de Andrade Coêlho", 999175344, "ricardo@email.com", "1234");
-        Participant participant4 = new Participant("Ângela Maria Araújo Coêlho", 999223567, "angela@email.com", "1234");
+        Participant participant1 = new Participant("Vinícius Araújo Coêlho", participantService.formatContact("998271900"), "vinicius@email.com", "1234");
+        Participant participant2 = new Participant("João Victor Araújo Coêlho", participantService.formatContact("987593594"), "joaovcitor@email.com", "1234");
+        Participant participant3 = new Participant("Ricardo José de Andrade Coêlho", participantService.formatContact("999175344"), "ricardo@email.com", "1234");
+        Participant participant4 = new Participant("Ângela Maria Araújo Coêlho", participantService.formatContact("999223567"), "angela@email.com", "1234");
 
         participantRepository.createParticipant(participant1);
         participantRepository.createParticipant(participant2);

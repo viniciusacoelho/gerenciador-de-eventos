@@ -155,7 +155,7 @@ public class ParticipantView {
 //        Participant participant = new Participant(name, contact, email, password);
 //        participantRepository.createParticipant(participant);
 
-        Participant participant1 = new Participant("Vinícius", 998271900, "vinicius@email.com", "1234");
+        Participant participant1 = new Participant("Vinícius", participantService.formatContact("82998271900"), "vinicius@email.com", "1234");
 //        Participant participant2 = new Participant("João Victor", 987593594, "joaovcitor@email.com", "1234");
 //        Participant participant3 = new Participant("Ricardo", 999175344, "ricardo@email.com", "1234");
 //        Participant participant4 = new Participant("Ângela", 999223567, "angela@email.com", "1234");
@@ -198,7 +198,7 @@ public class ParticipantView {
                     case 2 -> viewAvailableEvents(participant);
                     case 3 -> confirmAttendance(participant);
                     case 4 -> historyRegisteredEvents(participant);
-                    case 5 -> removeParticipantEvent(participant);
+                    case 5 -> cancelParticipantEvent(participant);
                     case 6 -> viewRegistration(participant);
                     case 7 -> updateAccount(participant);
                     case 8 -> deleteAccount(participant);
@@ -330,7 +330,7 @@ public class ParticipantView {
         participantRepository.readParticipantEvents(participant);
     }
 
-    public void removeParticipantEvent(Participant participant) {
+    public void cancelParticipantEvent(Participant participant) {
         System.out.println("      Cancelar Presença de Participante\n--------------------------------------------");
 
         if (eventService.hasEventsRegistered(event)) {
@@ -345,17 +345,18 @@ public class ParticipantView {
             return;
         }
 
-        if (participantRepository.getCounterCanceledEvents() == 0) {
-            System.out.println("Nenhum evento disponível para cancelar.");
-            return;
-        } else {
-            participantRepository.setCounterCanceledEvents(0);
-        }
-
         do {
             try {
                 System.out.println("--------------------------------------------");
                 participantRepository.readParticipantEventsNotCanceled(participant);
+
+                if (participantRepository.getCounterCanceledEvents() == 0) {
+                    System.out.println("Nenhum evento disponível para cancelar.");
+                    return;
+                } else {
+                    participantRepository.setCounterCanceledEvents(0);
+                }
+
                 System.out.println("Digite o ID do evento para cancelar presença:");
                 int eventId = scanner.nextInt();
                 scanner.nextLine();
@@ -459,12 +460,14 @@ public class ParticipantView {
     public static void updateContact(Participant participant) {
         do {
             System.out.println("Digite o novo contato para atualizar:");
-            int newContact = scanner.nextInt();
+            String newContact = scanner.nextLine();
             boolean isNewContactValidated = participantService.validateContact(newContact);
 
             if (!isNewContactValidated) {
                 return;
             }
+
+            participantService.formatContact(newContact);
 
             if (!isEqualUtil.isEqual(newContact, participant.getContact())) {
                 participantRepository.updateParticipant(participant, newContact, "Contato");

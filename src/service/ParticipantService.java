@@ -13,27 +13,23 @@ public class ParticipantService {
     public static EventService eventService = new EventService();
 
     public boolean validateName(String name) {
-        return name.length() > 3;
+        return name.matches("^\\p{L}{2,}([\\s-]\\p{L}+)*$");
     }
 
-    // TODO: Validate if contact have 10 digits
-    public boolean validateContact(int contact) {
-        return contact > 10;
+    public boolean validateContact(String contact) {
+        return contact.matches("^\\d{11}$");
     }
 
-    // TODO: Contact formatter
-    public String contactFormatter(int contact) {
-        return "Em breve";
+    public String formatContact(String contact) {
+        return "(" +  contact.substring(0, 2) + ")" + " " + contact.substring(2, 7) + "-" + contact.substring(7, 11);
     }
 
-    // TODO: Regex validation
     public boolean validateEmail(String email) {
-        return email.length() > 3;
+        return email.matches("^[^._+-][a-zA-Z._+-]+[^._+-]@[a-zA-Z0-9]([a-zA-Z0-9-])*[a-zA-Z0-9]+(\\.[a-zA-Z0-9]{2,})+$");
     }
 
-    // TODO: Regex validation
     public boolean validatePassword(String password) {
-        return password.length() > 3;
+        return password.length() >= 8;
     }
 
     public void addEventParticipant(Event event, Participant participant) {
@@ -46,19 +42,19 @@ public class ParticipantService {
     }
 
     public void confirmAttendance(Participant participant, Event event) throws EventNotFoundException {
-        if (!participant.getAttendances().containsKey(event)) {
+        if (!participant.getAttendanceEvents().containsKey(event)) {
             throw new EventNotFoundException("Evento inválido!");
         }
 
-        participant.getAttendances().put(event, Attendance.CONFIRMED);
+        participant.setAttendanceEvents(event, Attendance.CONFIRMED);
     }
 
     public void cancelAttendance(Participant participant, Event event) throws EventNotFoundException {
-        if (!participant.getAttendances().containsKey(event)) {
+        if (!participant.getAttendanceEvents().containsKey(event)) {
             throw new EventNotFoundException("Evento inválido!");
         }
 
-        participant.getAttendances().put(event, Attendance.CANCELED);
+        participant.setAttendanceEvents(event, Attendance.CANCELED);
         eventService.removeParticipant(participant, event);
     }
 
