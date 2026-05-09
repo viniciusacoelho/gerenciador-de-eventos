@@ -1,6 +1,7 @@
 package view;
 
 import exceptions.IncorrectDefaultPasswordException;
+import model.Ticket;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -10,6 +11,7 @@ public class AdminView {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static EventView eventView = new EventView();
+    public static TicketView ticketView = new TicketView();
     public static AdminParticipantView adminParticipantView = new AdminParticipantView();
 
     public void login() throws IncorrectDefaultPasswordException {
@@ -32,7 +34,7 @@ public class AdminView {
     }
 
     public static void panel() {
-        String[] menu = {"Evento", "Participante", "Voltar"};
+        String[] menu = {"Evento", "Ingresso", "Participante", "Voltar"};
 
         do {
             System.out.println("--------------------------------------------");
@@ -53,8 +55,9 @@ public class AdminView {
 
                 switch (option) {
                     case 1 -> eventView.panel();
-                    case 2 -> adminParticipantView.panel();
-                    case 3 -> {
+                    case 2 -> ticketView.panel();
+                    case 3 -> adminParticipantView.panel();
+                    case 4 -> {
                         System.out.println("Voltando...");
                         return;
                     }

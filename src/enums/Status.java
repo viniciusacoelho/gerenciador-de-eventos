@@ -1,0 +1,18 @@
+package enums;
+
+public enum Status {
+
+    AVAILABLE ("Disponível"),
+    SOLD_OUT ("Esgotado");
+
+    private final String status;
+
+    Status(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+}
