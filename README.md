@@ -3,7 +3,7 @@
 
 # 📅 Gerenciador de Eventos
 
-Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes**, permitindo o controle de cadastros, inscrições e confirmações de presença. O objetivo principal é oferecer uma aplicação organizada, funcional e didática, servindo como prática de Programação Orientada a Objetos (POO), lógica de programação, e fundamentos da linguagem Java.
+Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes**, permitindo o controle de cadastros, inscrições e confirmações de presença. O objetivo principal é oferecer uma aplicação organizada, funcional e didática, servindo como prática de Programação Orientada a Objetos (POO), estruturas de dados, lógica de programação e fundamentos da linguagem Java.
 
 ---
 
@@ -30,7 +30,7 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 
 ### 🔐 **Sistema**
 
-* Login básico com e-mail e senha;
+* Login com e-mail e senha e criação de conta;
 * Menu interativo via console;
 * Validação de entradas do usuário;
 
@@ -42,7 +42,7 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 * `ArrayList`
 * `List`
 * `InputMismatchException` (tratamento de exceções)
-* `LocalDateTime` 
+* `LocalDateTime` (data e hora)
 ---
 
 ## 📁 **Estrutura do Projeto**
@@ -54,9 +54,11 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 ├── src/
 │   ├── app
 │   ├── enums
+│   ├── exceptions
 │   ├── model
 │   ├── repository
 │   ├── service
+│   ├── util
 │   └── view
 ├── .gitignore
 ├── LICENSE
@@ -84,7 +86,7 @@ git clone https://github.com/viniciusacoelho/gerenciador-de-eventos.git
 Este sistema foi construído com foco em:
 
 * Prática de Java puro
-* Consolidação de POO e lógica de programação
+* Consolidação de POO, estruturas de dados e lógica de programação
 * Organização de código
 * Simulação de um sistema real de gerenciamento
 * Evolução contínua do projeto
@@ -104,6 +106,7 @@ Consulte o arquivo `LICENSE` para mais detalhes.
 ### 👨‍💻 Vinícius Araújo Coêlho
 
 * Estudante de Sistemas de Informação
+* Desenvolvedor backend
 * Desenvolvimento completo do sistema
 * Estruturação da lógica e organização do código
 * Projeto voltado para aprendizado e portfólio
