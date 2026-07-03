@@ -1,6 +1,10 @@
 package repository;
 
+import enums.TicketType;
 import model.Ticket;
+import model.TicketHalfPrice;
+import model.TicketVip;
+import service.TicketService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +13,8 @@ public class TicketRepository {
 
     private final List<Ticket> tickets = new ArrayList<>();
 
+    public TicketService ticketService = new TicketService();
+
     public void createTicket(Ticket ticket) {
         this.tickets.add(ticket);
     }
@@ -16,14 +22,25 @@ public class TicketRepository {
     public void readTickets() {
         for (Ticket ticket : this.tickets) {
             System.out.println(ticket);
+
+            if (ticket instanceof TicketHalfPrice) {
+                System.out.println(((TicketHalfPrice) ticket).hasStudentId() ? "Sim" : "Não");
+            } else if (ticket instanceof TicketVip) {
+                ticketService.listBenefits(((TicketVip) ticket).getBenefits());
+            }
+
+            System.out.println("--------------------------------------------");
         }
     }
 
-    public <T> void updateTicket(String attributeName, Ticket ticket, T attribute) {
+    public <T> void updateTicket(Ticket ticket, T attribute, String attributeName) {
         switch (attributeName) {
             case "Nome" -> ticket.setName((String) attribute);
             case "Descrição" -> ticket.setDescription((String) attribute);
             case "Preço" -> ticket.setPrice((double) attribute);
+            case "Tipo do ingresso" -> ticket.setPrice(((TicketType) attribute).ordinal());
+            case "Carteirinha de Estudante" -> ((TicketHalfPrice) ticket).setStudentId((Boolean) attribute);
+            case "Benefícios" -> ((TicketVip) ticket).setBenefits((List<String>) attribute);
             default -> System.out.println("Atributo inválido! Tente novamente.");
         }
 
