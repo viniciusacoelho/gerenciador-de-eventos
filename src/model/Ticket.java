@@ -1,10 +1,14 @@
 package model;
 
 import enums.Status;
+import enums.TicketType;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class Ticket {
+public abstract class Ticket {
 
     private static int totalRegisteredTickets = 1;
 
@@ -16,16 +20,17 @@ public class Ticket {
 
     private double price;
 
-    private Status status;
-    // TODO:
-//    private Map<Status, Event> statusEvents;
+    private Map<Status, Event> statusEvents;
 
-    public Ticket(String name, String description, double price) {
+    private TicketType ticketType;
+
+    public Ticket(String name, String description, double price, TicketType ticketType) {
         this.ticketId = totalRegisteredTickets++;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.status = Status.AVAILABLE;
+        this.statusEvents = new HashMap<>();
+        this.ticketType = ticketType;
     }
 
     public Ticket() {
@@ -63,12 +68,20 @@ public class Ticket {
         this.price = price;
     }
 
-    public Status getStatus() {
-        return status;
+    public Map<Status, Event> getStatusEvents() {
+        return statusEvents;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatusEvents(Map<Status, Event> statusEvents) {
+        this.statusEvents = statusEvents;
+    }
+
+    public TicketType getTicketType() {
+        return ticketType;
+    }
+
+    public void setTicketType(TicketType ticketType) {
+        this.ticketType = ticketType;
     }
 
     @Override
@@ -76,7 +89,10 @@ public class Ticket {
         return "ID: " + ticketId +
                 "\nNome: " + name +
                 "\nDescrição: " + description +
-                "\nPreço: R$ " + price;
+                "\nPreço: R$ " + price +
+                "\nTipo: " + ticketType.getTicketType();
     }
+
+    public abstract double calculatePrice();
 
 }
