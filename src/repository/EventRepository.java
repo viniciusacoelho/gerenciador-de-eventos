@@ -2,6 +2,7 @@ package repository;
 
 import exceptions.EventNotFoundException;
 import model.Event;
+import model.Ticket;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,6 +16,10 @@ public class EventRepository {
         this.events = new ArrayList<>();
     }
 
+    public List<Event> getEvents() {
+        return events;
+    }
+
     public void createEvent(Event event) {
         this.events.add(event);
     }
@@ -26,6 +31,11 @@ public class EventRepository {
 
         for (Event event : events) {
             System.out.println(event);
+//            System.out.println(new Ticket().getStatusEvents().get(event));
+            event.getTickets().stream()
+                    .map(Ticket::getStatus)
+                    .forEach(System.out::println);
+
             System.out.println("--------------------------------------------");
         }
     }

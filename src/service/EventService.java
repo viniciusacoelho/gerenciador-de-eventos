@@ -1,9 +1,11 @@
 package service;
 
+import enums.Status;
 import exceptions.EventFullException;
 import exceptions.EventNotFoundException;
 import model.Event;
 import model.Participant;
+import model.Ticket;
 
 public class EventService {
 
@@ -19,9 +21,11 @@ public class EventService {
         return capacity > 0;
     }
 
-    public void addParticipantEvent(Participant participant, Event event) throws EventFullException {
+    public void addParticipantEvent(Participant participant, Event event, Ticket ticket) throws EventFullException {
         if (!hasCapacity(event)) {
             // TODO: When I create the Ticket class, I'll put the SOLD_OUT enum here
+            // TODO: I think I'll put it in other place
+            ticket.setStatusEvents(Status.SOLD_OUT, event);
             throw new EventFullException("Evento lotado! Não foi possível inscrever o participante '" + participant.getName() + "'.");
         }
 
@@ -45,7 +49,7 @@ public class EventService {
         event.getParticipants().remove(participant);
     }
 
-    public void hasEvent(Event event) {
+    public void hasEvent(Event event) throws EventNotFoundException {
         if (isEmpty(event)) {
             throw new EventNotFoundException("Evento não encontrado. Tente novamente.");
         }

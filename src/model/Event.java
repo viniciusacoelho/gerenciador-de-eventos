@@ -22,6 +22,8 @@ public class Event {
 
     private List<Participant> participants;
 
+    private List<Ticket> tickets;
+
     private static final DateTimeUtil dateTimeUtil = new DateTimeUtil();
 
     public Event(String name, LocalDateTime dateTime, String location, int capacity) {
@@ -31,6 +33,7 @@ public class Event {
         this.location = location;
         this.capacity = capacity;
         this.participants = new ArrayList<>();
+        this.tickets = new ArrayList<>();
     }
 
     public Event() {
@@ -84,6 +87,14 @@ public class Event {
         this.participants.add(participant);
     }
 
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(Ticket ticket) {
+        this.tickets.add(ticket);
+    }
+
     @Override
     public String toString() {
         return "ID: " + eventId +
@@ -91,7 +102,11 @@ public class Event {
                 "\nHorário: " + dateTimeUtil.formatDateTime(dateTime) +
                 "\nLocal: " + location +
                 "\nCapacidade: " + capacity +
-                "\nNúmero de participantes confirmados: " + participants.toArray().length;
+                "\nNúmero de participantes confirmados: " + confirmedParticipants();
+    }
+
+    public int confirmedParticipants() {
+        return participants.toArray().length;
     }
 
 }

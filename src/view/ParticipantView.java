@@ -5,13 +5,16 @@ import exceptions.EventNotFoundException;
 import exceptions.ParticipantEventNotFoundException;
 import model.Event;
 import model.Participant;
+import model.Ticket;
 import repository.ParticipantRepository;
+import repository.TicketRepository;
 import service.ParticipantService;
 import util.IsEqualUtil;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import static view.AdminView.ticketView;
 import static view.EventView.event;
 import static view.EventView.eventRepository;
 import static view.EventView.eventService;
@@ -20,6 +23,7 @@ public class ParticipantView {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static final IsEqualUtil isEqualUtil = new IsEqualUtil();
+    private final TicketRepository ticketRepository = new TicketRepository();
 
     public static ParticipantRepository participantRepository = new ParticipantRepository();
     public static ParticipantService participantService = new ParticipantService();
@@ -195,10 +199,10 @@ public class ParticipantView {
 
                 switch (option) {
                     case 1 -> registerParticipantEvent(participant);
-                    case 2 -> viewAvailableEvents(participant);
+                    case 2 -> viewAvailableEvents();
                     case 3 -> confirmAttendance(participant);
                     case 4 -> historyRegisteredEvents(participant);
-                    case 5 -> cancelParticipantEvent(participant);
+                    case 5 -> cancelParticipantAttendance(participant);
                     case 6 -> viewRegistration(participant);
                     case 7 -> updateAccount(participant);
                     case 8 -> deleteAccount(participant);
@@ -241,8 +245,13 @@ public class ParticipantView {
                     return;
                 }
 
+                Ticket ticket = ticketView.buyTicket(event);
+                if (ticket == null) {
+                    return;
+                }
+
                 try {
-                    eventService.addParticipantEvent(participant, event);
+                    eventService.addParticipantEvent(participant, event, ticket);
                 } catch (EventFullException e) {
                     System.err.println(e.getMessage());
                     return;
@@ -257,7 +266,7 @@ public class ParticipantView {
         } while (true);
     }
 
-    public static void viewAvailableEvents(Participant participant) {
+    public static void viewAvailableEvents() {
         // TODO: List events that wasn't registered in participant, and list events that are only available, not sold out (maybe)
         System.out.println("Em breve...");
     }
@@ -303,7 +312,7 @@ public class ParticipantView {
                 }
 
                 System.out.println("Você deseja confirmar presença no evento '" + event.getName() + "'? (s/n)");
-                String response = scanner.nextLine().toLowerCase();
+                String response = scanner.nextLine().toLowerCase().strip();
 
                 if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
                     participantService.confirmAttendance(participant, event);
@@ -328,9 +337,10 @@ public class ParticipantView {
         // TODO: A method that validate if the participant presence are confirmed (maybe)
         // TODO: Read events using Stack (LIFO), because the Events that the participant registered recently need stay on the top
         participantRepository.readParticipantEvents(participant);
+        // TODO: Use events.reversed(), don't need to use Stack
     }
 
-    public void cancelParticipantEvent(Participant participant) {
+    public void cancelParticipantAttendance(Participant participant) {
         System.out.println("      Cancelar Presença de Participante\n--------------------------------------------");
 
         if (eventService.hasEventsRegistered(event)) {
@@ -374,7 +384,7 @@ public class ParticipantView {
                 }
 
                 System.out.println("Você deseja cancelar presença no evento '" + eventRepository.findEventById(eventId).getName() + "'? (s/n)");
-                String response = scanner.nextLine().toLowerCase();
+                String response = scanner.nextLine().toLowerCase().trim();
 
                 if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
                     participantService.cancelAttendance(participant, event);
@@ -386,8 +396,6 @@ public class ParticipantView {
                     System.out.println("Resposta inválida! Tente novamente.");
                 }
 
-                // TODO: Test if this 'break' is necessary
-                break;
             } catch (InputMismatchException e) {
                 System.out.println("[ERRO]: Digite um número!");
                 scanner.nextLine();
@@ -404,7 +412,9 @@ public class ParticipantView {
         System.out.println("           Atualizar Participante\n--------------------------------------------");
 
         String[] menu = {
-                "Atualizar Nome", "Atualizar Contato", "Atualizar E-mail", "Atualizar Senha", "Voltar"
+                "Atualizar Nome", "Atualizar Contato",
+                "Atualizar E-mail", "Atualizar Senha",
+                "Voltar"
         };
 
         do {

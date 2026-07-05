@@ -1,6 +1,7 @@
 package repository;
 
 import enums.TicketType;
+import model.Event;
 import model.Ticket;
 import model.TicketHalfPrice;
 import model.TicketVip;
@@ -21,6 +22,20 @@ public class TicketRepository {
 
     public void readTickets() {
         for (Ticket ticket : this.tickets) {
+            System.out.println(ticket);
+
+            if (ticket instanceof TicketHalfPrice) {
+                System.out.println(((TicketHalfPrice) ticket).hasStudentId() ? "Sim" : "Não");
+            } else if (ticket instanceof TicketVip) {
+                ticketService.listBenefits(((TicketVip) ticket).getBenefits());
+            }
+
+            System.out.println("--------------------------------------------");
+        }
+    }
+
+    public void readEventTickets(Event event) {
+        for (Ticket ticket : event.getTickets()) {
             System.out.println(ticket);
 
             if (ticket instanceof TicketHalfPrice) {

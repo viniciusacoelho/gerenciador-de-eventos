@@ -3,9 +3,7 @@ package model;
 import enums.Status;
 import enums.TicketType;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class Ticket {
@@ -22,6 +20,8 @@ public abstract class Ticket {
 
     private Map<Status, Event> statusEvents;
 
+    private Status status;
+
     private TicketType ticketType;
 
     public Ticket(String name, String description, double price, TicketType ticketType) {
@@ -30,6 +30,7 @@ public abstract class Ticket {
         this.description = description;
         this.price = price;
         this.statusEvents = new HashMap<>();
+        this.status = Status.AVAILABLE;
         this.ticketType = ticketType;
     }
 
@@ -72,8 +73,16 @@ public abstract class Ticket {
         return statusEvents;
     }
 
-    public void setStatusEvents(Map<Status, Event> statusEvents) {
-        this.statusEvents = statusEvents;
+    public void setStatusEvents(Status status, Event event) {
+        this.statusEvents.put(status, event);
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public TicketType getTicketType() {

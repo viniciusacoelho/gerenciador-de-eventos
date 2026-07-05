@@ -23,7 +23,7 @@ public class TicketService {
         return !benefit.isEmpty() && benefit.length() <= 1000;
     }
 
-    public void hasTicket(Ticket ticket) {
+    public void hasTicket(Ticket ticket) throws TicketNotFoundException {
         if (ticket == null) {
             throw new TicketNotFoundException();
         }

@@ -9,8 +9,11 @@ import util.IsEqualUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import static view.TicketView.addTicket;
 
 public class EventView {
 
@@ -25,7 +28,10 @@ public class EventView {
 
     public void panel() {
         String[] menu = {
-                "Cadastrar Evento", "Listar Eventos", "Buscar Evento", "Atualizar Evento", "Remover Evento", "Voltar"
+                "Cadastrar Evento", "Listar Eventos",
+                "Buscar Evento", "Atualizar Evento",
+                "Remover Evento", "Adicionar Ingresso ao Evento",
+                "Voltar"
         };
 
         do {
@@ -51,7 +57,8 @@ public class EventView {
                     case 3 -> findEvent();
                     case 4 -> updateEvent();
                     case 5 -> removeEvent();
-                    case 6 -> {
+                    case 6 -> addTicket();
+                    case 7 -> {
                         System.out.println("Voltando...");
                         return;
                     }
@@ -278,12 +285,12 @@ public class EventView {
                     System.out.println("Nova capacidade inválida! Tente novamente.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("[ERR]: Digite um número!");
+                System.err.println("[ERRO]: Digite um número!");
             }
         } while (true);
     }
 
-    public static void removeEvent() throws EventNotFoundException {
+    public static void removeEvent() {
         System.out.println("           Deletar Evento\n--------------------------------------------");
         Event event = chooseEvent("deletar");
 
@@ -305,7 +312,7 @@ public class EventView {
                 int eventId = scanner.nextInt();
                 return eventRepository.findEventById(eventId);
             } catch (InputMismatchException e) {
-                System.out.println("[ERRO]: Digite um número!");
+                System.err.println("[ERRO]: Digite um número!");
             }
         } while (true);
     }

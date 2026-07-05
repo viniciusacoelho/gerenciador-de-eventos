@@ -1,6 +1,8 @@
 package view;
 
+import enums.Status;
 import enums.TicketType;
+import exceptions.EventNotFoundException;
 import exceptions.TicketNotFoundException;
 import model.*;
 import repository.TicketRepository;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+
+import static view.EventView.*;
 
 public class TicketView {
 
@@ -264,26 +268,7 @@ public class TicketView {
         }
         System.out.println("\n--------------------------------------------\n");
 
-        String[] menu;
-        if (ticket instanceof TicketHalfPrice) {
-            menu = new String[] {
-                    "Atualizar Nome", "Atualizar Descrição",
-                    "Atualizar Preço", "Atualizar Tipo",
-                    "Atualizar Carteirinha de Estudante", "Voltar"
-            };
-        } else if (ticket instanceof TicketVip) {
-            menu = new String[] {
-                    "Atualizar Nome", "Atualizar Descrição",
-                    "Atualizar Preço", "Atualizar Tipo",
-                    "Atualizar Benefício", "Voltar"
-            };
-        } else {
-            menu = new String[] {
-                    "Atualizar Nome", "Atualizar Descrição",
-                    "Atualizar Preço", "Atualizar Tipo",
-                    "Voltar"
-            };
-        }
+        String[] menu = getMenu(ticket);
 
         do {
             for (int i = 0; i < menu.length; i++) {
@@ -322,6 +307,30 @@ public class TicketView {
                 scanner.nextLine();
             }
         } while (true);
+    }
+
+    private static String[] getMenu(Ticket ticket) {
+        String[] menu;
+        if (ticket instanceof TicketHalfPrice) {
+            menu = new String[] {
+                    "Atualizar Nome", "Atualizar Descrição",
+                    "Atualizar Preço", "Atualizar Tipo",
+                    "Atualizar Carteirinha de Estudante", "Voltar"
+            };
+        } else if (ticket instanceof TicketVip) {
+            menu = new String[] {
+                    "Atualizar Nome", "Atualizar Descrição",
+                    "Atualizar Preço", "Atualizar Tipo",
+                    "Atualizar Benefício", "Voltar"
+            };
+        } else {
+            menu = new String[] {
+                    "Atualizar Nome", "Atualizar Descrição",
+                    "Atualizar Preço", "Atualizar Tipo",
+                    "Voltar"
+            };
+        }
+        return menu;
     }
 
     public static void updateName(Ticket ticket) {
@@ -422,16 +431,15 @@ public class TicketView {
     }
 
     public static void updateStudentId(TicketHalfPrice ticket) {
+        boolean newStudentId = false;
+
         do {
             System.out.println("Você tem carteirinha de estudante agora? (s/n)");
             String response = scanner.nextLine().toLowerCase().strip();
 
-            boolean newStudentId = false;
             if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
                 newStudentId = true;
-                break;
             } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {
-                newStudentId = false;
                 break;
             } else {
                 System.out.println("Resposta inválida! Tente novamente.");
@@ -441,7 +449,7 @@ public class TicketView {
                 ticketRepository.updateTicket(ticket, newStudentId, "Nome");
                 break;
             } else {
-                System.out.println("Novo nome inválido! Tente novamente.");
+                System.out.println("Novo nome inválido/já cadastrado! Tente novamente.");
             }
 
         } while (true);
@@ -503,4 +511,49 @@ public class TicketView {
             }
         } while (true);
     }
+
+    public Ticket buyTicket(Event event) {
+        System.out.println("           Comprar Ingresso\n--------------------------------------------");
+        ticketRepository.readEventTickets(event);
+        Ticket ticket = chooseTicket("comprar");
+
+        try {
+            ticketService.hasTicket(ticket);
+        } catch (TicketNotFoundException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+
+        if (ticket.getStatus() == Status.SOLD_OUT) {
+            System.out.println("Ingresso esgotado!");
+            return null;
+        }
+
+        System.out.println("Ingresso '" + ticket.getName() + "' comprado com sucesso!");
+        return ticket;
+    }
+
+    public static void addTicket() {
+        System.out.println("           Adicionar Ingresso ao Evento\n--------------------------------------------");
+
+        eventRepository.readEvents();
+        Event event = chooseEvent("adicionar ingresso");
+        try {
+            eventService.hasEvent(event);
+        } catch (EventNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
+
+        ticketRepository.readTickets();
+        Ticket ticket = chooseTicket("adicionar ao evento");
+        try {
+            ticketService.hasTicket(ticket);
+        } catch (TicketNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
+
+        event.setTickets(ticket);
+        System.out.println("Ingresso '" + ticket.getName() + "' adicionado ao evento '" + event.getName() + "' com sucesso!");
+    }
+
 }
