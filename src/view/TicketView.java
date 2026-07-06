@@ -512,7 +512,7 @@ public class TicketView {
         } while (true);
     }
 
-    public Ticket buyTicket(Event event) {
+    public Ticket buyTicket(Participant participant, Event event) {
         System.out.println("           Comprar Ingresso\n--------------------------------------------");
         ticketRepository.readEventTickets(event);
         Ticket ticket = chooseTicket("comprar");
@@ -529,6 +529,7 @@ public class TicketView {
             return null;
         }
 
+        participant.setEventTickets(event, ticket);
         System.out.println("Ingresso '" + ticket.getName() + "' comprado com sucesso!");
         return ticket;
     }

@@ -245,7 +245,7 @@ public class ParticipantView {
                     return;
                 }
 
-                Ticket ticket = ticketView.buyTicket(event);
+                Ticket ticket = ticketView.buyTicket(participant, event);
                 if (ticket == null) {
                     return;
                 }

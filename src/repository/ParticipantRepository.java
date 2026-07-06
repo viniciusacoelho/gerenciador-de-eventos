@@ -4,6 +4,7 @@ import exceptions.ParticipantEventNotFoundException;
 import exceptions.ParticipantNotFoundException;
 import model.Event;
 import model.Participant;
+import model.Ticket;
 import service.ParticipantService;
 
 import java.util.ArrayList;
@@ -21,6 +22,10 @@ public class ParticipantRepository {
 
     public ParticipantRepository() {
         participants = new ArrayList<>();
+    }
+
+    public List<Participant> getParticipants() {
+        return participants;
     }
 
     public void createParticipant(Participant participant) {
@@ -48,6 +53,7 @@ public class ParticipantRepository {
         for (Event event : participant.getEvents()) {
             System.out.println(event);
             System.out.println("Presença: " + participant.getAttendanceEvents().get(event).getAttendance());
+            System.out.println("Ingresso: " + participant.getEventTickets().get(event).getName());
             System.out.println("--------------------------------------------");
         }
     }

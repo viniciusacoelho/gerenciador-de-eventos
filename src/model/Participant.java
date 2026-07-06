@@ -22,6 +22,7 @@ public class Participant {
 
     private String email;
 
+//    TODO: Cryptography
     private String password;
 
     private LocalDateTime accountDateTimeCreation;
@@ -29,6 +30,8 @@ public class Participant {
     private List<Event> events;
 
     private Map<Event, Attendance> attendanceEvents;
+
+    private Map<Event, Ticket> eventTickets;
 
     private final static DateTimeUtil dateTimeUtil = new DateTimeUtil();
 
@@ -41,6 +44,7 @@ public class Participant {
         this.accountDateTimeCreation = LocalDateTime.now();
         this.events = new ArrayList<>();
         this.attendanceEvents = new HashMap<>();
+        this.eventTickets = new HashMap<>();
     }
 
     public Participant() {
@@ -103,6 +107,14 @@ public class Participant {
         this.attendanceEvents.put(event, attendance);
     }
 
+    public Map<Event, Ticket> getEventTickets() {
+        return eventTickets;
+    }
+
+    public void setEventTickets(Event event, Ticket ticket) {
+        this.eventTickets.put(event, ticket);
+    }
+
     public LocalDateTime getAccountDateTimeCreation() { // TODO: Verify if it's necessary, if the user will use it in the future
         return accountDateTimeCreation;
     }
@@ -111,12 +123,12 @@ public class Participant {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Participant that = (Participant) o;
-        return participantId == that.participantId && Objects.equals(name, that.name) && Objects.equals(contact, that.contact) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(accountDateTimeCreation, that.accountDateTimeCreation) && Objects.equals(events, that.events) && Objects.equals(attendanceEvents, that.attendanceEvents);
+        return participantId == that.participantId && Objects.equals(name, that.name) && Objects.equals(contact, that.contact) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(accountDateTimeCreation, that.accountDateTimeCreation) && Objects.equals(events, that.events) && Objects.equals(attendanceEvents, that.attendanceEvents) && Objects.equals(eventTickets, that.eventTickets);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(participantId, name, contact, email, password, accountDateTimeCreation, events, attendanceEvents);
+        return Objects.hash(participantId, name, contact, email, password, accountDateTimeCreation, events, attendanceEvents, eventTickets);
     }
 
     @Override
