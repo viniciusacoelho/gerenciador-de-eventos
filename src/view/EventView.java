@@ -163,7 +163,7 @@ public class EventView {
         System.out.println(event);
     }
 
-    public static void updateEvent() throws EventNotFoundException {
+    public static void updateEvent() {
         System.out.println("           Atualizar Evento\n--------------------------------------------");
         Event event = chooseEvent("atualizar");
 

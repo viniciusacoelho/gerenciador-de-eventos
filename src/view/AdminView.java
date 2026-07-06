@@ -1,7 +1,6 @@
 package view;
 
 import exceptions.IncorrectDefaultPasswordException;
-import model.Ticket;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

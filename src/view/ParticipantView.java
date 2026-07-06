@@ -324,8 +324,6 @@ public class ParticipantView {
                     System.out.println("Resposta inválida! Tente novamente.");
                 }
 
-                // TODO: Test if this 'break' is necessary
-                break;
             } catch (InputMismatchException e) {
                 System.out.println("[ERRO]: Digite um número!");
                 scanner.nextLine();
@@ -334,10 +332,13 @@ public class ParticipantView {
     }
 
     public void historyRegisteredEvents(Participant participant) {
-        // TODO: A method that validate if the participant presence are confirmed (maybe)
-        // TODO: Read events using Stack (LIFO), because the Events that the participant registered recently need stay on the top
-        participantRepository.readParticipantEvents(participant);
-        // TODO: Use events.reversed(), don't need to use Stack
+        System.out.println("      Histórico de Eventos Inscritos\n--------------------------------------------");
+        // TODO: A method that validate if the participant attendance was confirmed (maybe)
+        try {
+            participantRepository.readParticipantEvents(participant);
+        } catch (EventNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void cancelParticipantAttendance(Participant participant) {

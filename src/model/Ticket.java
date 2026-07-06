@@ -37,7 +37,7 @@ public abstract class Ticket {
     public Ticket() {
     }
 
-    public static int getTotalRegisteredTickets() {
+    public int getTotalRegisteredTickets() {
         return totalRegisteredTickets;
     }
 

@@ -4,7 +4,6 @@ import exceptions.ParticipantEventNotFoundException;
 import exceptions.ParticipantNotFoundException;
 import model.Event;
 import model.Participant;
-import model.Ticket;
 import service.ParticipantService;
 
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class ParticipantRepository {
             System.out.println(e.getMessage());
         }
 
-        for (Event event : participant.getEvents()) {
+        for (Event event : participant.getEvents().reversed()) {
             System.out.println(event);
             System.out.println("Presença: " + participant.getAttendanceEvents().get(event).getAttendance());
             System.out.println("Ingresso: " + participant.getEventTickets().get(event).getName());

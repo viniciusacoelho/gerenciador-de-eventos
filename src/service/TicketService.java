@@ -29,6 +29,10 @@ public class TicketService {
         }
     }
 
+    public boolean hasTicketRegistered(Ticket ticket) throws TicketNotFoundException {
+        return ticket.getTotalRegisteredTickets() == 0;
+    }
+
     public boolean validateBenefitId(int newBenefitId, List<String> benefits) {
         return newBenefitId > 0 && newBenefitId <= benefits.size();
     }
