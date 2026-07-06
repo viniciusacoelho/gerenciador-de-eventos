@@ -4,7 +4,13 @@ import enums.Status;
 import enums.TicketType;
 import exceptions.EventNotFoundException;
 import exceptions.TicketNotFoundException;
-import model.*;
+import model.Event;
+import model.Participant;
+import model.Ticket;
+import model.TicketDefault;
+import model.TicketFree;
+import model.TicketHalfPrice;
+import model.TicketVip;
 import repository.TicketRepository;
 import service.TicketService;
 import util.IsEqualUtil;
@@ -15,7 +21,9 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import static view.EventView.*;
+import static view.EventView.chooseEvent;
+import static view.EventView.eventRepository;
+import static view.EventView.eventService;
 
 public class TicketView {
 
@@ -514,11 +522,13 @@ public class TicketView {
 
     public Ticket buyTicket(Participant participant, Event event) {
         System.out.println("           Comprar Ingresso\n--------------------------------------------");
+
         ticketRepository.readEventTickets(event);
         Ticket ticket = chooseTicket("comprar");
 
         try {
             ticketService.hasTicket(ticket);
+            ticketService.hasTicket(ticketRepository.findByEventTicketId(event.getTickets(), ticket.getTicketId()));
         } catch (TicketNotFoundException e) {
             System.out.println(e.getMessage());
             return null;
@@ -539,6 +549,7 @@ public class TicketView {
 
         eventRepository.readEvents();
         Event event = chooseEvent("adicionar ingresso");
+
         try {
             eventService.hasEvent(event);
         } catch (EventNotFoundException e) {

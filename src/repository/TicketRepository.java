@@ -84,4 +84,21 @@ public class TicketRepository {
         return null;
     }
 
+    public Ticket findByEventTicketId(List<Ticket> eventTickets, int ticketId) {
+        int start = 0;
+        int end = eventTickets.size() - 1;
+
+        while (start <= end) {
+            int middle = (start + end) / 2;
+            if (eventTickets.get(middle).getTicketId() == ticketId) {
+                return eventTickets.get(middle);
+            } else if (eventTickets.get(middle).getTicketId() < ticketId) {
+                start = middle + 1;
+            } else {
+                end = middle - 1;
+            }
+        }
+
+        return null;
+    }
 }
