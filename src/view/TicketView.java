@@ -269,12 +269,12 @@ public class TicketView {
             return;
         }
 
-        System.out.println("\n--------------------------------------------\n");
+        System.out.println("--------------------------------------------");
         System.out.println(ticket);
         if (ticket instanceof TicketVip) {
             ticketService.listBenefits(((TicketVip) ticket).getBenefits());
         }
-        System.out.println("\n--------------------------------------------\n");
+        System.out.println("--------------------------------------------");
 
         String[] menu = getMenu(ticket);
 
@@ -464,6 +464,81 @@ public class TicketView {
     }
 
     public static void updateBenefits(TicketVip ticket) {
+        String[] menu = {
+                "Adicionar Benefício", "Editar Benefício",
+                "Remover Benefício", "Voltar"
+        };
+
+        do {
+            for (int i = 0; i < menu.length; i++) {
+                System.out.println((i + 1) + " - " + menu[i]);
+            }
+
+            try {
+                System.out.println("--------------------------------------------");
+                System.out.println("Digite uma opção:");
+                int option = scanner.nextInt();
+                scanner.nextLine();
+                System.out.println("--------------------------------------------");
+
+                switch (option) {
+                    case 1 -> addBenefit(ticket);
+                    case 2 -> editBenefits(ticket);
+                    case 3 -> removeBenefit(ticket);
+                    case 4 -> {
+                        System.out.println("Voltando...");
+                        return;
+                    }
+                    default -> System.out.println("Opção inválida! Tente novamente.");
+                }
+
+            } catch (InputMismatchException e) {
+                System.err.println("[ERRO]: Digite um número!");
+                scanner.nextLine();
+            }
+        } while (true);
+    }
+
+    public static void addBenefit(TicketVip ticket) {
+        int quantity;
+        do {
+            try {
+                System.out.println("Quantos benefícios você deseja adicionar ao ingresso '" + ticket.getName() + "' ?");
+                quantity = scanner.nextInt();
+                boolean validatedQuantity = ticketService.validateQuantity(quantity);
+
+                if (validatedQuantity) {
+                    break;
+                } else {
+                    System.out.println("Quantidade inválida! Tente novamente.");
+                }
+
+            } catch (InputMismatchException e) {
+                System.err.println("[ERRO]: Digite um número!");
+                scanner.nextLine();
+            }
+        } while (true);
+
+        do {
+            System.out.println("Digite o novo benefício para adicionar:");
+            String newBenefit = scanner.nextLine();
+            boolean isNewBefitValidated = ticketService.validateBenefit(newBenefit);
+
+            if (!isNewBefitValidated) {
+                return;
+            }
+
+            if (!newBenefit.equalsIgnoreCase(ticket.getDescription())) {
+                ticketService.addBenefit(ticket.getBenefits(), newBenefit);
+                quantity--;
+            } else {
+                System.out.println("Novo benefício inválido! Tente novamente.");
+            }
+
+        } while (quantity != 0);
+    }
+
+    public static void editBenefits(TicketVip ticket) {
         do {
             ticketService.listBenefits(ticket.getBenefits());
             System.out.println("Digite o ID no benefício para atualizar:");
@@ -486,6 +561,23 @@ public class TicketView {
                 } else {
                     System.out.println("Nova descrição inválida! Tente novamente.");
                 }
+                break;
+            } else {
+                System.out.println("ID do benefício inválido! Tente novamente.");
+            }
+        } while (true);
+    }
+
+    public static void removeBenefit(TicketVip ticket) {
+        do {
+            ticketService.listBenefits(ticket.getBenefits());
+            System.out.println("Digite o ID no benefício para remover:");
+            int benefitId = scanner.nextInt();
+            scanner.nextLine();
+            boolean isBefitIdValidated = ticketService.validateBenefitId(benefitId - 1, ticket.getBenefits());
+
+            if (isBefitIdValidated) {
+                ticketService.deleteBenefit(ticket.getBenefits(), benefitId);
                 break;
             } else {
                 System.out.println("ID do benefício inválido! Tente novamente.");
