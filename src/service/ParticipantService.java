@@ -33,7 +33,6 @@ public class ParticipantService {
     }
 
     public void addEventParticipant(Event event, Participant participant) {
-//        participant.setPresences(Presence.PENDING); // TODO: Verify if need this
         participant.setEvents(event);
     }
 
@@ -83,6 +82,10 @@ public class ParticipantService {
         if (participant.getEvents().isEmpty()) {
             throw new EventNotFoundException("Nenhum evento inscrito anteriormente.");
         }
+    }
+
+    public boolean isParticipantEvent(Participant participant, Event event) {
+        return event.getParticipants().contains(participant);
     }
 
 }

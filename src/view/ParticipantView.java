@@ -199,7 +199,7 @@ public class ParticipantView {
 
                 switch (option) {
                     case 1 -> registerParticipantEvent(participant);
-                    case 2 -> viewAvailableEvents();
+                    case 2 -> viewAvailableEvents(participant);
                     case 3 -> confirmAttendance(participant);
                     case 4 -> historyRegisteredEvents(participant);
                     case 5 -> cancelParticipantAttendance(participant);
@@ -266,9 +266,13 @@ public class ParticipantView {
         } while (true);
     }
 
-    public static void viewAvailableEvents() {
-        // TODO: List events that wasn't registered in participant, and list events that are only available, not sold out (maybe)
-        System.out.println("Em breve...");
+    public static void viewAvailableEvents(Participant participant) {
+        // List events that wasn't registered in participant, and list events that are only available, not sold out
+        try {
+            participantRepository.readParticipantEventsNotRegistered(participant);
+        } catch (EventNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void confirmAttendance(Participant participant) throws EventNotFoundException, ParticipantEventNotFoundException {
@@ -333,7 +337,6 @@ public class ParticipantView {
 
     public void historyRegisteredEvents(Participant participant) {
         System.out.println("      Histórico de Eventos Inscritos\n--------------------------------------------");
-        // TODO: A method that validate if the participant attendance was confirmed (maybe)
         try {
             participantRepository.readParticipantEvents(participant);
         } catch (EventNotFoundException e) {
@@ -535,7 +538,6 @@ public class ParticipantView {
             String response = scanner.nextLine().toLowerCase();
 
             if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
-                // TODO: This isn't working because it only removes from the participants list, not from the Participant class
                 participantRepository.deleteParticipant(participant);
                 break;
             } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {

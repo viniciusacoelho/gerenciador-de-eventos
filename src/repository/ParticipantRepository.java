@@ -1,13 +1,18 @@
 package repository;
 
+import enums.Status;
+import exceptions.EventNotFoundException;
 import exceptions.ParticipantEventNotFoundException;
 import exceptions.ParticipantNotFoundException;
 import model.Event;
 import model.Participant;
+import model.Ticket;
 import service.ParticipantService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static view.EventView.*;
 
 public class ParticipantRepository {
 
@@ -87,6 +92,22 @@ public class ParticipantRepository {
                 System.out.println("Presença: " + participant.getAttendanceEvents().get(event).getAttendance());
                 System.out.println("--------------------------------------------");
                 this.counterCanceledEvents++;
+            }
+        }
+    }
+
+    public void readParticipantEventsNotRegistered(Participant participant) {
+        if (eventRepository.getEvents().isEmpty()) {
+            throw new EventNotFoundException("Nenhum evento cadastrado anteriormente.");
+        }
+
+        for (Event event : eventRepository.getEvents()) {
+            if (!participantService.isParticipantEvent(participant, event) && !event.getTickets().stream().map(Ticket::getStatus).toList().contains(Status.SOLD_OUT)) {
+                System.out.println(event);
+                event.getTickets().stream()
+                        .map(Ticket::getStatus)
+                        .forEach(System.out::println);
+                System.out.println("--------------------------------------------");
             }
         }
     }
