@@ -296,16 +296,21 @@ public class TicketView {
                     case 3 -> updatePrice(ticket);
                     case 4 -> updateTicketType(ticket);
                     case 5 -> {
-                        assert ticket instanceof TicketVip;
-                        updateBenefits((TicketVip) ticket);
+                        if (ticket instanceof TicketHalfPrice) {
+                            updateStudentId((TicketHalfPrice) ticket);
+                        } else if (ticket instanceof TicketVip) {
+                            updateBenefits((TicketVip) ticket);
+                        } else {
+                            System.out.println("Voltando...");
+                            return;
+                        }
                     }
                     case 6 -> {
-                        assert ticket instanceof TicketHalfPrice;
-                        updateStudentId((TicketHalfPrice) ticket);
-                    }
-                    case 7 -> {
-                        System.out.println("Voltando...");
-                        return;
+                        if (ticket instanceof TicketHalfPrice || ticket instanceof TicketVip) {
+                            System.out.println("Voltando...");
+                            return;
+                        }
+                        System.out.println("Opção inválida! Tente novamente.");
                     }
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
