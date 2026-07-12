@@ -32,9 +32,7 @@ public class TicketHalfPrice extends Ticket {
         return "ID: " + super.getTicketId() +
                 "\nNome: " + super.getName() +
                 "\nDescrição: " + super.getDescription() +
-                "\nPreço: R$ " + super.getPrice() +
-                "\nConfirmação: " + this.studentId;
-//                "\nConfirmação: " + (this.studentId ? "Sim" : "Não");
+                "\nPreço: R$ " + super.getPrice();
     }
 
 }

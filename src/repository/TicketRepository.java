@@ -25,7 +25,7 @@ public class TicketRepository {
             System.out.println(ticket);
 
             if (ticket instanceof TicketHalfPrice) {
-                System.out.println(((TicketHalfPrice) ticket).hasStudentId() ? "Sim" : "Não");
+                System.out.println("Precisa de Carteirinha de Estudante? " + (((TicketHalfPrice) ticket).hasStudentId() ? "Sim" : "Não"));
             } else if (ticket instanceof TicketVip) {
                 ticketService.listBenefits(((TicketVip) ticket).getBenefits());
             }
@@ -39,7 +39,7 @@ public class TicketRepository {
             System.out.println(ticket);
 
             if (ticket instanceof TicketHalfPrice) {
-                System.out.println(((TicketHalfPrice) ticket).hasStudentId() ? "Sim" : "Não");
+                System.out.println("Precisa de Carteirinha de Estudante? " + (((TicketHalfPrice) ticket).hasStudentId() ? "Sim" : "Não"));
             } else if (ticket instanceof TicketVip) {
                 ticketService.listBenefits(((TicketVip) ticket).getBenefits());
             }
@@ -54,7 +54,7 @@ public class TicketRepository {
             case "Descrição" -> ticket.setDescription((String) attribute);
             case "Preço" -> ticket.setPrice((double) attribute);
             case "Tipo do ingresso" -> ticket.setPrice(((TicketType) attribute).ordinal());
-            case "Carteirinha de Estudante" -> ((TicketHalfPrice) ticket).setStudentId((Boolean) attribute);
+            case "Carteirinha de Estudante" -> ((TicketHalfPrice) ticket).setStudentId((boolean) attribute);
             case "Benefícios" -> ((TicketVip) ticket).setBenefits((List<String>) attribute);
             default -> System.out.println("Atributo inválido! Tente novamente.");
         }

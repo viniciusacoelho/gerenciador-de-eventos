@@ -3,6 +3,7 @@ package view;
 import enums.Status;
 import enums.TicketType;
 import exceptions.EventNotFoundException;
+import exceptions.NoStudentIdException;
 import exceptions.TicketNotFoundException;
 import model.Event;
 import model.Participant;
@@ -194,7 +195,7 @@ public class TicketView {
             } while (quantity != 0);
         } else if (ticketType == TicketType.TICKET_HALF_PRICE) {
             do {
-                System.out.println("Você tem carteirinha de estudante? (s/n)");
+                System.out.println("Precisa comprovar com carteirinha de estudante? (s/n)");
                 String response = scanner.nextLine().toLowerCase().strip();
 
                 if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
@@ -402,7 +403,7 @@ public class TicketView {
                     System.out.println("Nova capacidade inválida! Tente novamente.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("[ERR]: Digite um número!");
+                System.out.println("[ERRO]: Digite um número!");
             }
         } while (true);
     }
@@ -506,6 +507,7 @@ public class TicketView {
 
     public static void addBenefit(TicketVip ticket) {
         int quantity;
+
         do {
             try {
                 System.out.println("Quantos benefícios você deseja adicionar ao ingresso '" + ticket.getName() + "' ?");
@@ -617,11 +619,28 @@ public class TicketView {
         } while (true);
     }
 
-    public Ticket buyTicket(Participant participant, Event event) {
+    public Ticket buyTicket(Participant participant, Event event) throws NoStudentIdException {
         System.out.println("           Comprar Ingresso\n--------------------------------------------");
 
         ticketRepository.readEventTickets(event);
         Ticket ticket = chooseTicket("comprar");
+        scanner.nextLine();
+
+        if (ticket.getTicketType() == TicketType.TICKET_HALF_PRICE && ((TicketHalfPrice) ticket).hasStudentId()) {
+            do {
+                System.out.println("Você tem carteirinha de estudante? (s/n)");
+                String response = scanner.nextLine().toLowerCase().strip();
+
+                if (response.equalsIgnoreCase("s") || response.equalsIgnoreCase("sim")) {
+                    break;
+                } else if (response.equalsIgnoreCase("n") || response.equalsIgnoreCase("nao") || response.equalsIgnoreCase("não")) {
+                    throw new NoStudentIdException();
+                } else {
+                    System.out.println("Resposta inválida! Tente novamente.");
+                }
+
+            } while (true);
+        }
 
         try {
             ticketService.hasTicket(ticket);
@@ -636,8 +655,10 @@ public class TicketView {
             return null;
         }
 
+//        ticket.calculatePrice();
         participant.setEventTickets(event, ticket);
         System.out.println("Ingresso '" + ticket.getName() + "' comprado com sucesso!");
+//        System.out.println("Total: R$ " + ticket.getPrice());
         return ticket;
     }
 

@@ -1,11 +1,14 @@
 package view;
 
+import enums.TicketType;
 import exceptions.EventFullException;
 import exceptions.EventNotFoundException;
+import exceptions.NoStudentIdException;
 import exceptions.ParticipantEventNotFoundException;
 import model.Event;
 import model.Participant;
 import model.Ticket;
+import model.TicketHalfPrice;
 import repository.ParticipantRepository;
 import repository.TicketRepository;
 import service.ParticipantService;
@@ -234,6 +237,7 @@ public class ParticipantView {
                 int eventId = scanner.nextInt();
                 System.out.println("--------------------------------------------");
                 Event event = eventRepository.findEventById(eventId);
+                scanner.nextLine();
 
                 if (eventService.isEmpty(event)) {
                     System.out.println("ID do evento inválido! Tente novamente.");
@@ -245,7 +249,14 @@ public class ParticipantView {
                     return;
                 }
 
-                Ticket ticket = ticketView.buyTicket(participant, event);
+                Ticket ticket;
+                try {
+                    ticket = ticketView.buyTicket(participant, event);
+                } catch (NoStudentIdException e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
+
                 if (ticket == null) {
                     return;
                 }
@@ -296,7 +307,6 @@ public class ParticipantView {
 
                 participantRepository.readParticipantEventsNotConfirmed(participant);
 
-                // TODO: Fix when the participant confirms their attendance and returns here. The exception doesn't work because they have no events to confirm, but the program still requests the event ID, even though it's empty
                 if (participantRepository.getCounterConfirmedEvents() == 0) {
                     System.out.println("Nenhum evento pendente para confirmação.");
                     return;
