@@ -655,10 +655,10 @@ public class TicketView {
             return null;
         }
 
-//        ticket.calculatePrice();
+        ticket.calculatePrice();
         participant.setEventTickets(event, ticket);
         System.out.println("Ingresso '" + ticket.getName() + "' comprado com sucesso!");
-//        System.out.println("Total: R$ " + ticket.getPrice());
+        System.out.println("Total: R$ " + ticket.getPrice());
         return ticket;
     }
 
