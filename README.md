@@ -41,10 +41,8 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 ## 🛠️ **Tecnologias Utilizadas**
 
 * **Java 25**
-* `ArrayList`
-* `List`
-* `InputMismatchException` (tratamento de exceções)
-* `LocalDateTime` (data e hora)
+* **Git**
+
 ---
 
 ## 📁 **Estrutura do Projeto**
