@@ -9,12 +9,19 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 
 ## 📌 **Funcionalidades Principais**
 
-### 🎫 **Eventos**
+### 🎉 **Eventos**
 
 * Cadastro de novos eventos;
 * Definição de nome, data, local e capacidade máxima;
 * Listagem de eventos cadastrados;
 * Controle da quantidade de participantes por evento.
+
+### 🎫 **Ingressos**
+
+* Diferentes tipos de ingresso usando herança (ingresso padrão, grátis, meia-entrada e VIP);
+* Benefícios personalizados para ingressos VIP;
+* Cálculo do valor final do ingresso;
+* Regras para meia-entrada com validação de carteirinha de estudante quando configurada pelo administrador.
 
 ### 👤 **Participantes**
 
@@ -22,11 +29,6 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 * Armazenamento de nome e contato;
 * Associação correta entre participante e evento;
 * Exibição dos participantes inscritos por evento.
-
-### ✅ **Presença**
-
-* Confirmação de presença de participantes;
-* Visualização de participantes confirmados.
 
 ### 🔐 **Sistema**
 
