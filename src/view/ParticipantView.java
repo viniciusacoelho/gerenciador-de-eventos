@@ -1,6 +1,5 @@
 package view;
 
-import enums.TicketType;
 import exceptions.EventFullException;
 import exceptions.EventNotFoundException;
 import exceptions.NoStudentIdException;
@@ -8,9 +7,7 @@ import exceptions.ParticipantEventNotFoundException;
 import model.Event;
 import model.Participant;
 import model.Ticket;
-import model.TicketHalfPrice;
 import repository.ParticipantRepository;
-import repository.TicketRepository;
 import service.ParticipantService;
 import util.IsEqualUtil;
 
@@ -22,15 +19,21 @@ import static view.EventView.event;
 import static view.EventView.eventRepository;
 import static view.EventView.eventService;
 
+/**
+ * Responsável pela interface de interação entre o participante e as
+ * funcionalidades do sistema.
+ */
 public class ParticipantView {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static final IsEqualUtil isEqualUtil = new IsEqualUtil();
-    private final TicketRepository ticketRepository = new TicketRepository();
 
     public static ParticipantRepository participantRepository = new ParticipantRepository();
     public static ParticipantService participantService = new ParticipantService();
 
+    /**
+     * Exibe o painel principal de funcionalidades do participante.
+     */
     public void panel() {
         String[] menu = {"Criar Conta", "Login", "Voltar"};
 
@@ -67,6 +70,9 @@ public class ParticipantView {
         } while (true);
     }
 
+    /**
+     * Realiza o login de um participante no sistema.
+     */
     public void login() {
         System.out.println("--------------------------------------------");
         System.out.println("                   Login");
@@ -86,6 +92,9 @@ public class ParticipantView {
         System.out.println("E-mail e/ou senha inválidos!");
     }
 
+    /**
+     * Realiza o cadastro de uma nova conta de participante no sistema.
+     */
     public void createAccount() {
         System.out.println("           Cadastro\n--------------------------------------------");
 
@@ -176,6 +185,11 @@ public class ParticipantView {
         panel(participant1);
     }
 
+    /**
+     * Exibe o painel de funcionalidades de um participante específico.
+     *
+     * @param participant participante que terá suas opções exibidas.
+     */
     public void panel(Participant participant) {
         String[] menu = {
                 "Inscrever-se em um Evento", "Visualizar Eventos/Disponíveis", "Confirmar Presença no Evento",
@@ -223,6 +237,11 @@ public class ParticipantView {
         } while (true);
     }
 
+    /**
+     * Realiza a inscrição de um participante em um evento.
+     *
+     * @param participant participante que será inscrito no evento.
+     */
     public static void registerParticipantEvent(Participant participant) {
         if (eventService.hasEventsRegistered(event)) {
             System.out.println("Nenhum evento cadastrado anteriormente.");
@@ -277,8 +296,12 @@ public class ParticipantView {
         } while (true);
     }
 
+    /**
+     * Exibe os eventos disponíveis para inscrição de um participante.
+     *
+     * @param participant participante que visualizará os eventos disponíveis.
+     */
     public static void viewAvailableEvents(Participant participant) {
-        // List events that wasn't registered in participant, and list events that are only available, not sold out
         try {
             participantRepository.readParticipantEventsNotRegistered(participant);
         } catch (EventNotFoundException e) {
@@ -286,6 +309,13 @@ public class ParticipantView {
         }
     }
 
+    /**
+     * Confirma a presença de um participante em um evento.
+     *
+     * @param participant participante que terá a presença confirmada.
+     * @throws EventNotFoundException caso o evento não seja encontrado.
+     * @throws ParticipantEventNotFoundException caso o participante não possua o evento informado.
+     */
     public static void confirmAttendance(Participant participant) throws EventNotFoundException, ParticipantEventNotFoundException {
         System.out.println("      Confirmar Presença de Participante\n--------------------------------------------");
 
@@ -345,6 +375,11 @@ public class ParticipantView {
         } while (true);
     }
 
+    /**
+     * Exibe o histórico de eventos cadastrados de um participante.
+     *
+     * @param participant participante cujo histórico de eventos será exibido.
+     */
     public void historyRegisteredEvents(Participant participant) {
         System.out.println("      Histórico de Eventos Inscritos\n--------------------------------------------");
         try {
@@ -354,6 +389,11 @@ public class ParticipantView {
         }
     }
 
+    /**
+     * Cancela a presença de um participante em um evento.
+     *
+     * @param participant participante que terá a presença cancelada.
+     */
     public void cancelParticipantAttendance(Participant participant) {
         System.out.println("      Cancelar Presença de Participante\n--------------------------------------------");
 
@@ -417,11 +457,21 @@ public class ParticipantView {
         } while (true);
     }
 
+    /**
+     * Exibe as inscrições realizadas por um participante.
+     *
+     * @param participant participante que terá suas inscrições exibidas.
+     */
     public static void viewRegistration(Participant participant) {
         System.out.println("           Visualizar Cadastro\n--------------------------------------------");
         System.out.println(participant);
     }
 
+    /**
+     * Atualiza as informações da conta de um participante.
+     *
+     * @param participant participante que terá os dados atualizados.
+     */
     public void updateAccount(Participant participant) {
         System.out.println("           Atualizar Participante\n--------------------------------------------");
 
@@ -462,6 +512,11 @@ public class ParticipantView {
         } while (true);
     }
 
+    /**
+     * Atualiza o nome de um participante.
+     *
+     * @param participant participante que terá o nome atualizado.
+     */
     public static void updateName(Participant participant) {
         do {
             System.out.println("Digite o novo nome para atualizar:");
@@ -481,6 +536,11 @@ public class ParticipantView {
         } while (true);
     }
 
+    /**
+     * Atualiza o contato de um participante.
+     *
+     * @param participant participante que terá o contato atualizado.
+     */
     public static void updateContact(Participant participant) {
         do {
             System.out.println("Digite o novo contato para atualizar:");
@@ -502,6 +562,11 @@ public class ParticipantView {
         } while (true);
     }
 
+    /**
+     * Atualiza o e-mail de um participante.
+     *
+     * @param participant participante que terá o e-mail atualizado.
+     */
     public static void updateEmail(Participant participant) {
         do {
             System.out.println("Digite o novo email para atualizar:");
@@ -521,6 +586,11 @@ public class ParticipantView {
         } while (true);
     }
 
+    /**
+     * Atualiza a senha de um participante.
+     *
+     * @param participant participante que terá a senha atualizada.
+     */
     public static void updatePassword(Participant participant) {
         do {
             System.out.println("Digite a nova senha para atualizar:");
@@ -540,6 +610,11 @@ public class ParticipantView {
         } while (true);
     }
 
+    /**
+     * Remove a conta de um participante do sistema.
+     *
+     * @param participant participante que terá a conta removida.
+     */
     public static void deleteAccount(Participant participant) {
         System.out.println("           Excluir Conta\n--------------------------------------------");
 

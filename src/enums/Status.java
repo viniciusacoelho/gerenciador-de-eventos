@@ -1,5 +1,8 @@
 package enums;
 
+/**
+ * Representa os possíveis estados de um evento.
+ */
 public enum Status {
 
     AVAILABLE ("Disponível"),

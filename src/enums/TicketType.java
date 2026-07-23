@@ -1,5 +1,8 @@
 package enums;
 
+/**
+ * Representa os tipos de ingressos disponíveis para um evento.
+ */
 public enum TicketType {
 
     TICKET_DEFAULT ("Ingresso Padrão"),

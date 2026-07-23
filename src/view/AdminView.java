@@ -5,14 +5,22 @@ import exceptions.IncorrectDefaultPasswordException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Responsável pela interface principal de interação entre o administrador e o sistema.
+ */
 public class AdminView {
-
-    private static final Scanner scanner = new Scanner(System.in);
 
     public static EventView eventView = new EventView();
     public static TicketView ticketView = new TicketView();
     public static AdminParticipantView adminParticipantView = new AdminParticipantView();
 
+    private static final Scanner scanner = new Scanner(System.in);
+
+    /**
+     * Realiza o login do administrador no sistema.
+     *
+     * @throws IncorrectDefaultPasswordException caso a senha padrão informada esteja incorreta.
+     */
     public void login() throws IncorrectDefaultPasswordException {
 //        final String DEFAULT_PASSWORD = "1234";
 //
@@ -32,6 +40,9 @@ public class AdminView {
         panel();
     }
 
+    /**
+     * Exibe o painel principal de gerenciamento do administrador.
+     */
     public static void panel() {
         String[] menu = {"Evento", "Ingresso", "Participante", "Voltar"};
 

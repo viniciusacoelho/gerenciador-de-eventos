@@ -9,12 +9,15 @@ import util.IsEqualUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static view.TicketView.addTicket;
 
+/**
+ * Responsável pela interface de interação entre o usuário e as funcionalidades
+ * relacionadas ao gerenciamento de eventos.
+ */
 public class EventView {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -26,6 +29,9 @@ public class EventView {
 
     public static DateTimeUtil dateTimeUtil = new DateTimeUtil();
 
+    /**
+     * Exibe o painel de gerenciamento de eventos.
+     */
     public void panel() {
         String[] menu = {
                 "Cadastrar Evento", "Listar Eventos",
@@ -72,6 +78,9 @@ public class EventView {
         } while (true);
     }
 
+    /**
+     * Realiza o cadastro de um novo evento no sistema.
+     */
     public static void registerEvent() {
         System.out.println("              Cadastrar Evento\n--------------------------------------------");
 
@@ -149,6 +158,9 @@ public class EventView {
         System.out.println("Evento '" + event1.getName() + "' cadastrado com sucesso!");
     }
 
+    /**
+     * Busca um evento cadastrado no sistema.
+     */
     public static void findEvent() {
         System.out.println("           Buscar Evento\n--------------------------------------------");
         Event event = chooseEvent("buscar");
@@ -163,6 +175,9 @@ public class EventView {
         System.out.println(event);
     }
 
+    /**
+     * Atualiza as informações de um evento cadastrado no sistema.
+     */
     public static void updateEvent() {
         System.out.println("           Atualizar Evento\n--------------------------------------------");
         Event event = chooseEvent("atualizar");
@@ -212,6 +227,11 @@ public class EventView {
         } while (true);
     }
 
+    /**
+     * Atualiza o nome de um evento.
+     *
+     * @param event evento que terá o nome atualizado.
+     */
     public static void updateName(Event event) {
         do {
             System.out.println("Digite o novo nome para atualizar:");
@@ -231,6 +251,11 @@ public class EventView {
         } while (true);
     }
 
+    /**
+     * Atualiza a data e hora de um evento.
+     *
+     * @param event evento que terá a data e hora atualizadas.
+     */
     public static void updateDateTime(Event event) {
         do {
             try {
@@ -248,6 +273,11 @@ public class EventView {
         } while (true);
     }
 
+    /**
+     * Atualiza a localização de um evento.
+     *
+     * @param event evento que terá a localização atualizada.
+     */
     public static void updateLocation(Event event) {
         do {
             System.out.println("Digite o novo local para atualizar:");
@@ -267,6 +297,11 @@ public class EventView {
         } while (true);
     }
 
+    /**
+     * Atualiza a capacidade máxima de um evento.
+     *
+     * @param event evento que terá a capacidade atualizada.
+     */
     public static void updateCapacity(Event event) {
         do {
             try {
@@ -290,6 +325,9 @@ public class EventView {
         } while (true);
     }
 
+    /**
+     * Remove um evento cadastrado no sistema.
+     */
     public static void removeEvent() {
         System.out.println("           Deletar Evento\n--------------------------------------------");
         Event event = chooseEvent("deletar");
@@ -304,7 +342,12 @@ public class EventView {
         eventRepository.deleteEvent(event);
     }
 
-    // TODO: Maybe put the exception just here to not use in the others methods
+    /**
+     * Permite escolher um evento com base na ação informada.
+     *
+     * @param action ação utilizada para definir a forma de seleção do evento.
+     * @return evento selecionado.
+     */
     public static Event chooseEvent(String action) {
         do {
             try {

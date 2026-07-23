@@ -10,12 +10,19 @@ import java.util.Scanner;
 import static view.ParticipantView.deleteAccount;
 import static view.ParticipantView.participantRepository;
 
+/**
+ * Responsável pela interface de interação entre o administrador e as
+ * funcionalidades relacionadas ao gerenciamento de participantes.
+ */
 public class AdminParticipantView {
 
     private static final Scanner scanner = new Scanner(System.in);
 
     private static final ParticipantService participantService = new ParticipantService();
 
+    /**
+     * Exibe o painel de gerenciamento de participantes para o administrador.
+     */
     public void panel() {
         String[] menu = {
                 "Cadastrar Participante", "Listar Participantes", "Buscar Participante",
@@ -59,6 +66,9 @@ public class AdminParticipantView {
         } while (true);
     }
 
+    /**
+     * Realiza o cadastro de um novo participante no sistema.
+     */
     public static void registerParticipant() {
         System.out.println("           Inscrever Participante\n--------------------------------------------");
 
@@ -111,6 +121,11 @@ public class AdminParticipantView {
         System.out.println("Participante '" + participant1.getName() + "' cadastrado com sucesso!");
     }
 
+    /**
+     * Busca um participante no sistema.
+     *
+     * @throws ParticipantNotFoundException caso o participante não seja encontrado.
+     */
     public static void findParticipant() throws ParticipantNotFoundException {
         System.out.println("           Buscar Participante\n--------------------------------------------");
         Participant participant = chooseParticipant("buscar");
@@ -123,6 +138,11 @@ public class AdminParticipantView {
         System.out.println(participant);
     }
 
+    /**
+     * Atualiza as informações de um participante cadastrado no sistema.
+     *
+     * @throws ParticipantNotFoundException caso o participante não seja encontrado.
+     */
     public static void updateParticipant() throws ParticipantNotFoundException {
         Participant participant = chooseParticipant("atualizar");
 
@@ -134,6 +154,11 @@ public class AdminParticipantView {
         deleteAccount(participant);
     }
 
+    /**
+     * Remove um participante cadastrado no sistema.
+     *
+     * @throws ParticipantNotFoundException caso o participante não seja encontrado.
+     */
     public static void removeParticipant() throws ParticipantNotFoundException {
         Participant participant = chooseParticipant("deletar");
 
@@ -145,6 +170,12 @@ public class AdminParticipantView {
         deleteAccount(participant);
     }
 
+    /**
+     * Permite escolher um participante com base na ação informada.
+     *
+     * @param action ação utilizada para definir a forma de seleção do participante.
+     * @return participante selecionado.
+     */
     public static Participant chooseParticipant(String action) {
         System.out.println("Digite o e-mail do participante para " + action + ':');
         String email = scanner.nextLine();

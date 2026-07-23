@@ -10,16 +10,27 @@ import service.TicketService;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Responsável por armazenar e gerenciar os ingressos cadastrados no sistema.
+ */
 public class TicketRepository {
 
     private final List<Ticket> tickets = new ArrayList<>();
 
     public TicketService ticketService = new TicketService();
 
+    /**
+     * Adiciona um novo ingresso ao repositório.
+     *
+     * @param ticket ticket ingresso que será cadastrado.
+     */
     public void createTicket(Ticket ticket) {
         this.tickets.add(ticket);
     }
 
+    /**
+     * Exibe todos os ingressos cadastrados no sistema.
+     */
     public void readTickets() {
         for (Ticket ticket : this.tickets) {
             System.out.println(ticket);
@@ -34,6 +45,11 @@ public class TicketRepository {
         }
     }
 
+    /**
+     * Exibe os ingressos disponíveis de um determinado evento.
+     *
+     * @param event evento cujos ingressos serão exibidos.
+     */
     public void readEventTickets(Event event) {
         for (Ticket ticket : event.getTickets()) {
             System.out.println(ticket);
@@ -48,6 +64,14 @@ public class TicketRepository {
         }
     }
 
+    /**
+     * Atualiza um atributo específico de um ingresso.
+     *
+     * @param ticket ingresso que será atualizado.
+     * @param attribute novo valor do atributo.
+     * @param attributeName nome do atributo que será atualizado.
+     * @param <T> tipo do atributo informado.
+     */
     public <T> void updateTicket(Ticket ticket, T attribute, String attributeName) {
         switch (attributeName) {
             case "Nome" -> ticket.setName((String) attribute);
@@ -62,10 +86,21 @@ public class TicketRepository {
         System.out.println(attributeName + " atualizado com sucesso!");
     }
 
+    /**
+     * Remove um ingresso do repositório.
+     *
+     * @param ticket ingresso que será removido.
+     */
     public void deleteTicket(Ticket ticket) {
         this.tickets.remove(ticket);
     }
 
+    /**
+     * Busca um ingresso pelo seu identificador.
+     *
+     * @param ticketId identificador do ingresso.
+     * @return ingresso correspondente ao identificador informado.
+     */
     public Ticket findTicketById(int ticketId) {
         int start = 0;
         int end = this.tickets.size() - 1;
@@ -84,6 +119,13 @@ public class TicketRepository {
         return null;
     }
 
+    /**
+     * Busca um ingresso pelo identificador dentro da lista de ingressos de um evento.
+     *
+     * @param eventTickets lista de ingressos do evento.
+     * @param ticketId identificador do ingresso.
+     * @return ingresso correspondente ao identificador informado.
+     */
     public Ticket findByEventTicketId(List<Ticket> eventTickets, int ticketId) {
         int start = 0;
         int end = eventTickets.size() - 1;

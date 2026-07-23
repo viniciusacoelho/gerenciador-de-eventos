@@ -8,22 +8,43 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Responsável por armazenar e gerenciar os eventos cadastrados no sistema.
+ */
 public class EventRepository {
 
     private final List<Event> events;
 
+    /**
+     * Cria um repositório de eventos.
+     */
     public EventRepository() {
         this.events = new ArrayList<>();
     }
 
+    /**
+     * Retorna a lista de eventos cadastrados no repositório.
+     *
+     * @return lista de eventos cadastrados.
+     */
     public List<Event> getEvents() {
         return events;
     }
 
+    /**
+     * Adiciona um novo evento ao repositório.
+     *
+     * @param event evento que será cadastrado.
+     */
     public void createEvent(Event event) {
         this.events.add(event);
     }
 
+    /**
+     * Exibe todos os eventos cadastrados no sistema.
+     *
+     * @throws EventNotFoundException caso não exista nenhum evento cadastrado.
+     */
     public void readEvents() throws EventNotFoundException {
         if (events.isEmpty()) {
             throw new EventNotFoundException("Nenhum evento cadastrado anteriormente.");
@@ -31,15 +52,21 @@ public class EventRepository {
 
         for (Event event : events) {
             System.out.println(event);
-//            System.out.println(new Ticket().getStatusEvents().get(event));
             event.getTickets().stream()
                     .map(Ticket::getStatus)
                     .forEach(System.out::println);
-
             System.out.println("--------------------------------------------");
         }
     }
 
+    /**
+     * Atualiza um atributo específico de um evento.
+     *
+     * @param eventId identificador do evento que será atualizado.
+     * @param attribute novo valor do atributo.
+     * @param attributeName nome do atributo que será atualizado.
+     * @param <T> tipo do atributo informado
+     */
     public <T> void updateEvent(int eventId, T attribute, String attributeName) {
         Event event = findEventById(eventId);
 
@@ -54,13 +81,24 @@ public class EventRepository {
         System.out.println(attributeName + " atualizado com sucesso!");
     }
 
+    /**
+     * Remove um evento do repositório
+     *
+     * @param event evento que será removido.
+     */
     public void deleteEvent(Event event) {
         System.out.println("Participante '" + event.getName() + "' deletado com sucesso!");
         events.remove(event);
     }
 
+    /**
+     * Busca um evento pelo seu identificador.
+     *
+     * @param eventId identificador do evento.
+     * @return evento correspondente ao identificador informado.
+     * @throws EventNotFoundException caso o evento não seja encontrado.
+     */
     public Event findEventById(int eventId) throws EventNotFoundException {
-        // TODO: Test another way to use it, because this make a error, so I think I've no create a method to fix it
         if (events.isEmpty()) {
             throw new EventNotFoundException("Nenhum evento cadastrado anteriormente.");
         }
@@ -80,10 +118,16 @@ public class EventRepository {
             }
         }
 
-//        throw new EventNotFoundException("Evento não encontrado");
         return null;
     }
 
+    /**
+     * Busca um evento pelo seu nome.
+     *
+     * @param name nome do evento.
+     * @return evento correspondente ao nome informado.
+     * @throws EventNotFoundException caso o evento não seja encontrado.
+     */
     public Event findEventByName(String name) throws EventNotFoundException {
         if (events.isEmpty()) {
             throw new IndexOutOfBoundsException("Nenhum evento cadastrado anteriormente.");
@@ -95,7 +139,6 @@ public class EventRepository {
             }
         }
 
-//        throw new EventNotFoundException("Evento não encontrado");
         return null;
     }
 

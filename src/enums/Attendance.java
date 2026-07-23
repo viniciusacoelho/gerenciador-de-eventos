@@ -1,5 +1,8 @@
 package enums;
 
+/**
+ * Representa os possíveis estados de presença de um participante em um evento.
+ */
 public enum Attendance {
 
     CONFIRMED ("Confirmada"),

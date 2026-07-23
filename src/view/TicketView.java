@@ -26,6 +26,10 @@ import static view.EventView.chooseEvent;
 import static view.EventView.eventRepository;
 import static view.EventView.eventService;
 
+/**
+ * Responsável pela interface de interação entre o usuário e as funcionalidades
+ * relacionadas ao gerenciamento de ingressos.
+ */
 public class TicketView {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -36,6 +40,9 @@ public class TicketView {
     private static final TicketRepository ticketRepository = new TicketRepository();
     private static final TicketService ticketService = new TicketService();
 
+    /**
+     * Exibe o painel de gerenciamento de ingressos.
+     */
     public void panel() {
         String[] menu = {
                 "Cadastrar Ingresso", "Listar Ingressos",
@@ -80,6 +87,9 @@ public class TicketView {
         } while (true);
     }
 
+    /**
+     * Realiza o cadastro de um novo ingresso no sistema.
+     */
     public static void registerTicket() {
         System.out.println("              Cadastrar Ingresso\n--------------------------------------------");
 /*
@@ -244,6 +254,9 @@ public class TicketView {
 //        System.out.println("Ingresso '" + ticket.getName() + "' cadastrado com sucesso!");
     }
 
+    /**
+     * Busca um ingresso cadastrado no sistema.
+     */
     public static void findTicket() {
         System.out.println("           Buscar Ingresso\n--------------------------------------------");
         Ticket ticket = chooseTicket("buscar");
@@ -258,6 +271,9 @@ public class TicketView {
         System.out.println(ticket);
     }
 
+    /**
+     * Atualiza as informações de um ingresso cadastrado no sistema.
+     */
     public static void updateTicket() {
         System.out.println("           Atualizar Ingresso\n--------------------------------------------");
         ticketRepository.readTickets();
@@ -323,6 +339,12 @@ public class TicketView {
         } while (true);
     }
 
+    /**
+     * Retorna as opções de menu disponíveis de acordo com o tipo de ingresso.
+     *
+     * @param ticket ingresso utilizado para definir as opções do menu.
+     * @return lista de opções disponíveis no menu.
+     */
     private static String[] getMenu(Ticket ticket) {
         String[] menu;
         if (ticket instanceof TicketHalfPrice) {
@@ -347,6 +369,11 @@ public class TicketView {
         return menu;
     }
 
+    /**
+     * Atualiza o nome de um ingresso.
+     *
+     * @param ticket ingresso que terá o nome atualizado.
+     */
     public static void updateName(Ticket ticket) {
         do {
             System.out.println("Digite o novo nome para atualizar:");
@@ -365,7 +392,12 @@ public class TicketView {
             }
         } while (true);
     }
-    
+
+    /**
+     * Atualiza a descrição de um ingresso.
+     *
+     * @param ticket ingresso que terá a descrição atualizada.
+     */
     public static void updateDescription(Ticket ticket) {
         do {
             System.out.println("Digite a nova descrição para atualizar:");
@@ -385,6 +417,11 @@ public class TicketView {
         } while (true);
     }
 
+    /**
+     * Atualiza o preço de um ingresso.
+     *
+     * @param ticket ingresso que terá o preço atualizado.
+     */
     public static void updatePrice(Ticket ticket) {
         do {
             try {
@@ -408,6 +445,11 @@ public class TicketView {
         } while (true);
     }
 
+    /**
+     * Atualiza o tipo de um ingresso.
+     *
+     * @param ticket ingresso que terá o tipo atualizado.
+     */
     public static void updateTicketType(Ticket ticket) {
         do {
             try {
@@ -444,6 +486,11 @@ public class TicketView {
         } while (true);
     }
 
+    /**
+     * Atualiza a informação da carteirinha de estudante de um ingresso de meia-entrada.
+     *
+     * @param ticket ingresso de meia-entrada que terá a informação da carteirinha atualizada.
+     */
     public static void updateStudentId(TicketHalfPrice ticket) {
         boolean newStudentId = false;
 
@@ -469,6 +516,11 @@ public class TicketView {
         } while (true);
     }
 
+    /**
+     * Atualiza os benefícios de um ingresso VIP.
+     *
+     * @param ticket ticket ingresso VIP que terá os benefícios atualizados.
+     */
     public static void updateBenefits(TicketVip ticket) {
         String[] menu = {
                 "Adicionar Benefício", "Editar Benefício",
@@ -505,6 +557,11 @@ public class TicketView {
         } while (true);
     }
 
+    /**
+     * Adiciona um benefício a um ingresso VIP.
+     *
+     * @param ticket ingresso VIP que receberá o novo benefício.
+     */
     public static void addBenefit(TicketVip ticket) {
         int quantity;
 
@@ -545,6 +602,11 @@ public class TicketView {
         } while (quantity != 0);
     }
 
+    /**
+     * Edita um benefício de um ingresso VIP.
+     *
+     * @param ticket ingresso VIP que terá um benefício editado.
+     */
     public static void editBenefits(TicketVip ticket) {
         do {
             ticketService.listBenefits(ticket.getBenefits());
@@ -575,6 +637,11 @@ public class TicketView {
         } while (true);
     }
 
+    /**
+     * Remove um benefício de um ingresso VIP.
+     *
+     * @param ticket ingresso VIP que terá um benefício removido.
+     */
     public static void removeBenefit(TicketVip ticket) {
         do {
             ticketService.listBenefits(ticket.getBenefits());
@@ -592,6 +659,9 @@ public class TicketView {
         } while (true);
     }
 
+    /**
+     * Remove um ingresso cadastrado no sistema.
+     */
     public static void removeTicket() {
         System.out.println("           Deletar Ingresso\n--------------------------------------------");
         ticketRepository.readTickets();
@@ -607,6 +677,12 @@ public class TicketView {
         ticketRepository.deleteTicket(ticket);
     }
 
+    /**
+     * Permite escolher um ingresso com base na ação informada.
+     *
+     * @param action ação utilizada para definir a forma de seleção do ingresso.
+     * @return ingresso selecionado.
+     */
     public static Ticket chooseTicket(String action) {
         do {
             try {
@@ -619,6 +695,14 @@ public class TicketView {
         } while (true);
     }
 
+    /**
+     * Realiza a compra de um ingresso por um participante para um evento.
+     *
+     * @param participant participante que realizará a compra do ingresso.
+     * @param event evento relacionado ao ingresso adquirido.
+     * @return ingresso comprado pelo participante.
+     * @throws NoStudentIdException caso o participante não possua carteirinha de estudante para comprar um ingresso de meia-entrada.
+     */
     public Ticket buyTicket(Participant participant, Event event) throws NoStudentIdException {
         System.out.println("           Comprar Ingresso\n--------------------------------------------");
 
@@ -662,6 +746,9 @@ public class TicketView {
         return ticket;
     }
 
+    /**
+     * Adiciona um novo ingresso ao sistema.
+     */
     public static void addTicket() {
         System.out.println("           Adicionar Ingresso ao Evento\n--------------------------------------------");
 

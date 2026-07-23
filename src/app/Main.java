@@ -1,46 +1,62 @@
+package app;
+
 import view.AdminView;
 import view.ParticipantView;
 
-void main() {
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
-    Scanner scanner = new Scanner(System.in);
+/**
+ * Método principal responsável por iniciar a execução da aplicação Gerenciador de Eventos.
+ *
+ * @author Vinícius Araújo Coêlho
+ * @version 1.0
+ * @since 29/12/2025
+ */
+public class Main {
 
-    AdminView adminView = new AdminView();
-    ParticipantView participantView = new ParticipantView();
+    void main() {
 
-    String[] menu = {
-            "Administrador", "Participante", "Sair"
-    };
+        Scanner scanner = new Scanner(System.in);
 
-    do {
-        System.out.println("--------------------------------------------");
-        System.out.println("           Gerenciador de Eventos");
-        System.out.println("--------------------------------------------");
-        System.out.println("Identifique-se\n");
+        AdminView adminView = new AdminView();
+        ParticipantView participantView = new ParticipantView();
 
-        for (int i = 0; i < menu.length; i++) {
-            System.out.println((i + 1) + " - " + menu[i]);
-        }
+        String[] menu = {
+                "Administrador", "Participante", "Sair"
+        };
 
-        try {
-            System.out.println("--------------------------------------------\n\nDigite uma opção:");
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+        do {
+            System.out.println("--------------------------------------------");
+            System.out.println("           Gerenciador de Eventos");
+            System.out.println("--------------------------------------------");
+            System.out.println("Identifique-se\n");
 
-            switch (opcao) {
-                case 1 -> adminView.login();
-                case 2 -> participantView.panel();
-                case 3 -> {
-                    System.out.println("Saindo...");
-                    System.exit(0);
-                }
-                default -> System.out.println("Opção inválida! Tente novamente.");
+            for (int i = 0; i < menu.length; i++) {
+                System.out.println((i + 1) + " - " + menu[i]);
             }
 
-        } catch (InputMismatchException e) {
-            System.err.println("[ERRO]: Digite um número!");
-            scanner.nextLine();
-        }
-    } while (true);
+            try {
+                System.out.println("--------------------------------------------\n\nDigite uma opção:");
+                int opcao = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (opcao) {
+                    case 1 -> adminView.login();
+                    case 2 -> participantView.panel();
+                    case 3 -> {
+                        System.out.println("Saindo...");
+                        System.exit(0);
+                    }
+                    default -> System.out.println("Opção inválida! Tente novamente.");
+                }
+
+            } catch (InputMismatchException e) {
+                System.err.println("[ERRO]: Digite um número!");
+                scanner.nextLine();
+            }
+        } while (true);
+
+    }
 
 }
