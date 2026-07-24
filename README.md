@@ -51,6 +51,7 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 /gerenciador-de-eventos
 │
 ├── .idea
+├── docs
 ├── src/
 │   ├── app
 │   ├── enums
@@ -91,6 +92,12 @@ Este sistema foi construído com foco em:
 * Simulação de um sistema real de gerenciamento
 * Evolução contínua do projeto
 * Preparação para portfólio profissional
+
+---
+
+## 📚 **Documentação**
+
+A documentação JavaDoc está disponível em `docs\index.html`. Ela contém informações sobre classes, métodos, atributos e estrutura do sistema.
 
 ---
 
