@@ -51,7 +51,9 @@ Este projeto é um sistema desenvolvido para gerenciar **eventos e participantes
 /gerenciador-de-eventos
 │
 ├── .idea
-├── docs
+├── docs/
+│   ├── javadoc
+│   └── uml
 ├── src/
 │   ├── app
 │   ├── enums
@@ -97,7 +99,13 @@ Este sistema foi construído com foco em:
 
 ## 📚 **Documentação**
 
-A documentação JavaDoc está disponível em `docs\index.html`. Ela contém informações sobre classes, métodos, atributos e estrutura do sistema.
+A documentação **JavaDoc** está disponível em `docs\index.html`. Ela contém informações sobre classes, métodos, atributos e estrutura do sistema.
+
+---
+
+## 📐 UML
+
+O diagrama de classes **UML** do projeto está disponível na pasta `docs/uml`.
 
 ---
 
